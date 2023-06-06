@@ -17,3 +17,6 @@ with open('Protein_mave_db_gold_standard_only_sequences_splits.tsv') as file:
 
 
 print(s1, s2, s3, s4)
+
+
+## Testing line
