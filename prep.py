@@ -108,6 +108,39 @@ def get_dictionary_for_eve_scores(eve_score_file_path):
     return scores_dictionary
 
 
+
+def get_dictionary_for_mutpred_scores(score_file_path):
+    scores_dictionary = {}
+    with open(score_file_path) as file:
+        for line in file:
+            # break
+            if line[:2] == "ID":
+                pass
+            else:
+                # print(line.split(","))
+
+                mutation_name = line.split(",")[1]
+                mutepred_score = line.split(",")[2]
+                scores_dictionary[mutation_name] = [mutepred_score]
+
+                # print(mutation_name, mutepred_score)
+                # break
+    #             # print(line.split(","))
+    #             eve_score = line.split(",")[3]
+
+
+    #             # print(mutation_name, evol_index, eve_score)
+
+
+    return scores_dictionary
+
+
+score_file_path = "/home/ali/Documents/GPML/tVIM2.out"
+get_dictionary_for_mutpred_scores(score_file_path)
+
+
+
+
 def get_score_comparison_list(eve_score_dict, all_data_dict, protein_name):
     print(protein_name)
     scores_list = []
@@ -126,7 +159,7 @@ def get_score_comparison_list(eve_score_dict, all_data_dict, protein_name):
             # pretty_print(mutation)
 
             try:
-                eve_score_value = eve_score_dict[mutation][1]
+                eve_score_value = eve_score_dict[mutation][0]
                 scores_list.append([mutation, scaled_effect, eve_score_value])
                 # print(eve_score_value)
             except KeyError:
@@ -183,7 +216,6 @@ file_path = data_directory + mave_folder_name + file_name
 
 eve_scores_file_name = "all_EVE_scores_June17_CBS_HUMAN.csv"
 
-eve_scores_directory = data_directory + cor_folder + eve_scores_file_name
 
 
 # protein_name = "VKOR_urn:mavedb:00000078-a"
@@ -192,7 +224,7 @@ eve_scores_directory = data_directory + cor_folder + eve_scores_file_name
 
 # protein_name = "PTEN_urn:mavedb:00000013-a"
 
-protein_name = "CBS_urn:mavedb:00000005-a"
+protein_name = "VIM-2_with_p.Met1_Phe2insGly_urn:mavedb:00000073-c\t\turn:mavedb:00000073-c,None"
 
 
 
@@ -208,8 +240,11 @@ protein_name = "CBS_urn:mavedb:00000005-a"
 all_data_dict = get_dictonary_of_scores(file_path)
 # pretty_print(all_data_dict['VIM-2_with_p.Met1_Phe2insGly_urn:mavedb:00000073-c'][-1])
 # pretty_print(type(all_data_dict['VIM-2_with_p.Met1_Phe2insGly_urn:mavedb:00000073-c']))
+# pretty_print(all_data_dict.keys())
 
-VIM2 = all_data_dict['VIM-2_with_p.Met1_Phe2insGly_urn:mavedb:00000073-c']
+pro_name = "VKOR_urn:mavedb:00000078-a\t\turn:mavedb:00000078-a,None"
+
+VIM2 = all_data_dict[pro_name]
 
 
 def remove_stop_codon(sequence):
@@ -248,16 +283,16 @@ def mute_pred_input(pro_name, data, mut_count=None):
     return (name_and_mutations + "\n", seq + "\n")
     
     
-pro_name = "VIM-2_with_p.Met1_Phe2insGly_urn"
+
 data = VIM2
-mut_count = None
+mut_count = 5
 
 
 
 def write_file_for_mutepred(name_with_ext, data_touple):
     with open(name_with_ext, 'w') as file:
         for item in data_touple:
-            print(item)
+            # print(item)
             file.write(item)
 
 
@@ -270,13 +305,14 @@ write_file_for_mutepred(name_with_ext, data_touple)
 # # P53_data = all_data_dict['p53_urn:mavedb:00000059-a']
 # # point_mutations = get_mutations_list(P53_data)
 
-# eve_score_dict = get_dictionary_for_eve_scores(eve_scores_directory)
+eve_scores_directory = "/home/ali/Documents/GPML/tVIM2.out"
+eve_score_dict = get_dictionary_for_mutpred_scores(eve_scores_directory)
 
-# scores_for_spearman_comparison = get_score_comparison_list(eve_score_dict, all_data_dict, protein_name)
+scores_for_spearman_comparison = get_score_comparison_list(eve_score_dict, all_data_dict, protein_name)
 
-# # pretty_print(scores_for_spearman_comparison)
+pretty_print(scores_for_spearman_comparison)
 
-# get_spearman_score(scores_for_spearman_comparison)
+get_spearman_score(scores_for_spearman_comparison)
 
 
 
