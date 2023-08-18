@@ -61,20 +61,6 @@ def get_single_letter_point_mutation(three_letter_point_mutation):
     """this function takes the point mutation which is in the format of 
     three letter amino acid, position and then the three letter amino acid,
     where the first amino is the orignal amino ac
-
-
-
-
-
-def get_spearman_score(scores_for_spearman_comparison):
-    scaled_effects = []
-    eve_score_values = []
-    for score_list in scores_for_spearman_comparison:
-        scaled_effects.append(score_list[1])
-        eve_score_values.append(score_list[2])
-        print(score_list[1])
-
-    # Calculate Spearman correlation coefficient aid and then the number, 
     is the position where the mutation occured, last the three letter amino 
     acid is the amino acid which turned out to be in the case of mutation."""
     first = convert_three_letter_to_one_letter(three_letter_point_mutation[:3])
@@ -220,19 +206,91 @@ protein_name = "CBS_urn:mavedb:00000005-a"
 
 
 all_data_dict = get_dictonary_of_scores(file_path)
+# pretty_print(all_data_dict['VIM-2_with_p.Met1_Phe2insGly_urn:mavedb:00000073-c'][-1])
+# pretty_print(type(all_data_dict['VIM-2_with_p.Met1_Phe2insGly_urn:mavedb:00000073-c']))
+
+VIM2 = all_data_dict['VIM-2_with_p.Met1_Phe2insGly_urn:mavedb:00000073-c']
 
 
-# P53_data = all_data_dict['p53_urn:mavedb:00000059-a']
-# point_mutations = get_mutations_list(P53_data)
+def remove_stop_codon(sequence):
+    if sequence[-1] == "*":
+        return sequence[:-1]
+    else:
+        return sequence
 
-eve_score_dict = get_dictionary_for_eve_scores(eve_scores_directory)
+def mute_pred_input(pro_name, data, mut_count=None):
+    """Input
+            pro_name: string --> VIM-2_with_p.Met1_Phe2insGly_urn:mavedb:00000073-c
+            data:  list of strings where last string is the sequence --> see the tail 
+                            ['<p.Met1Ala #scaled_effect:0.29943354034999425',
+                            'MGFKPVGEVRLYQI']
+            mut_count: intege to limit the number of mutations to add infront of name
+                        of the protein."""
+    seq = remove_stop_codon(data[-1])
+    mut_lines = data[:-1]
+    # print(len(mut_lines))
 
-scores_for_spearman_comparison = get_score_comparison_list(eve_score_dict, all_data_dict, protein_name)
+    name_and_mutations = ">" + pro_name
 
-# pretty_print(scores_for_spearman_comparison)
+    if mut_count == None:
+        for mut_line in mut_lines:
 
-get_spearman_score(scores_for_spearman_comparison)
+            mutation = get_single_letter_point_mutation(mut_line.split(".")[1].split(" ")[0])
+
+            name_and_mutations = name_and_mutations + " " + mutation
+    elif isinstance(mut_count, int):
+        for i in range(mut_count):
+            mutation = get_single_letter_point_mutation(mut_lines[i].split(".")[1].split(" ")[0])
+            name_and_mutations = name_and_mutations + " " + mutation
+            # print(mutation)
+
+
+    return (name_and_mutations + "\n", seq + "\n")
+    
+    
+pro_name = "VIM-2_with_p.Met1_Phe2insGly_urn"
+data = VIM2
+mut_count = None
 
 
 
+def write_file_for_mutepred(name_with_ext, data_touple):
+    with open(name_with_ext, 'w') as file:
+        for item in data_touple:
+            print(item)
+            file.write(item)
+
+
+name_with_ext = "VIM.fasta"
+data_touple = mute_pred_input(pro_name, data, mut_count)
+
+
+write_file_for_mutepred(name_with_ext, data_touple)
+
+# # P53_data = all_data_dict['p53_urn:mavedb:00000059-a']
+# # point_mutations = get_mutations_list(P53_data)
+
+# eve_score_dict = get_dictionary_for_eve_scores(eve_scores_directory)
+
+# scores_for_spearman_comparison = get_score_comparison_list(eve_score_dict, all_data_dict, protein_name)
+
+# # pretty_print(scores_for_spearman_comparison)
+
+# get_spearman_score(scores_for_spearman_comparison)
+
+
+
+
+# 
+
+# # P53_data = all_data_dict['p53_urn:mavedb:00000059-a']
+# # point_mutations = get_mutations_list(P53_data)
+
+# eve_score_dict = get_dictionary_for_eve_scores(eve_scores_directory)
+
+# scores_for_spearman_comparison = get_score_comparison_list(eve_score_dict, all_data_dict, protein_name)
+
+# # pretty_print(scores_for_spearman_comparison)
+
+# get_spearman_score(scores_for_spearman_comparison)
 
