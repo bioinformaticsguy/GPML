@@ -242,7 +242,7 @@ all_data_dict = get_dictonary_of_scores(file_path)
 # pretty_print(type(all_data_dict['VIM-2_with_p.Met1_Phe2insGly_urn:mavedb:00000073-c']))
 # pretty_print(all_data_dict.keys())
 
-pro_name = "VKOR_urn:mavedb:00000078-a\t\turn:mavedb:00000078-a,None"
+pro_name = "NUDT15_urn:mavedb:00000055-0		urn:mavedb:00000055-0,None"
 
 VIM2 = all_data_dict[pro_name]
 
@@ -285,7 +285,7 @@ def mute_pred_input(pro_name, data, mut_count=None):
     
 
 data = VIM2
-mut_count = 5
+mut_count = None
 
 
 
@@ -296,7 +296,7 @@ def write_file_for_mutepred(name_with_ext, data_touple):
             file.write(item)
 
 
-name_with_ext = "VIM.fasta"
+name_with_ext = "NUDT15.fasta"
 data_touple = mute_pred_input(pro_name, data, mut_count)
 
 
@@ -305,14 +305,14 @@ write_file_for_mutepred(name_with_ext, data_touple)
 # # P53_data = all_data_dict['p53_urn:mavedb:00000059-a']
 # # point_mutations = get_mutations_list(P53_data)
 
-eve_scores_directory = "/home/ali/Documents/GPML/tVIM2.out"
-eve_score_dict = get_dictionary_for_mutpred_scores(eve_scores_directory)
+# eve_scores_directory = "/home/ali/Documents/GPML/tVIM2.out"
+# eve_score_dict = get_dictionary_for_mutpred_scores(eve_scores_directory)
 
-scores_for_spearman_comparison = get_score_comparison_list(eve_score_dict, all_data_dict, protein_name)
+# scores_for_spearman_comparison = get_score_comparison_list(eve_score_dict, all_data_dict, protein_name)
 
-pretty_print(scores_for_spearman_comparison)
+# pretty_print(scores_for_spearman_comparison)
 
-get_spearman_score(scores_for_spearman_comparison)
+# get_spearman_score(scores_for_spearman_comparison)
 
 
 
