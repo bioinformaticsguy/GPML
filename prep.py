@@ -284,8 +284,8 @@ def mute_pred_input(pro_name, data, mut_count=None):
     
     
 
-data = VIM2
-mut_count = None
+# data = VIM2
+# mut_count = None
 
 
 
@@ -296,11 +296,11 @@ def write_file_for_mutepred(name_with_ext, data_touple):
             file.write(item)
 
 
-name_with_ext = "NUDT15.fasta"
-data_touple = mute_pred_input(pro_name, data, mut_count)
+# name_with_ext = "NUDT15.fasta"
+# data_touple = mute_pred_input(pro_name, data, mut_count)
 
 
-write_file_for_mutepred(name_with_ext, data_touple)
+# write_file_for_mutepred(name_with_ext, data_touple)
 
 # # P53_data = all_data_dict['p53_urn:mavedb:00000059-a']
 # # point_mutations = get_mutations_list(P53_data)
@@ -330,3 +330,70 @@ write_file_for_mutepred(name_with_ext, data_touple)
 
 # get_spearman_score(scores_for_spearman_comparison)
 
+
+
+def readFastaIteration(filename):
+    '''Given a fasta file returns a list of all the touples
+    in which the first element of touple is the description of the fasta sequence 
+    and the 2nd element is the sequence itself.'''
+    sequences = []
+    descrip = None
+    seq_dict = {}
+    with open(filename) as file:
+        for line in file:
+            if line[0] == ">":
+                if descrip:
+                    seq_dict[descrip] = seq
+                    # sequences.append((descrip, seq))
+                descrip = line
+                seq = '' 
+            else:
+                seq = seq + line[:-1]
+        seq_dict[descrip] = seq
+    
+    return seq_dict
+
+seqs = list(readFastaIteration('/home/ali/Documents/GPML/Data/maveGSData/mave_db_gold_standard_only_sequences.fasta').values())
+
+# print(len(seqs) == len(set(seqs)))
+# print(len(seqs))
+# print(len(set(seqs)))
+
+
+def find_duplicate_values(dictionary):
+    value_to_keys = {}
+    duplicates = {}
+
+    for key, value in dictionary.items():
+        if value in value_to_keys:
+            value_to_keys[value].append(key)
+        else:
+            value_to_keys[value] = [key]
+
+    for value, keys in value_to_keys.items():
+        if len(keys) > 1:
+            duplicates[value] = keys
+
+    return duplicates
+
+# Your dictionary
+# your_dictionary = {
+#     "key1": "value1",
+#     "key2": "value2",
+#     "key3": "value1",
+#     "key4": "value3",
+#     "key5": "value2"
+# }
+
+your_dictionary = readFastaIteration('/home/ali/Documents/GPML/Data/maveGSData/mave_db_gold_standard_only_sequences.fasta')
+
+duplicate_keys = find_duplicate_values(your_dictionary)
+
+pretty_print(duplicate_keys)
+
+if not duplicate_keys:
+    print("No duplicate values found.")
+else:
+    print("Keys with duplicate values:")
+    for value, keys in duplicate_keys.items():
+        print(f"Value '{value[:5]}' appears in keys:", [key[:5] for key in keys])
