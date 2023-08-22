@@ -103,34 +103,34 @@ def get_dictionary_for_eve_scores(eve_score_file_path):
 
 
 def get_dictionary_for_mutpred_scores(score_file_path):
+    """
+    Input:
+            This function takes the path of the output file
+            with only scores using the 4th type of output
+            from the mutepred Pipline.
+
+    Return:
+            It returns the dictionary, so that each key if the
+            mutation name and each value is the mutepred score.
+    """
+
     scores_dictionary = {}
     with open(score_file_path) as file:
         for line in file:
-            # break
             if line[:2] == "ID":
                 pass
             else:
-                # print(line.split(","))
-
                 mutation_name = line.split(",")[1]
                 mutepred_score = line.split(",")[2]
                 scores_dictionary[mutation_name] = [mutepred_score]
-
-                # print(mutation_name, mutepred_score)
-                # break
-    #             # print(line.split(","))
-    #             eve_score = line.split(",")[3]
-
-    #             # print(mutation_name, evol_index, eve_score)
-
     return scores_dictionary
 
 
-def get_score_comparison_list(eve_score_dict, all_data_dict, protein_name):
+def get_score_comparison_list(tool_score_dict, gs_dictionary, protein_name):
     print(protein_name)
     scores_list = []
     count = 0
-    protein_data = all_data_dict[protein_name]
+    protein_data = gs_dictionary[protein_name]
 
     # pretty_print(protein_data)
 
@@ -143,8 +143,8 @@ def get_score_comparison_list(eve_score_dict, all_data_dict, protein_name):
             # pretty_print(mutation)
 
             try:
-                eve_score_value = eve_score_dict[mutation][0]
-                scores_list.append([mutation, scaled_effect, eve_score_value])
+                tool_score_value = tool_score_dict[mutation][0]
+                scores_list.append([mutation, scaled_effect, tool_score_value])
                 # print(eve_score_value)
             except KeyError:
                 count += 1
@@ -153,19 +153,28 @@ def get_score_comparison_list(eve_score_dict, all_data_dict, protein_name):
     return scores_list
 
 
-def get_spearman_score(scores_for_spearman_comparison):
+def get_spearman_score(scores_for_spearman_comparison_list):
+    """
+    Input:
+            This function takes the scores list from the fucntion
+            get_score_comparison_list()
+
+    Return:
+            This function returns the spearman score for the specific
+            list.
+
+    """
     scaled_effects = []
     eve_score_values = []
-    for score_list in scores_for_spearman_comparison:
+    for score_list in scores_for_spearman_comparison_list:
         scaled_effects.append(score_list[1])
         eve_score_values.append(score_list[2])
         # print(score_list[1])
 
     # Calculate Spearman correlation coefficient and p-value
-    corr, p_value = stats.spearmanr(scaled_effects, eve_score_values)
+    spearman_correlation_score, p_value = stats.spearmanr(scaled_effects, eve_score_values)
 
-    print("Spearman correlation coefficient:", corr)
-    print("p-value:", p_value)
+    return (spearman_correlation_score, p_value)
 
 
 def remove_stop_codon(sequence):
