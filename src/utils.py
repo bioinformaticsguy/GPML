@@ -184,7 +184,7 @@ def remove_stop_codon(sequence):
         return sequence
 
 
-def mute_pred_input(pro_name, data, mut_count=None):
+def get_mute_pred_input(pro_name, data, mut_count=None):
     """Input
             pro_name: string --> VIM-2_with_p.Met1_Phe2insGly_urn:mavedb:00000073-c
             data:  list of strings where last string is the sequence --> see the tail 
