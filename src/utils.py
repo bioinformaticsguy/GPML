@@ -285,3 +285,18 @@ def get_list_of_mute_pred_inputs(gs_dictionary, mut_count=None):
         list_of_mute_pred_inputs.append(mute_pred_input(protein_name, data))
 
     return list_of_mute_pred_inputs
+
+
+def generate_one_file_for_each_protein(protein_names, gs_dictionary, folder_path, mut_count=None):
+    """This functioin takes the names of the proteins and it takes the
+    gold standard dictionary, also it takes the folder path. It writes all the
+    files with the specific mutations in that folder, there is one small problem
+    that needs to be fixed with the naming and the folder directory. I will update
+    it from my mac book"""
+    for protein_name in protein_names:
+        protein_data = gs_dictionary[protein_name]
+        mutepred_input = [get_mute_pred_input(protein_name, protein_data, mut_count=mut_count)]
+
+        file_name = str(folder_path) + protein_name + ".fasta"
+
+        write_file_for_mutepred(file_name, mutepred_input)

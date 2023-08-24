@@ -1,5 +1,6 @@
 from src.utils import get_dictonary_of_scores, get_list_of_mute_pred_inputs, write_file_for_mutepred, \
-    get_dictionary_for_mutpred_scores, get_score_comparison_list, get_spearman_score, get_mute_pred_input
+    get_dictionary_for_mutpred_scores, get_score_comparison_list, get_spearman_score, get_mute_pred_input, \
+    generate_one_file_for_each_protein
 
 from pprint import pprint as pretty_print
 from pathlib import Path
@@ -10,6 +11,7 @@ mave_db_file_path = Path("Data/maveGSData/mave_db_gold_standard.fasta")
 mutepred_input_file_path = Path("Data/mutpred_input_files/mutepred_36.fasta")
 mutepred_score_file_dir = Path("Data/mutepred_scores/tNUDT15.out")
 mutepred_scores = Path("Data/mutepred_scores/f_/")
+multiprocessong_folder_path = Path("Data/test_multi_processor")
 
 # Protein Names
 NUDT15_55_0 = "NUDT15_urn:mavedb:00000055-0"
@@ -36,16 +38,26 @@ gs_dictionary = get_dictonary_of_scores(mave_db_file_path)
 
 
 # Generate 36 ProFiles
-protein_names = gs_dictionary.keys()
-
-def generate_one_file_for_each_protein(protein_names, gs_dictionary, folder_path):
-    for protein_name in protein_names:
-        protein_data = gs_dictionary[protein_name]
-        mutepred_input = [get_mute_pred_input(protein_name, protein_data)]
-
-        file_name = str(folder_path) + protein_name + ".fasta"
-
-        write_file_for_mutepred(file_name, mutepred_input)
+# protein_names = gs_dictionary.keys()
+# generate_one_file_for_each_protein(protein_names, gs_dictionary, folder_path=mutepred_scores, mut_count=2)
 
 
-generate_one_file_for_each_protein(protein_names, gs_dictionary, folder_path=mutepred_scores)
+
+# MultiPreprocessing
+import subprocess
+import multiprocessing
+
+# Function to run the command for a given input and output file
+def run_command(input_file, output_file):
+    command = f"./run_mutpred2.sh -i {input_file} -p 1 -c 1 -b 0 -t 0.1 -f 4 -o {output_file}"
+    subprocess.call(command, shell=True)
+
+if __name__ == "__main__":
+    input_files = ["t_36_seq.fasta"] * 36  # Assuming you want to use the same input file for all cores
+    output_files = ["t_36_seq.out"] * 36  # Assuming you want to use the same output file for all cores
+
+    pool = multiprocessing.Pool(processes=36)  # Number of cores
+    pool.starmap(run_command, zip(input_files, output_files))
+    pool.close()
+    pool.join()
+
