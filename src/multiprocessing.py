@@ -14,3 +14,4 @@ if __name__ == "__main__":
     pool.starmap(run_command, zip(input_files, output_files))
     pool.close()
     pool.join()
+
