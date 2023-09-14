@@ -282,7 +282,7 @@ def get_list_of_mute_pred_inputs(gs_dictionary, mut_count=None):
     protein_names = gs_dictionary.keys()
     for protein_name in protein_names:
         data = gs_dictionary[protein_name]
-        list_of_mute_pred_inputs.append(mute_pred_input(protein_name, data))
+        list_of_mute_pred_inputs.append(get_mute_pred_input(protein_name, data))
 
     return list_of_mute_pred_inputs
 
