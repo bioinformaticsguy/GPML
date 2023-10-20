@@ -102,32 +102,8 @@ def get_dictionary_for_eve_scores(eve_score_file_path):
     return scores_dictionary
 
 
-def get_dictionary_for_mutpred_scores(score_file_path):
-    """
-    Input:
-            This function takes the path of the output file
-            with only scores using the 4th type of output
-            from the mutepred Pipline.
-
-    Return:
-            It returns the dictionary, so that each key if the
-            mutation name and each value is the mutepred score.
-    """
-
-    scores_dictionary = {}
-    with open(score_file_path) as file:
-        for line in file:
-            if line[:2] == "ID":
-                pass
-            else:
-                mutation_name = line.split(",")[1]
-                mutepred_score = line.split(",")[2]
-                scores_dictionary[mutation_name] = [mutepred_score]
-    return scores_dictionary
-
-
 def get_score_comparison_list(tool_score_dict, gs_dictionary, protein_name):
-    print(protein_name)
+    # print(protein_name)
     scores_list = []
     count = 0
     protein_data = gs_dictionary[protein_name]
@@ -143,7 +119,7 @@ def get_score_comparison_list(tool_score_dict, gs_dictionary, protein_name):
             # pretty_print(mutation)
 
             try:
-                tool_score_value = tool_score_dict[mutation][0]
+                tool_score_value = tool_score_dict[mutation]
                 scores_list.append([mutation, scaled_effect, tool_score_value])
                 # print(eve_score_value)
             except KeyError:
@@ -227,11 +203,11 @@ def write_file_for_mutepred(name_with_ext, data_tuples):
                 file.write(item)
 
 
-def readFastaIteration(filename):
-    '''Given a fasta file returns a list of all the touples
-    in which the first element of touple is the description of the fasta sequence 
-    and the 2nd element is the sequence itself.'''
-    sequences = []
+def read_fasta_iteration(filename):
+    """Given a fasta file returns a dictionary
+    in which the key is the description of the fasta sequence
+    and the value is the sequence itself."""
+
     descrip = None
     seq_dict = {}
     with open(filename) as file:
@@ -247,23 +223,6 @@ def readFastaIteration(filename):
         seq_dict[descrip] = seq
 
     return seq_dict
-
-
-def find_duplicate_values(dictionary):
-    value_to_keys = {}
-    duplicates = {}
-
-    for key, value in dictionary.items():
-        if value in value_to_keys:
-            value_to_keys[value].append(key)
-        else:
-            value_to_keys[value] = [key]
-
-    for value, keys in value_to_keys.items():
-        if len(keys) > 1:
-            duplicates[value] = keys
-
-    return duplicates
 
 
 def get_list_of_mute_pred_inputs(gs_dictionary, mut_count=None):
@@ -300,3 +259,113 @@ def generate_one_file_for_each_protein(protein_names, gs_dictionary, folder_path
         file_name = str(folder_path) + protein_name + ".fasta"
 
         write_file_for_mutepred(file_name, mutepred_input)
+
+
+def process_msa_file_headers(unprocessed_msa_folder_path, input_file_name):
+    input_file_path = unprocessed_msa_folder_path / input_file_name
+    processed_lines = []
+    with open(input_file_path) as file:
+        for line in file:
+            if line.startswith(">"):
+                processed_lines.append(line.split()[0] + "\n")
+
+            else:
+                processed_lines.append(line)
+
+    return processed_lines
+
+
+def write_file_from_list_of_lines(list_of_lines, output_folder, output_file_name):
+    output_file_path = output_folder / output_file_name
+    with open(output_file_path, "w") as file:
+        for line in list_of_lines:
+            file.write(line)
+
+    file.close()
+
+
+def get_dictionary_for_mutpred_scores(score_file_path):
+    """
+    Input:
+            This function takes the path of the output file
+            with only scores using the 4th type of output
+            from the mutepred Pipline.
+
+    Return:
+            It returns the dictionary, so that each key if the
+            mutation name and each value is the mutepred score.
+    """
+
+    scores_dictionary = {}
+    with open(score_file_path) as file:
+        for line in file:
+            if line[:2] == "ID":
+                pass
+            else:
+                mutation_name = line.split(",")[1]
+                mutepred_score = line.split(",")[2]
+                scores_dictionary[mutation_name] = [mutepred_score]
+    return scores_dictionary
+
+
+def get_mutepred_dictionary_of_scores(file_path):
+    """
+    This function takes the output file with multiple proteins from mutepred
+    and then it generates a dictionary with having keys and the names of the
+    proteins and value is the list with contains the touples, where
+    each touple has two elements first one for the mutation and the second
+    one for the mutepred score.
+
+    {protein_name: [('G2Y', '0.243'), ('G2W', '0.273'), ('G2V', '0.207')]}
+    """
+    protein_set = set()
+    scores_dictionary = {}
+    with open(file_path) as file:
+        for line in file:
+            if line[:2] == "ID":
+                pass
+            else:
+                protein_name = line.split(",")[0]
+                mutation_name = line.split(",")[1]
+                mutepred_score = line.split(",")[2]
+                if protein_name in protein_set:
+                    scores_dictionary[protein_name][mutation_name] = float(mutepred_score)
+                else:
+                    scores_dictionary[protein_name] = {}
+                    scores_dictionary[protein_name][mutation_name] = float(mutepred_score)
+                    protein_set.add(protein_name)
+
+    return scores_dictionary
+
+
+def write_csv_file_for_spearman_scores(csv_file_path, spearman_scores_list):
+    """
+    This function takes the csv file path and the list of the spearman scores and then
+    it generates the csv file.
+    """
+    with open(csv_file_path, 'w') as csv_file:
+        # Writing header
+        csv_file.write(','.join(map(str, spearman_scores_list[0])) + '\n')
+
+        # Writing data rows
+        for row in spearman_scores_list[1:]:
+            csv_file.write(','.join(map(str, row)) + '\n')
+        # print(spearman_score)
+
+
+
+def get_spearman_scores_for_all_mutepred_proetins(mutepred_dictionary_of_scores, gs_dictionary):
+    """This function takes the mutepred dictionary of scores and the gold
+    standard dictionary and then it generates the spearman scores list
+    for all the proteins using the data from the mutepred dictionary of scores."""
+    scores_list = []
+    protein_names = gs_dictionary.keys()
+    for protein_name in protein_names:
+        scores_for_spearman_comparison_list = get_score_comparison_list(mutepred_dictionary_of_scores[protein_name], gs_dictionary, protein_name)
+        # print(scores_for_spearman_comparison_list)
+        spearman_correlation_score, p_value = get_spearman_score(scores_for_spearman_comparison_list)
+
+        #
+        scores_list.append((protein_name, spearman_correlation_score, p_value))
+
+    return(scores_list)
