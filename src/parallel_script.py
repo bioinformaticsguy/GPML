@@ -12,5 +12,5 @@ def run_command(input_file):
     print(output_file)
 
     # command = ["java", "search_dbNSFP44a", "-i", str(input_file), "-o", output_file]
-    # command = ["touch", output_file]
-    # subprocess.run(command)
+    command = ["touch", output_file]
+    subprocess.run(command)
