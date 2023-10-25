@@ -27,3 +27,6 @@ dict = InputGenerator.get_protein_names_and_snps_from_mutepred_input_file(MUTEPR
 # InputGenerator.write_input_files(mutepred_input_file_path = MUTEPRED_INPUT_FILE_PATH,
 #                                  genes_meta_data_file_path = META_DATA_INPUT_FILE_PATH,
 #                                  dbNSFP_input_files_directory = dbNSFP_INPUT_FILES_DIRECTORY)
+
+
+
