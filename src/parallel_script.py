@@ -3,7 +3,7 @@ from multiprocessing import Pool
 from pathlib import Path
 import subprocess
 
-OUTPUT_FOLDER = Path("Data/dbNSFP_output_folder")
+OUTPUT_FOLDER = Path("Data/dbNSFP_output_dir")
 
 
 def run_command(input_file):

@@ -195,7 +195,6 @@ def get_mute_pred_input(pro_name, data, mut_count=None):
 
 
 def write_file_for_mutepred(name_with_ext, data_tuples):
-
     with open(name_with_ext, 'w') as file:
         for data_tuple in data_tuples:
             for item in data_tuple:
@@ -353,19 +352,35 @@ def write_csv_file_for_spearman_scores(csv_file_path, spearman_scores_list):
         # print(spearman_score)
 
 
-
-def get_spearman_scores_for_all_mutepred_proetins(mutepred_dictionary_of_scores, gs_dictionary):
+def get_spearman_scores_for_all_tool_proetins(tool_dictionary_of_scores, gs_dictionary):
     """This function takes the mutepred dictionary of scores and the gold
     standard dictionary and then it generates the spearman scores list
     for all the proteins using the data from the mutepred dictionary of scores."""
     scores_list = []
-    protein_names = gs_dictionary.keys()
+    protein_names = tool_dictionary_of_scores.keys()
     for protein_name in protein_names:
-        scores_for_spearman_comparison_list = get_score_comparison_list(mutepred_dictionary_of_scores[protein_name], gs_dictionary, protein_name)
+        scores_for_spearman_comparison_list = get_score_comparison_list(tool_dictionary_of_scores[protein_name],
+                                                                        gs_dictionary, protein_name)
         # print(scores_for_spearman_comparison_list)
         spearman_correlation_score, p_value = get_spearman_score(scores_for_spearman_comparison_list)
 
         #
         scores_list.append((protein_name, spearman_correlation_score, p_value))
 
-    return(scores_list)
+    return (scores_list)
+
+
+def get_count_of_lines_except_header(file_path):
+    """Given a file path it counts the total number
+    of lines and then returns n-1 because the first
+    line could be a header. This function can also be
+    used for the dbNSFP .err files as the last line
+    says that the how many snps were not found"""
+    with open(file_path, 'r') as file:
+        # Skip the header
+        header = next(file)
+
+        # Count the remaining lines
+        line_count = sum(1 for line in file)
+
+    return line_count
