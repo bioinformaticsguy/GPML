@@ -5,9 +5,9 @@ from src.utils import get_spearman_scores_for_all_tool_proetins
 import csv
 
 MUTEPRED_INPUT_FILE_PATH = Path("Data/mutpred_input_files/mutepred_36.fasta")
-META_DATA_INPUT_FILE_PATH = Path("Data/maveGSData/genes_meta_data.csv")
+META_DATA_INPUT_FILE_PATH = Path("Data/mave_gs_data/genes_meta_data.csv")
 
-# df = pd.read_csv(Path('Data/maveGSData/genes_meta_data.csv'))
+# df = pd.read_csv(Path('Data/mave_gs_data/genes_meta_data.csv'))
 #
 # uniprot_ids = df['Uniprot ID'].tolist()
 #
@@ -52,7 +52,12 @@ META_DATA_INPUT_FILE_PATH = Path("Data/maveGSData/genes_meta_data.csv")
 # [print(i) for i in sorted(spearmen_scores)]
 
 
-tool_score_header_names_list = ["PROVEAN_score", "REVEL_score", "MutPred_score", "Polyphen2_HDIV_score"]
+tool_score_header_names_list = ["PROVEAN_score",
+                                "REVEL_score",
+                                "MutPred_score",
+                                "Polyphen2_HDIV_score",
+                                "EVE_score",
+                                "AlphaMissense_score"]
 
 def dictionary_of_spearman_corelations_of_different_tools(tool_score_header_names_list, gs_dictionary):
     dictionary_of_correlations = {}
@@ -76,7 +81,8 @@ def get_dict_for_csv_data(corr_dict):
         data_for_csv_dict[gene_name] = {}
         for tool_score_name in tool_score_header_names_list:
             a = [tup[1] for tup in corr_dict[tool_score_name] if tup[0] == gene_name]
-            data_for_csv_dict[gene_name][tool_score_name] = a[0]
+            # print(a[0])
+            data_for_csv_dict[gene_name][tool_score_name] = abs(a[0])
 
     return data_for_csv_dict, gene_names
 
@@ -84,7 +90,7 @@ data_for_csv_writing, gene_names = get_dict_for_csv_data(corr_dict)
 
 
 
-csv_file_path = Path("Data/dbNSFP_analysis_output_dir/your_file.csv")
+csv_file_path = Path("Data/dbNSFP_analysis_output_dir/spearman_comparisons.csv")
 rows_to_write_in_csv = []
 with open(csv_file_path, mode='w', newline='') as csv_file:
     csv_writer = csv.writer(csv_file)

@@ -1,7 +1,12 @@
+from pathlib import Path
 import scipy.stats as stats
+import pandas as pd
+
+MAVE_DB_GOLD_STANDARD_SEQUENCE_ONLY_FILE_PATH = Path("Data/mave_gs_data/mave_db_gold_standard_only_sequences.fasta")
+COLUMN_NAMES_OF_MAVE_GS_DATAFRAME_LIST = ['protein_name', 'SNPs', 'scaled_effect', 'Prot_sequence']
 
 
-def get_dictonary_of_scores(file_path):
+def get_dictonary_of_scores_maveDB(file_path):
     """
     This function takes the file which has the mutations and the sequences, 
     then it stores the data related to each protein in one list and then, 
@@ -384,3 +389,38 @@ def get_count_of_lines_except_header(file_path):
         line_count = sum(1 for line in file)
 
     return line_count
+
+
+def get_list_to_add_in_dataframe(list_from_the_dictionary):
+    """
+    it takes the list entry from the dictionary value, and then
+    it returns the list with three values to enter add it to the
+    dataframe.
+    """
+    sequence = remove_stop_codon(list_from_the_dictionary[-1])
+
+    snp_string = ""
+    scaled_effect_string = ""
+    snps_and_scores = list_from_the_dictionary[:-1]
+
+    for snp_and_score in snps_and_scores:
+        snp = snp_and_score.split()[0][3:]
+        scaled_effect = snp_and_score.split()[1].split(":")[1]
+        snp_string += snp + ";"
+        scaled_effect_string += scaled_effect + ";"
+
+    return [snp_string[:-1], scaled_effect_string[:-1], sequence]
+
+
+def get_dataframe_for_mave_gs_data(mave_gs_file_path, column_names):
+    """
+    Given the column names and the path of the mave db gold standard data
+    it returns the pandas dataframe.
+    """
+    dictionary_of_data = get_dictonary_of_scores_maveDB(mave_gs_file_path)
+
+    rows = []
+    for protein_name, value in dictionary_of_data.items():
+        row = [protein_name] + get_list_to_add_in_dataframe(value)
+        rows.append(row)
+    return pd.DataFrame(rows, columns=column_names)

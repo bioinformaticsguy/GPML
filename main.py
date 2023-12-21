@@ -2,15 +2,14 @@ import csv
 import pandas as pd
 from pprint import pprint as pretty_print
 from pathlib import Path
-from src.utils import get_dictonary_of_scores, get_list_of_mute_pred_inputs, write_file_for_mutepred, \
+from src.utils import get_dictonary_of_scores_maveDB, get_list_of_mute_pred_inputs, write_file_for_mutepred, \
     get_dictionary_for_mutpred_scores, get_score_comparison_list, get_spearman_score, get_mute_pred_input, \
     generate_one_file_for_each_protein, get_mutepred_dictionary_of_scores, read_fasta_iteration
 
 
 # Path Variables
-mave_db_gold_standard_fasta_file_path = Path("Data/maveGSData/mave_db_gold_standard.fasta")
-MAVE_DB_GOLD_STANDARD_SEQUENCE_ONLY_FILE_PATH = Path("Data/maveGSData/mave_db_gold_standard_only_sequences.fasta")
-nine_human_seqs_uniprot_file_path = Path("Data/maveGSData/nine_human_seqs_uniprot.fasta")
+MAVE_GS_FILE_PATH = Path("Data/mave_gs_data/mave_db_gold_standard.fasta")
+nine_human_seqs_uniprot_file_path = Path("Data/mave_gs_data/nine_human_seqs_uniprot.fasta")
 mutepred_input_file_path = Path("Data/mutpred_input_files/mutepred_36.fasta")
 mutepred_score_file_dir = Path("Data/mutepred_scores/tNUDT15.out")
 mutepred_scores = Path("Data/mutepred_scores/f_/")
@@ -23,7 +22,7 @@ csv_file_path = Path("Data/mutepred_sore_comp/spearman_scores.csv")
 NUDT15_55_0 = "NUDT15_urn:mavedb:00000055-0"
 
 # Data Type Variables
-gs_dictionary = get_dictonary_of_scores(mave_db_gold_standard_fasta_file_path)
+gs_dictionary = get_dictonary_of_scores_maveDB(MAVE_GS_FILE_PATH)
 
 
 # Get mutepred_dictionary_of_scores
