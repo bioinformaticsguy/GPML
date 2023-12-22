@@ -136,14 +136,20 @@ def get_score_comparison_list(tool_score_dict, gs_dictionary, protein_name):
 
 def get_spearman_score(scores_for_spearman_comparison_list):
     """
-    Input:
-            This function takes the scores list from the fucntion
-            get_score_comparison_list()
+    Calculate the Spearman correlation coefficient and p-value for a list of scores.
 
-    Return:
-            This function returns the spearman score for the specific
-            list.
+    Parameters:
+    - scores_for_spearman_comparison_list (List[Tuple]): A list of tuples, where each tuple
+      contains the necessary scores for Spearman comparison.
 
+    Returns:
+    - Tuple[float, float]: A tuple containing the Spearman correlation coefficient and its p-value.
+
+    Example:
+    ```
+    scores_list = [(protein1, scaled_effect1, eve_score_value1), (protein2, scaled_effect2, eve_score_value2)]
+    spearman_correlation, p_value = get_spearman_score(scores_list)
+    ```
     """
     scaled_effects = []
     eve_score_values = []
