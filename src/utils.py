@@ -419,3 +419,45 @@ def get_list_to_add_in_dataframe(list_from_the_dictionary):
 
 
 
+
+from typing import Dict
+import numpy as np
+from scipy.stats import pearsonr
+
+def calculate_correlation(dict1: Dict[str, float], dict2: Dict[str, float]) -> float:
+    """
+    Calculate the Pearson correlation coefficient between two dictionaries.
+
+    Parameters:
+    - dict1 (Dict[str, float]): The first dictionary with SNPs as keys and corresponding scores.
+    - dict2 (Dict[str, float]): The second dictionary with SNPs as keys and corresponding scores.
+
+    Returns:
+    - float: The Pearson correlation coefficient.
+
+    Example:
+    ```
+    dict1 = {'rs1': 0.5, 'rs2': 0.8, 'rs3': 0.2}
+    dict2 = {'rs2': 0.7, 'rs3': 0.1, 'rs4': 0.9}
+
+    correlation_coefficient = calculate_correlation(dict1, dict2)
+    print(correlation_coefficient)
+    ```
+    """
+    common_snps = set(dict1.keys()) & set(dict2.keys())
+
+    # Filter values for common SNPs
+    values_dict1 = [dict1[snp] for snp in common_snps]
+    values_dict2 = [dict2[snp] for snp in common_snps]
+
+    # Calculate Pearson correlation coefficient
+    correlation_coefficient, _ = pearsonr(values_dict1, values_dict2)
+
+    return correlation_coefficient
+
+# Example usage:
+dict1 = {'rs1': 0.5, 'rs2': 0.8, 'rs3': 0.2}
+dict2 = {'rs2': 0.7, 'rs3': 0.1, 'rs4': 0.9}
+
+correlation_coefficient = calculate_correlation(dict1, dict2)
+print(correlation_coefficient)
