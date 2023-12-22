@@ -20,8 +20,4 @@ disjunction_df = MutepredDataPreprocessor. \
                                 subset_df=filtered_data,
                                 on_column="protein_name")
 
-
-
-
-print(1)
-print(1)
+print("pipline Finished")
