@@ -1,6 +1,6 @@
 from pathlib import Path
 from src.mutepred_overlaps import MutepredDataPreprocessor
-from main_pandas_dataframes import  ONLY_HUMAN_MAVE_GS_DATAFRAME
+from main_dataframe_preprocessor import  ONLY_HUMAN_MAVE_GS_DATAFRAME
 
 TRAINING_DATA_FILE_PATH = Path("Data/mutepred_training_data/wo_exclusive_hgmd_mp2_training_data_MavedbData.csv")
 AMINO_ACID_SEQUENCE_SUBSTITUTIONS_COLUMN_NAME = 'Amino_acid_substitutions'
