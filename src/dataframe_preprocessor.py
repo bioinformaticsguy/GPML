@@ -210,3 +210,14 @@ class MutepredTrainingProcessor:
         result_df.columns = [col.replace('_x', '') for col in result_df.columns]
 
         return result_df
+
+class dbNSFPProcessor:
+    @staticmethod
+    def get_dbNSFP_df(file_path: pathlib.Path) -> pandas.DataFrame:
+        """
+        Input: str file path
+        Output: returns a pandas dataframe of whole data for a single protein.
+        """
+        df = pd.read_csv(file_path, sep='\t')
+
+        return df
