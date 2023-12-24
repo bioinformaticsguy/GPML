@@ -41,7 +41,7 @@ DICTIONARY_PROTEINS_SPECIES = {
 }
 
 
-class MAVE_GOLD_STANDARD:
+class MaveGoldStandard:
 
     @staticmethod
     def get_dataframe_for_mave_gs_data(mave_gs_file_path, column_names):
@@ -107,3 +107,5 @@ class MAVE_GOLD_STANDARD:
         mave_goldstandard_dataframe = _add_SNP_dict_column(mave_goldstandard_dataframe)
 
         return mave_goldstandard_dataframe
+
+class Mutepred
