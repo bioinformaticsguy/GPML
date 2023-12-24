@@ -1,3 +1,6 @@
+import pathlib
+
+import pandas
 import pandas as pd
 from src.utils import get_dictonary_of_scores_maveDB, get_list_to_add_in_dataframe, get_single_letter_point_mutation
 
@@ -108,9 +111,55 @@ class MaveGoldStandard:
 
         return mave_goldstandard_dataframe
 
+
+    @staticmethod
+    def mark_rows_present_in_subset(
+            superset_df, subset_df, new_column_name='in_subset_dataframe',
+            id_columns=('protein_name', 'protein_name')
+    ):
+        """
+        Add a binary column to the superset dataframe indicating whether each row is present in the subset dataframe.
+
+        Parameters:
+        - superset_df (pd.DataFrame): The dataframe that serves as the superset.
+        - subset_df (pd.DataFrame): The dataframe that serves as the subset.
+        - new_column_name (str): The name of the new binary column to be added. Default is 'in_subset_dataframe'.
+        - id_columns (tuple): Tuple containing the column names used as identifiers in superset and subset dataframes,
+                            respectively. Default is ('id', 'id').
+
+        Returns:
+        pd.DataFrame: The superset dataframe with the new binary column added.
+
+        Example:
+        superset_df = pd.DataFrame({'id': [1, 2, 3, 4], 'other_column': ['A', 'B', 'C', 'D']})
+        subset_df = pd.DataFrame({'id': [2, 4], 'other_column': ['B', 'D']})
+        result_df = DataFrameUtility.mark_rows_present_in_subset(superset_df, subset_df)
+
+        Output:
+        >> result_df
+           id other_column  in_subset_dataframe
+        0   1            A                   0
+        1   2            B                   1
+        2   3            C                   0
+        3   4            D                   1
+        """
+        superset_id_col, subset_id_col = id_columns
+
+        if (
+                superset_id_col not in superset_df.columns or
+                subset_id_col not in subset_df.columns
+        ):
+            raise ValueError(
+                f"Column '{superset_id_col}' or '{subset_id_col}' not found in respective dataframes."
+            )
+
+        superset_df[new_column_name] = superset_df[superset_id_col].isin(subset_df[subset_id_col]).astype(int)
+        return superset_df
+
+
 class MutepredTrainingProcessor:
     @staticmethod
-    def get_mutepred_df(file_path):
+    def get_mutepred_df(file_path: pathlib.Path) -> pandas.DataFrame:
         """
         Input: str file path
         Output: returns a pandas dataframe of whole data
