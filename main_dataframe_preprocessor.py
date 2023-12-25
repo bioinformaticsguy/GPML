@@ -27,7 +27,7 @@ MAVE_GS_DATAFRAME = MaveGoldStandard.mark_rows_present_in_subset(superset_df=MAV
                                                                  subset_df=FILTERED_MAVE_GOLDSTANDARD_MUTEPRED_TRAINING,
                                                                  new_column_name="in_mutepred")
 
-dataframe = dbNSFPProcessor.get_dbNSFP_df(TEMP_dbNSFP_PROTEIN_PATH)
+# dataframe = dbNSFPProcessor.get_dbNSFP_df(TEMP_dbNSFP_PROTEIN_PATH)
 
 check_list = dbNSFPProcessor.check_if_all_dbNSFP_file_have_same_names_as_mave_goldstandard(MAVE_GS_DATAFRAME, OUTPUT_DIR_MUTEPRED)
 

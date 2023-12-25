@@ -228,7 +228,7 @@ class dbNSFPProcessor:
         csv_file_names = [file.name for file in outputdirectory.iterdir() if
                           file.is_file() and file.name.endswith('.csv')]
         # file_names = [file.name for file in outputdirectory.iterdir() if file.is_file()]
-        modified_list = [filename.replace('_output.csv', '') for filename in csv_file_names]
+        modified_list = [filename.replace('.csv', '') for filename in csv_file_names]
 
         first_column_values = mave_goldstandard_df.iloc[:, 0].tolist()
 
