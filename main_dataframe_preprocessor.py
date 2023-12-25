@@ -7,7 +7,7 @@ from src.utils import COLUMN_NAMES_OF_MAVE_GS_DATAFRAME_LIST
 AMINO_ACID_SEQUENCE_COLUMN_NAME = 'Prot_sequence'
 TRAINING_DATA_FILE_PATH = Path("Data/mutepred_training_data/wo_exclusive_hgmd_mp2_training_data_MavedbData.csv")
 TEMP_dbNSFP_PROTEIN_PATH = Path("Data/dbNSFP_output_dir/CBS_urn_mavedb_00000005-a_output.csv")
-
+OUTPUT_DIR_MUTEPRED = Path("Data/dbNSFP_output_dir")
 
 ## Dataframes
 MAVE_GS_DATAFRAME = MaveGoldStandard.get_dataframe_for_mave_gs_data(MAVE_GS_FILE_PATH,
@@ -28,5 +28,7 @@ MAVE_GS_DATAFRAME = MaveGoldStandard.mark_rows_present_in_subset(superset_df=MAV
                                                                  new_column_name="in_mutepred")
 
 dataframe = dbNSFPProcessor.get_dbNSFP_df(TEMP_dbNSFP_PROTEIN_PATH)
+
+check_list = dbNSFPProcessor.check_if_all_dbNSFP_file_have_same_names_as_mave_goldstandard(MAVE_GS_DATAFRAME, OUTPUT_DIR_MUTEPRED)
 
 print("Break Point Stoper")

@@ -221,3 +221,22 @@ class dbNSFPProcessor:
         df = pd.read_csv(file_path, sep='\t')
 
         return df
+
+    @staticmethod
+    def check_if_all_dbNSFP_file_have_same_names_as_mave_goldstandard(mave_goldstandard_df, outputdirectory):
+        # List all file names in the directory
+        csv_file_names = [file.name for file in outputdirectory.iterdir() if
+                          file.is_file() and file.name.endswith('.csv')]
+        # file_names = [file.name for file in outputdirectory.iterdir() if file.is_file()]
+        modified_list = [filename.replace('_output.csv', '') for filename in csv_file_names]
+
+        first_column_values = mave_goldstandard_df.iloc[:, 0].tolist()
+
+        unique_to_list1 = list(set(first_column_values) - set(modified_list))
+
+        # Values unique to list2
+        unique_to_list2 = list(set(modified_list) - set(first_column_values))
+
+        return unique_to_list1, unique_to_list2, modified_list, first_column_values
+
+
