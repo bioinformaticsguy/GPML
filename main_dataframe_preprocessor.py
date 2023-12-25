@@ -2,6 +2,7 @@ from pathlib import Path
 from src.dataframe_preprocessor import MaveGoldStandard, MutepredTrainingProcessor, dbNSFPProcessor
 from main import MAVE_GS_FILE_PATH
 from src.utils import COLUMN_NAMES_OF_MAVE_GS_DATAFRAME_LIST
+import copy
 
 ## Path and Strings
 AMINO_ACID_SEQUENCE_COLUMN_NAME = 'Prot_sequence'
@@ -29,17 +30,15 @@ MAVE_GS_DATAFRAME = MaveGoldStandard.mark_rows_present_in_subset(superset_df=MAV
                                                                  subset_df=FILTERED_MAVE_GOLDSTANDARD_MUTEPRED_TRAINING,
                                                                  new_column_name="in_mutepred")
 
-TEMP_FILE_PATH = Path("Data/dbNSFP_output_dir/CBS_urn:mavedb:00000005-a.csv")
 
-temp_df_of_one_protein = dbNSFPProcessor.get_dbNSFP_df(protein_csv_file_path=TEMP_FILE_PATH)
 
-dict_of_snps = dbNSFPProcessor.get_protein_dictionary_snps_scores(dbNSFP_protein_dataframe=temp_df_of_one_protein,
-                                                                  snp_column_name=SNP_COLUMN_NAME,
-                                                                  tool_score_column_name=MUTEPRED_SCORE_COLUMN_NAME)
 
-testing_var = dbNSFPProcessor.add_tool_score_column(mave_gs_dataframe=MAVE_GS_DATAFRAME,
+
+MAVE_GS_DATAFRAME = dbNSFPProcessor.add_tool_score_column(mave_gs_dataframe=MAVE_GS_DATAFRAME,
                                                     db_nsfp_output_dir_path=OUTPUT_DIR_DB_NSFP,
                                                     tool_name=MUTEPRED_TOOL_NAME,
                                                     snp_column_name=SNP_COLUMN_NAME)
+
+
 
 print("stop")

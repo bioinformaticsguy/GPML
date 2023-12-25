@@ -1,3 +1,4 @@
+import copy
 import pathlib
 import re
 
@@ -286,35 +287,51 @@ class dbNSFPProcessor:
         return dict(filtered_tuples)
 
     @staticmethod
-    def add_tool_score_column(mave_gs_dataframe,
-                              db_nsfp_output_dir_path,
-                              tool_name,
-                              snp_column_name):
+    def add_tool_score_column(mave_gs_dataframe, db_nsfp_output_dir_path, tool_name, snp_column_name):
+        """
+        Add a tool score column to a copy of the MAVE GoldStandard DataFrame.
 
+        Parameters:
+        - mave_gs_dataframe (pd.DataFrame): The MAVE GoldStandard DataFrame.
+        - db_nsfp_output_dir_path (pathlib.Path): The path to the directory containing dbNSFP output files.
+        - tool_name (str): The name of the tool for which the score is being added.
+        - snp_column_name (str): The name of the column containing SNPs in dbNSFP output files.
+
+        Returns:
+        - pd.DataFrame: A deep copy of the MAVE GoldStandard DataFrame with the added tool score column.
+        """
+
+        # Create a deep copy of the MAVE GoldStandard DataFrame
+        mave_gs_df_deep_copy = copy.deepcopy(mave_gs_dataframe)
+
+        # Create the column name for the tool score
         column_name = tool_name + "_score"
 
-        ## Add new column
-        mave_gs_dataframe[column_name] = None
+        # Add a new column to the deep copy DataFrame
+        mave_gs_df_deep_copy[column_name] = None
 
-        protein_names = mave_gs_dataframe["protein_name"].tolist()
-
+        # Get a list of file paths for dbNSFP output files in the specified directory
         csv_file_names = [file for file in db_nsfp_output_dir_path.iterdir() if
                           file.is_file() and file.name.endswith('.csv')]
 
-        protein_names_from_csv_files = get_protein_names_from_db_nsfp_output_directory(
-            directory_path=db_nsfp_output_dir_path)
+        # Iterate over each dbNSFP output file
+        for csv_file_path in csv_file_names:
+            # Extract protein name from the file path
+            protein_name = csv_file_path.stem.replace("_output", "").replace("_urn_", "_urn:")
 
-        for csv_file_name in csv_file_names:
-            protein_name = csv_file_name.name.replace('.csv', '')
-            protein_dataframe = dbNSFPProcessor.get_dbNSFP_df(csv_file_name)
+            # Get the DataFrame for the current protein from the dbNSFP output file
+            protein_dataframe = dbNSFPProcessor.get_dbNSFP_df(protein_csv_file_path=csv_file_path)
+
+            # Get the dictionary of SNPs and scores for the current tool
             protein_snp_score_dictionary = dbNSFPProcessor.get_protein_dictionary_snps_scores(
                 dbNSFP_protein_dataframe=protein_dataframe,
                 snp_column_name=snp_column_name,
                 tool_score_column_name=column_name
             )
 
-            mave_gs_dataframe.loc[mave_gs_dataframe["protein_name"] == protein_name, column_name] = protein_snp_score_dictionary
+            # Update the tool score column for the corresponding protein in the deep copy DataFrame
+            mave_gs_df_deep_copy.loc[
+                mave_gs_df_deep_copy['protein_name'] == protein_name, column_name] = [
+                protein_snp_score_dictionary]
 
-
-
-        return column_name, protein_names, protein_names_from_csv_files, mave_gs_dataframe
+        return mave_gs_df_deep_copy
