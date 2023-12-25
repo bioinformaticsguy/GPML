@@ -461,3 +461,25 @@ dict2 = {'rs2': 0.7, 'rs3': 0.1, 'rs4': 0.9}
 
 correlation_coefficient = calculate_correlation(dict1, dict2)
 print(correlation_coefficient)
+
+
+def get_protein_names_from_db_nsfp_output_directory(directory_path):
+    """
+    Get protein names from CSV files in the specified directory.
+
+    Parameters:
+    - directory_path (Path): Path to the directory containing CSV files.
+
+    Returns:
+    - list: A list of protein names extracted from the CSV file names.
+    """
+
+    # List all file names in the directory
+    csv_file_names = [file.name for file in directory_path.iterdir() if
+                      file.is_file() and file.name.endswith('.csv')]
+
+    # Extract protein names from CSV file names
+    protein_names_from_csv_files = [filename.replace('.csv', '') for filename in csv_file_names]
+
+    return protein_names_from_csv_files
+

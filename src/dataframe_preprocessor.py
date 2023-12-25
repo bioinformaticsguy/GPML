@@ -1,8 +1,11 @@
 import pathlib
+import re
 
 import pandas
 import pandas as pd
-from src.utils import get_dictonary_of_scores_maveDB, get_list_to_add_in_dataframe, get_single_letter_point_mutation
+
+from src.utils import get_dictonary_of_scores_maveDB, get_list_to_add_in_dataframe, get_single_letter_point_mutation, \
+    get_protein_names_from_db_nsfp_output_directory
 
 DICTIONARY_PROTEINS_SPECIES = {
     'VIM-2_with_p.Met1_Phe2insGly_urn:mavedb:00000073-c': 'Human',
@@ -94,7 +97,6 @@ class MaveGoldStandard:
 
             return mave_gold_standard_df
 
-
         dictionary_of_data = get_dictonary_of_scores_maveDB(mave_gs_file_path)
 
         rows = []
@@ -104,13 +106,12 @@ class MaveGoldStandard:
         mave_goldstandard_dataframe = pd.DataFrame(rows, columns=column_names)
 
         mave_goldstandard_dataframe = _add_species_column(mave_goldstandard_dataframe,
-                            dictionary_species=DICTIONARY_PROTEINS_SPECIES,
-                            column_name="species")
+                                                          dictionary_species=DICTIONARY_PROTEINS_SPECIES,
+                                                          column_name="species")
 
         mave_goldstandard_dataframe = _add_SNP_dict_column(mave_goldstandard_dataframe)
 
         return mave_goldstandard_dataframe
-
 
     @staticmethod
     def mark_rows_present_in_subset(
@@ -211,32 +212,109 @@ class MutepredTrainingProcessor:
 
         return result_df
 
+
 class dbNSFPProcessor:
     @staticmethod
-    def get_dbNSFP_df(file_path: pathlib.Path) -> pandas.DataFrame:
+    def get_dbNSFP_df(protein_csv_file_path: pathlib.Path) -> pandas.DataFrame:
         """
         Input: str file path
         Output: returns a pandas dataframe of whole data for a single protein.
         """
-        df = pd.read_csv(file_path, sep='\t')
+        df = pd.read_csv(protein_csv_file_path, sep='\t')
 
         return df
 
     @staticmethod
-    def check_if_all_dbNSFP_file_have_same_names_as_mave_goldstandard(mave_goldstandard_df, outputdirectory):
+    def file_names_are_similar_to_mave_goldstandard_protein_names(mave_goldstandard_df, db_nsfp_output_path):
+        """
+        Checks if file names in the specified directory are similar to protein names in the provided DataFrame.
+
+        Parameters:
+        - mave_goldstandard_df (pd.DataFrame): DataFrame containing protein names.
+        - dbNSFP_output_path (Path): Path object representing the directory with CSV files to be checked.
+
+        Returns:
+        - bool: True if all file names are similar to protein names, False otherwise.
+        """
+
         # List all file names in the directory
-        csv_file_names = [file.name for file in outputdirectory.iterdir() if
-                          file.is_file() and file.name.endswith('.csv')]
-        # file_names = [file.name for file in outputdirectory.iterdir() if file.is_file()]
-        modified_list = [filename.replace('.csv', '') for filename in csv_file_names]
+        # csv_file_names = [file.name for file in db_nsfp_output_path.iterdir() if
+        #                   file.is_file() and file.name.endswith('.csv')]
+        # protein_names_from_csv_files = [filename.replace('.csv', '') for filename in csv_file_names]
+        protein_names_from_csv_files = get_protein_names_from_db_nsfp_output_directory(directory_path=db_nsfp_output_path)
 
-        first_column_values = mave_goldstandard_df.iloc[:, 0].tolist()
-
-        unique_to_list1 = list(set(first_column_values) - set(modified_list))
+        protein_names_in_mave_gold_standard_df = mave_goldstandard_df.iloc[:, 0].tolist()
 
         # Values unique to list2
-        unique_to_list2 = list(set(modified_list) - set(first_column_values))
+        unique_names_in_output_directory = list(
+            set(protein_names_from_csv_files) - set(protein_names_in_mave_gold_standard_df)
+        )
 
-        return unique_to_list1, unique_to_list2, modified_list, first_column_values
+        return True if len(unique_names_in_output_directory) == 0 else False
+
+    @staticmethod
+    def get_protein_dictionary_snps_scores(dbNSFP_protein_dataframe, snp_column_name, tool_score_column_name):
+
+        def _extract_snp_and_score(snp_str, score_str):
+            """
+            Extract SNPs and their corresponding scores from input strings.
+
+            Parameters:
+            - snp_str (str): String containing SNP information.
+            - score_str (str): String containing score information.
+
+            Returns:
+            - list: A list of tuples where each tuple contains an extracted SNP and its corresponding score.
+              Returns an empty list if no valid SNPs are found.
+            """
+            # Extracting SNPs and their score
+            snps = re.findall(r'p\.([A-Z0-9]+)', snp_str)
+            scores = str(score_str).split(';')[:len(snps)]
+
+            # Return the extracted SNP and its score or None if not valid
+            return list(set(list(zip(snps, scores))))
+
+        values_list = []
+
+        for _, row in dbNSFP_protein_dataframe.iterrows():
+            for tuple_snp_score in _extract_snp_and_score(snp_str=row[snp_column_name],
+                                                          score_str=row[tool_score_column_name]):
+                values_list.append(tuple_snp_score)
+
+        filtered_tuples = [(snp, float(score)) for snp, score in values_list if score != '.']
+
+        return dict(filtered_tuples)
+
+    @staticmethod
+    def add_tool_score_column(mave_gs_dataframe,
+                              db_nsfp_output_dir_path,
+                              tool_name,
+                              snp_column_name):
+
+        column_name = tool_name + "_score"
+
+        ## Add new column
+        mave_gs_dataframe[column_name] = None
+
+        protein_names = mave_gs_dataframe["protein_name"].tolist()
+
+        csv_file_names = [file for file in db_nsfp_output_dir_path.iterdir() if
+                          file.is_file() and file.name.endswith('.csv')]
+
+        protein_names_from_csv_files = get_protein_names_from_db_nsfp_output_directory(
+            directory_path=db_nsfp_output_dir_path)
+
+        for csv_file_name in csv_file_names:
+            protein_name = csv_file_name.name.replace('.csv', '')
+            protein_dataframe = dbNSFPProcessor.get_dbNSFP_df(csv_file_name)
+            protein_snp_score_dictionary = dbNSFPProcessor.get_protein_dictionary_snps_scores(
+                dbNSFP_protein_dataframe=protein_dataframe,
+                snp_column_name=snp_column_name,
+                tool_score_column_name=column_name
+            )
+
+            mave_gs_dataframe.loc[mave_gs_dataframe["protein_name"] == protein_name, column_name] = protein_snp_score_dictionary
 
 
+
+        return column_name, protein_names, protein_names_from_csv_files, mave_gs_dataframe
