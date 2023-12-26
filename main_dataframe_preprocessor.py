@@ -40,5 +40,24 @@ MAVE_GS_DATAFRAME = dbNSFPProcessor.add_tool_score_column(mave_gs_dataframe=MAVE
                                                     snp_column_name=SNP_COLUMN_NAME)
 
 
+import pandas as pd
+
+# Two sample dictionaries
+dict1 = {'A': 1, 'B': 2, 'C': 3, 'D': 100}
+dict2 = {'A': 10, 'B': 20, 'C': 30}
+
+# Create a set of all keys from both dictionaries
+all_keys = set(dict1.keys()).union(dict2.keys())
+
+# Create a DataFrame with None as default value
+df = pd.DataFrame({key: [dict1.get(key), dict2.get(key)] for key in all_keys},
+                  index=['Dict1_Values', 'Dict2_Values']).T.reset_index()
+
+# Rename the columns
+df.columns = ['Keys', 'Dict1_Values', 'Dict2_Values']
+
+# Display the DataFrame
+print(df)
+
 
 print("stop")
