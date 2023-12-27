@@ -1,4 +1,6 @@
 from pathlib import Path
+
+import pandas
 import scipy.stats as stats
 import pandas as pd
 
@@ -437,9 +439,9 @@ def get_protein_names_from_db_nsfp_output_directory(directory_path):
 
     return protein_names_from_csv_files
 
-
+# TODO Move these function related to the caluclations of the pearson corelation to a new module.
 def get_mave_tool_scores_dataframe(mave_scores_dict: dict, tool_scores_dict: dict, mave_score_column_name: str,
-                                   tool_score_column_name: str) -> pandas.DataFrame:
+                                   tool_score_column_name: str) -> pd.DataFrame:
     """
     Create a DataFrame with MAVE and tool scores.
 
@@ -466,3 +468,25 @@ def get_mave_tool_scores_dataframe(mave_scores_dict: dict, tool_scores_dict: dic
     return df
 
 
+def get_correlation_and_percentage_used(df, column1_name, column2_name):
+    """
+    Calculate the Pearson correlation and percentage of rows used between two columns in the DataFrame.
+
+    Parameters:
+    - df (pd.DataFrame): The input DataFrame.
+    - column1_name (str): Name of the first column.
+    - column2_name (str): Name of the second column.
+
+    Returns:
+    - Tuple[float, float]: A tuple containing the percentage of rows used and Pearson correlation.
+    """
+    # Drop rows with missing values in either of the columns
+    valid_data = df.dropna(subset=[column1_name, column2_name])
+
+    # Calculate Pearson correlation
+    correlation = valid_data[column1_name].corr(valid_data[column2_name])
+
+    # Calculate the percentage of rows used
+    percentage_used = (len(valid_data) / len(df)) * 100
+
+    return percentage_used, correlation

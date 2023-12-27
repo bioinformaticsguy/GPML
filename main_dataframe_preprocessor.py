@@ -12,7 +12,8 @@ import copy
 AMINO_ACID_SEQUENCE_COLUMN_NAME = 'Prot_sequence'
 SNP_COLUMN_NAME = "HGVSp_ANNOVAR"
 MUTEPRED_SCORE_COLUMN_NAME = "MutPred_score"
-MAVE_SCORE_COLUMN_NAME = "SNP_dict"
+MAVE_SCORE_DICTIONARY_COLUMN_NAME = "SNP_dict"
+MAVE_SCORE_COLUMN_NAME = "Mave_score"
 MUTEPRED_TOOL_NAME = "MutPred"
 TRAINING_DATA_FILE_PATH = Path("Data/mutepred_training_data/wo_exclusive_hgmd_mp2_training_data_MavedbData.csv")
 OUTPUT_DIR_DB_NSFP = Path("Data/dbNSFP_output_dir")
@@ -51,13 +52,26 @@ your_column_values = MAVE_GS_DATAFRAME['protein_name'].tolist()
 
 protein_name = your_column_values[1]
 
-mave_score_dict = MAVE_GS_DATAFRAME.loc[MAVE_GS_DATAFRAME['protein_name'] == protein_name, MAVE_SCORE_COLUMN_NAME].values[0]
+mave_score_dict = MAVE_GS_DATAFRAME.loc[MAVE_GS_DATAFRAME['protein_name'] == protein_name, MAVE_SCORE_DICTIONARY_COLUMN_NAME].values[0]
 tool_score_dict = MAVE_GS_DATAFRAME.loc[MAVE_GS_DATAFRAME['protein_name'] == protein_name, MUTEPRED_SCORE_COLUMN_NAME].values[0]
 
 
-mave_score_mutepred_df = get_mave_tool_scores_dataframe(mave_score_dict,
-                                                        tool_score_dict,
-                                                        mave_score_column_name=MAVE_SCORE_COLUMN_NAME,
-                                                        tool_score_column_name=MUTEPRED_SCORE_COLUMN_NAME)
+mave_mutepred_scores_df = get_mave_tool_scores_dataframe(mave_score_dict,
+                                                         tool_score_dict,
+                                                         mave_score_column_name=MAVE_SCORE_COLUMN_NAME,
+                                                         tool_score_column_name=MUTEPRED_SCORE_COLUMN_NAME)
+
+
+
+
+
+result = get_correlation_and_percentage_used(mave_mutepred_scores_df, MAVE_SCORE_COLUMN_NAME, MUTEPRED_SCORE_COLUMN_NAME)
+
+
+print(f"Percentage of Rows Used: {result[0]:.2f}%")
+print(f"Pearson Correlation: {result[1]:.2f}")
+
 
 print("pause")
+
+
