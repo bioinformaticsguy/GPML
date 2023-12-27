@@ -5,16 +5,17 @@ import pandas as pd
 
 from src.dataframe_preprocessor import MaveGoldStandard, MutepredTrainingProcessor, dbNSFPProcessor
 from main import MAVE_GS_FILE_PATH
-from src.utils import COLUMN_NAMES_OF_MAVE_GS_DATAFRAME_LIST, get_mave_tool_scores_dataframe
+from src.utils import COLUMN_NAMES_OF_MAVE_GS_DATAFRAME_LIST, get_mave_tool_scores_dataframe, \
+    get_correlation_and_percentage_used
 import copy
 
 ## Path and Strings
 AMINO_ACID_SEQUENCE_COLUMN_NAME = 'Prot_sequence'
 SNP_COLUMN_NAME = "HGVSp_ANNOVAR"
-MUTEPRED_SCORE_COLUMN_NAME = "MutPred_score"
 MAVE_SCORE_DICTIONARY_COLUMN_NAME = "SNP_dict"
 MAVE_SCORE_COLUMN_NAME = "Mave_score"
 MUTEPRED_TOOL_NAME = "MutPred"
+MUTEPRED_SCORE_COLUMN_NAME = MUTEPRED_TOOL_NAME + "_score"
 TRAINING_DATA_FILE_PATH = Path("Data/mutepred_training_data/wo_exclusive_hgmd_mp2_training_data_MavedbData.csv")
 OUTPUT_DIR_DB_NSFP = Path("Data/dbNSFP_output_dir")
 
@@ -34,7 +35,7 @@ FILTERED_MAVE_GOLDSTANDARD_MUTEPRED_TRAINING = MutepredTrainingProcessor. \
 
 MAVE_GS_DATAFRAME = MaveGoldStandard.mark_rows_present_in_subset(superset_df=MAVE_GS_DATAFRAME,
                                                                  subset_df=FILTERED_MAVE_GOLDSTANDARD_MUTEPRED_TRAINING,
-                                                                 new_column_name="in_mutepred")
+                                                                 new_column_name="in_mutepred_training")
 
 
 
@@ -50,7 +51,7 @@ MAVE_GS_DATAFRAME = dbNSFPProcessor.add_tool_score_column(mave_gs_dataframe=MAVE
 
 your_column_values = MAVE_GS_DATAFRAME['protein_name'].tolist()
 
-protein_name = your_column_values[1]
+protein_name = your_column_values[23]
 
 mave_score_dict = MAVE_GS_DATAFRAME.loc[MAVE_GS_DATAFRAME['protein_name'] == protein_name, MAVE_SCORE_DICTIONARY_COLUMN_NAME].values[0]
 tool_score_dict = MAVE_GS_DATAFRAME.loc[MAVE_GS_DATAFRAME['protein_name'] == protein_name, MUTEPRED_SCORE_COLUMN_NAME].values[0]

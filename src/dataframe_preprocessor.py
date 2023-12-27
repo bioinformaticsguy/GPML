@@ -238,10 +238,6 @@ class dbNSFPProcessor:
         - bool: True if all file names are similar to protein names, False otherwise.
         """
 
-        # List all file names in the directory
-        # csv_file_names = [file.name for file in db_nsfp_output_path.iterdir() if
-        #                   file.is_file() and file.name.endswith('.csv')]
-        # protein_names_from_csv_files = [filename.replace('.csv', '') for filename in csv_file_names]
         protein_names_from_csv_files = get_protein_names_from_db_nsfp_output_directory(directory_path=db_nsfp_output_path)
 
         protein_names_in_mave_gold_standard_df = mave_goldstandard_df.iloc[:, 0].tolist()
