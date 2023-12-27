@@ -417,52 +417,6 @@ def get_list_to_add_in_dataframe(list_from_the_dictionary):
 
     return [snp_string[:-1], scaled_effect_string[:-1], sequence]
 
-
-
-
-from typing import Dict
-import numpy as np
-from scipy.stats import pearsonr
-
-def calculate_correlation(dict1: Dict[str, float], dict2: Dict[str, float]) -> float:
-    """
-    Calculate the Pearson correlation coefficient between two dictionaries.
-
-    Parameters:
-    - dict1 (Dict[str, float]): The first dictionary with SNPs as keys and corresponding scores.
-    - dict2 (Dict[str, float]): The second dictionary with SNPs as keys and corresponding scores.
-
-    Returns:
-    - float: The Pearson correlation coefficient.
-
-    Example:
-    ```
-    dict1 = {'rs1': 0.5, 'rs2': 0.8, 'rs3': 0.2}
-    dict2 = {'rs2': 0.7, 'rs3': 0.1, 'rs4': 0.9}
-
-    correlation_coefficient = calculate_correlation(dict1, dict2)
-    print(correlation_coefficient)
-    ```
-    """
-    common_snps = set(dict1.keys()) & set(dict2.keys())
-
-    # Filter values for common SNPs
-    values_dict1 = [dict1[snp] for snp in common_snps]
-    values_dict2 = [dict2[snp] for snp in common_snps]
-
-    # Calculate Pearson correlation coefficient
-    correlation_coefficient, _ = pearsonr(values_dict1, values_dict2)
-
-    return correlation_coefficient
-
-# Example usage:
-dict1 = {'rs1': 0.5, 'rs2': 0.8, 'rs3': 0.2}
-dict2 = {'rs2': 0.7, 'rs3': 0.1, 'rs4': 0.9}
-
-correlation_coefficient = calculate_correlation(dict1, dict2)
-print(correlation_coefficient)
-
-
 def get_protein_names_from_db_nsfp_output_directory(directory_path):
     """
     Get protein names from CSV files in the specified directory.
@@ -482,4 +436,33 @@ def get_protein_names_from_db_nsfp_output_directory(directory_path):
     protein_names_from_csv_files = [filename.replace('.csv', '') for filename in csv_file_names]
 
     return protein_names_from_csv_files
+
+
+def get_mave_tool_scores_dataframe(mave_scores_dict: dict, tool_scores_dict: dict, mave_score_column_name: str,
+                                   tool_score_column_name: str) -> pandas.DataFrame:
+    """
+    Create a DataFrame with MAVE and tool scores.
+
+    Parameters:
+    - mave_scores_dict (dict): Dictionary containing MAVE scores.
+    - tool_scores_dict (dict): Dictionary containing tool scores.
+    - mave_score_column_name (str): Name of the column for MAVE scores.
+    - tool_score_column_name (str): Name of the column for tool scores.
+
+    Returns:
+    - pd.DataFrame: DataFrame with 'SNPs', 'MAVE_Scores', and 'Tool_Scores' columns.
+    """
+
+    # Create a set of all keys from both dictionaries
+    all_keys = set(mave_scores_dict.keys()).union(tool_scores_dict.keys())
+
+    # Create a DataFrame with None as the default value
+    df = pd.DataFrame({key: [mave_scores_dict.get(key), tool_scores_dict.get(key)] for key in all_keys},
+                      index=[mave_score_column_name, tool_score_column_name]).T.reset_index()
+
+    # Rename the columns
+    df.columns = ['SNPs', mave_score_column_name, tool_score_column_name]
+
+    return df
+
 

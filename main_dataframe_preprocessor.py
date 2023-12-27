@@ -5,7 +5,7 @@ import pandas as pd
 
 from src.dataframe_preprocessor import MaveGoldStandard, MutepredTrainingProcessor, dbNSFPProcessor
 from main import MAVE_GS_FILE_PATH
-from src.utils import COLUMN_NAMES_OF_MAVE_GS_DATAFRAME_LIST
+from src.utils import COLUMN_NAMES_OF_MAVE_GS_DATAFRAME_LIST, get_mave_tool_scores_dataframe
 import copy
 
 ## Path and Strings
@@ -46,32 +46,6 @@ MAVE_GS_DATAFRAME = dbNSFPProcessor.add_tool_score_column(mave_gs_dataframe=MAVE
 
 
 
-def create_mave_tool_scores_dataframe(mave_scores_dict: dict, tool_scores_dict: dict, mave_score_column_name: str,
-                                      tool_score_column_name: str) -> pandas.DataFrame:
-    """
-    Create a DataFrame with MAVE and tool scores.
-
-    Parameters:
-    - mave_scores_dict (dict): Dictionary containing MAVE scores.
-    - tool_scores_dict (dict): Dictionary containing tool scores.
-    - mave_score_column_name (str): Name of the column for MAVE scores.
-    - tool_score_column_name (str): Name of the column for tool scores.
-
-    Returns:
-    - pd.DataFrame: DataFrame with 'SNPs', 'MAVE_Scores', and 'Tool_Scores' columns.
-    """
-
-    # Create a set of all keys from both dictionaries
-    all_keys = set(mave_scores_dict.keys()).union(tool_scores_dict.keys())
-
-    # Create a DataFrame with None as the default value
-    df = pd.DataFrame({key: [mave_scores_dict.get(key), tool_scores_dict.get(key)] for key in all_keys},
-                      index=[mave_score_column_name, tool_score_column_name]).T.reset_index()
-
-    # Rename the columns
-    df.columns = ['SNPs', mave_score_column_name, tool_score_column_name]
-
-    return df
 
 your_column_values = MAVE_GS_DATAFRAME['protein_name'].tolist()
 
@@ -81,9 +55,9 @@ mave_score_dict = MAVE_GS_DATAFRAME.loc[MAVE_GS_DATAFRAME['protein_name'] == pro
 tool_score_dict = MAVE_GS_DATAFRAME.loc[MAVE_GS_DATAFRAME['protein_name'] == protein_name, MUTEPRED_SCORE_COLUMN_NAME].values[0]
 
 
-df = create_mave_tool_scores_dataframe(mave_score_dict,
-                                       tool_score_dict,
-                                       mave_score_column_name=MAVE_SCORE_COLUMN_NAME,
-                                       tool_score_column_name=MUTEPRED_SCORE_COLUMN_NAME)
+mave_score_mutepred_df = get_mave_tool_scores_dataframe(mave_score_dict,
+                                                        tool_score_dict,
+                                                        mave_score_column_name=MAVE_SCORE_COLUMN_NAME,
+                                                        tool_score_column_name=MUTEPRED_SCORE_COLUMN_NAME)
 
 print("pause")
