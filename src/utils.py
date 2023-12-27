@@ -1,3 +1,4 @@
+import pickle
 from pathlib import Path
 
 import pandas
@@ -490,3 +491,47 @@ def get_correlation_and_percentage_used(df, column1_name, column2_name):
     percentage_used = (len(valid_data) / len(df)) * 100
 
     return percentage_used, correlation
+
+
+def pickle_dataframe(dataframe, file_path, file_name):
+    """
+    Pickle a DataFrame to a specified file path and name.
+
+    Parameters:
+    - dataframe (pd.DataFrame): The DataFrame to pickle.
+    - file_path (Path): The path where the pickle file will be saved.
+    - file_name (str): The name of the pickle file.
+
+    Returns:
+    - None
+    """
+    # Ensure the file path exists, create it if not
+    file_path.mkdir(parents=True, exist_ok=True)
+
+    # Pickle the DataFrame
+    with open(file_path / file_name, 'wb') as file:
+        pickle.dump(dataframe, file)
+
+
+
+def load_dataframe(file_path, file_name):
+    """
+    Load a pickled DataFrame from a specified file path and name.
+
+    Parameters:
+    - file_path (Path): The path where the pickle file is located.
+    - file_name (str): The name of the pickle file.
+
+    Returns:
+    - pd.DataFrame: The loaded DataFrame.
+    """
+    # Check if the file exists
+    file_to_load = file_path / file_name
+    if not file_to_load.is_file():
+        raise FileNotFoundError(f"File '{file_name}' not found in path '{file_path}'.")
+
+    # Load the DataFrame
+    with open(file_to_load, 'rb') as file:
+        loaded_dataframe = pickle.load(file)
+
+    return loaded_dataframe
