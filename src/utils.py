@@ -1,13 +1,7 @@
 import pickle
 from pathlib import Path
-
-import pandas
 import scipy.stats as stats
 import pandas as pd
-
-MAVE_DB_GOLD_STANDARD_SEQUENCE_ONLY_FILE_PATH = Path("Data/mave_gs_data/mave_db_gold_standard_only_sequences.fasta")
-COLUMN_NAMES_OF_MAVE_GS_DATAFRAME_LIST = ['protein_name', 'SNPs', 'scaled_effect', 'Prot_sequence']
-
 
 def get_dictonary_of_scores_maveDB(file_path):
     """
@@ -441,8 +435,8 @@ def get_protein_names_from_db_nsfp_output_directory(directory_path):
     return protein_names_from_csv_files
 
 # TODO Move these function related to the caluclations of the pearson corelation to a new module.
-def get_mave_tool_scores_dataframe(mave_scores_dict: dict, tool_scores_dict: dict, mave_score_column_name: str,
-                                   tool_score_column_name: str) -> pd.DataFrame:
+def get_mave_tool_scores_dataframe(mave_scores_dict: dict, tool_scores_dict: dict, mave_score_dictionary_column_name: str,
+                                   tool_score_dictionary_column_name: str) -> pd.DataFrame:
     """
     Create a DataFrame with MAVE and tool scores.
 
@@ -461,10 +455,10 @@ def get_mave_tool_scores_dataframe(mave_scores_dict: dict, tool_scores_dict: dic
 
     # Create a DataFrame with None as the default value
     df = pd.DataFrame({key: [mave_scores_dict.get(key), tool_scores_dict.get(key)] for key in all_keys},
-                      index=[mave_score_column_name, tool_score_column_name]).T.reset_index()
+                      index=[mave_score_dictionary_column_name, tool_score_dictionary_column_name]).T.reset_index()
 
     # Rename the columns
-    df.columns = ['SNPs', mave_score_column_name, tool_score_column_name]
+    df.columns = ['SNPs', mave_score_dictionary_column_name, tool_score_dictionary_column_name]
 
     return df
 
@@ -491,7 +485,6 @@ def get_correlation_and_percentage_used(df, column1_name, column2_name):
     percentage_used = (len(valid_data) / len(df)) * 100
 
     return percentage_used, correlation
-
 
 def pickle_dataframe(dataframe, file_path, file_name):
     """

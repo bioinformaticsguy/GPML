@@ -3,9 +3,24 @@ import pathlib
 import re
 import pandas
 import pandas as pd
-
 from src.utils import get_dictonary_of_scores_maveDB, get_list_to_add_in_dataframe, get_single_letter_point_mutation, \
     get_protein_names_from_db_nsfp_output_directory
+
+MAVE_DB_GOLD_STANDARD_SEQUENCE_ONLY_FILE_PATH = pathlib.Path("Data/mave_gs_data/mave_db_gold_standard_only_sequences.fasta")
+COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID = 'protein_name'
+COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP = 'snps'
+COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SCALED_EFFECT = 'scaled_effect'
+COLUMN_NAME_OF_MAVE_GOLD_STANDARD_PROTEIN_SEQUENCE = 'Prot_sequence'
+
+COLUMN_NAMES_OF_MAVE_GS_DATAFRAME_LIST = [COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID,
+                                          COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP,
+                                          COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SCALED_EFFECT,
+                                          COLUMN_NAME_OF_MAVE_GOLD_STANDARD_PROTEIN_SEQUENCE]
+
+COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SPECIES = "species"
+COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY = "mave_snps_scores_dictinary"
+
+TOOL_SCORE_COLUMN_SUFFIX = "_score"
 
 DICTIONARY_PROTEINS_SPECIES = {
     'VIM-2_with_p.Met1_Phe2insGly_urn:mavedb:00000073-c': 'Human',
@@ -62,7 +77,9 @@ class MaveGoldStandard:
         - pd.DataFrame: A DataFrame constructed from the MAVE DB gold standard data.
         """
 
-        def _add_species_column(mave_gold_standard_df, dictionary_species, column_name="species"):
+        def _add_species_column(mave_gold_standard_df,
+                                dictionary_species,
+                                column_name=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SPECIES):
             """
                 Adds a new 'species' column to the provided DataFrame based on a mapping from protein names to species.
 
@@ -75,7 +92,9 @@ class MaveGoldStandard:
                 - pd.DataFrame: The DataFrame with the added 'species' column.
                 """
 
-            mave_gold_standard_df[column_name] = mave_gold_standard_df['protein_name'].map(dictionary_species)
+            mave_gold_standard_df[column_name] = mave_gold_standard_df[COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID]. \
+                                                    map(dictionary_species)
+
             return mave_gold_standard_df
 
         def _add_SNP_dict_column(mave_gold_standard_df: pd.DataFrame) -> pd.DataFrame:
@@ -88,10 +107,11 @@ class MaveGoldStandard:
             Returns:
             - pd.DataFrame: The DataFrame with the added 'SNP_dict' column.
             """
+
             # Split 'SNPs' and 'scaled_effect' columns, then create a dictionary for each row
-            mave_gold_standard_df['SNP_dict'] = mave_gold_standard_df.apply(
-                lambda row: dict(zip(map(get_single_letter_point_mutation, row['SNPs'].split(';')),
-                                     map(float, row['scaled_effect'].split(';')))),
+            mave_gold_standard_df[COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY] = mave_gold_standard_df.apply(
+                lambda row: dict(zip(map(get_single_letter_point_mutation, row[COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP].split(';')),
+                                     map(float, row[COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SCALED_EFFECT].split(';')))),
                 axis=1
             )
 
@@ -103,11 +123,11 @@ class MaveGoldStandard:
         for protein_name, value in dictionary_of_data.items():
             row = [protein_name] + get_list_to_add_in_dataframe(value)
             rows.append(row)
-        mave_goldstandard_dataframe = pd.DataFrame(rows, columns=column_names)
 
+        mave_goldstandard_dataframe = pd.DataFrame(rows, columns=column_names)
         mave_goldstandard_dataframe = _add_species_column(mave_goldstandard_dataframe,
                                                           dictionary_species=DICTIONARY_PROTEINS_SPECIES,
-                                                          column_name="species")
+                                                          column_name=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SPECIES)
 
         mave_goldstandard_dataframe = _add_SNP_dict_column(mave_goldstandard_dataframe)
 
@@ -115,8 +135,8 @@ class MaveGoldStandard:
 
     @staticmethod
     def mark_rows_present_in_subset(
-            superset_df, subset_df, new_column_name='in_subset_dataframe',
-            id_columns=('protein_name', 'protein_name')
+            superset_df, subset_df, new_column_name,
+            id_columns=(COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID)
     ):
         """
         Add a binary column to the superset dataframe indicating whether each row is present in the subset dataframe.
@@ -190,7 +210,7 @@ class MutepredTrainingProcessor:
             isin(dataframe_with_common_values[df_sequence_column_name])]
 
     @staticmethod
-    def get_disjunction(superset_df, subset_df, on_column='ID'):
+    def get_disjunction(superset_df, subset_df, on_column=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID):
         """
             Get the rows from the superset DataFrame that are not present in the subset DataFrame.
 
@@ -300,7 +320,7 @@ class dbNSFPProcessor:
         mave_gs_df_deep_copy = copy.deepcopy(mave_gs_dataframe)
 
         # Create the column name for the tool score
-        column_name = tool_name + "_score"
+        column_name = tool_name + TOOL_SCORE_COLUMN_SUFFIX
 
         # Add a new column to the deep copy DataFrame
         mave_gs_df_deep_copy[column_name] = None
@@ -326,7 +346,7 @@ class dbNSFPProcessor:
 
             # Update the tool score column for the corresponding protein in the deep copy DataFrame
             mave_gs_df_deep_copy.loc[
-                mave_gs_df_deep_copy['protein_name'] == protein_name, column_name] = [
+                mave_gs_df_deep_copy[COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID] == protein_name, column_name] = [
                 protein_snp_score_dictionary]
 
         return mave_gs_df_deep_copy
