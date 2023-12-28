@@ -6,7 +6,7 @@ import pandas as pd
 from src.utils import get_dictonary_of_scores_maveDB, get_list_to_add_in_dataframe, get_single_letter_point_mutation, \
     get_protein_names_from_db_nsfp_output_directory
 
-MAVE_DB_GOLD_STANDARD_SEQUENCE_ONLY_FILE_PATH = pathlib.Path("Data/mave_gs_data/mave_db_gold_standard_only_sequences.fasta")
+
 COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID = 'protein_name'
 COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP = 'snps'
 COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SCALED_EFFECT = 'scaled_effect'
@@ -22,44 +22,46 @@ COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY = "mave_snps_scores_dictinary"
 
 TOOL_SCORE_COLUMN_SUFFIX = "_score"
 
-DICTIONARY_PROTEINS_SPECIES = {
-    'VIM-2_with_p.Met1_Phe2insGly_urn:mavedb:00000073-c': 'Human',
-    'CBS_urn:mavedb:00000005-a': 'Bacteria',
-    'NUDT15_urn:mavedb:00000055-0': 'E-Coli',
-    'VIM-2_with_p.Met1_Phe2insGly_urn:mavedb:00000073-f': 'Virus',
-    'CcdB_urn:mavedb:00000084-a': 'Bacteria',
-    'VKOR_urn:mavedb:00000078-a': 'Yeast',
-    'VIM-2_with_p.Met1_Phe2insGly_urn:mavedb:00000073-g': 'Virus',
-    'TEM-1_beta-lactamase_urn:mavedb:00000086-d': 'Human',
-    'VIM-2_with_p.Met1_Phe2insGly_urn:mavedb:00000073-d': 'Virus',
-    'TEM-1_beta-lactamase_urn:mavedb:00000070-a': 'Human',
-    'CCR5_urn:mavedb:00000047-c': 'Bacteria',
-    'TEM-1_beta-lactamase_urn:mavedb:00000086-c': 'Human',
-    'PTEN_urn:mavedb:00000013-a': 'Escherichia coli',
-    'PTEN_urn:mavedb:00000054-a': 'Escherichia coli',
-    'p53_urn:mavedb:00000059-a': 'Escherichia coli',
-    'VKOR_urn:mavedb:00000078-b': 'Yeast',
-    'TEM-1_beta-lactamase_urn:mavedb:00000086-e': 'Human',
-    'TP53_(P72R)_urn:mavedb:00000068-c': 'Human',
-    'SUMO1_urn:mavedb:00000001-b': 'Human',
-    'NUDT15_urn:mavedb:00000055-a': 'E-Coli',
-    'SARS-CoV-2_receptor_binding_domain_urn:mavedb:00000044-b': 'Human',
-    'VIM-2_with_p.Met1_Phe2insGly_urn:mavedb:00000073-a': 'Human',
-    'TEM-17_beta-lactamase_urn:mavedb:00000085-b': 'Human',
-    'CYP2C9_urn:mavedb:00000095-a': 'Bacteria',
-    'SARS-CoV-2_receptor_binding_domain_urn:mavedb:00000044-a': 'Human',
-    'VIM-2_with_p.Met1_Phe2insGly_urn:mavedb:00000073-h': 'Virus',
-    'CYP2C9_urn:mavedb:00000095-b': 'E-Coli',
-    'A0A2Z5U3Z0_9INFA_A0A2Z5U3Z0_9INFA_Doud_2016': 'Bacteria',
-    'BLAT_ECOLX_BLAT_ECOLX_Deng_2012': 'Bacteria',
-    'BLAT_ECOLX_BLAT_ECOLX_Jacquier_2013': 'Bacteria',
-    'CCDB_ECOLI_CCDB_ECOLI_Tripathi_2016': 'Bacteria',
+PROTEIN_SPECIES_MAPPING = {
+    'A0A2Z5U3Z0_9INFA_A0A2Z5U3Z0_9INFA_Doud_2016': 'Virus',
+    'BLAT_ECOLX_BLAT_ECOLX_Deng_2012': 'E-Coli',
+    'BLAT_ECOLX_BLAT_ECOLX_Jacquier_2013': 'E-Coli',
+    'CBS_urn:mavedb:00000005-a': 'Human',
+    'CCDB_ECOLI_CCDB_ECOLI_Tripathi_2016': 'E-Coli',
+    'CcdB_urn:mavedb:00000084-a': 'E-Coli',
+    'CCR5_urn:mavedb:00000047-c': 'Human',
+    'CYP2C9_urn:mavedb:00000095-a': 'Human',
+    'CYP2C9_urn:mavedb:00000095-b': 'Human',
     'IF1_ECOLI_IF1_ECOLI_Kelsic_2016': 'E-Coli',
-    'KKA2_KLEPN_KKA2_KLEPN_Melnikov_2014': 'E-Coli',
-    'Q2N0S5_9HIV1_Q2N0S5_9HIV1_Haddox_2018': 'Escherichia coli',
-    'R1AB_SARS2_R1AB_SARS2_Flynn_growth_2022': 'Human',
-    'RL401_YEAST_RL401_YEAST_Mavor_2016': 'Human',
+    'KKA2_KLEPN_KKA2_KLEPN_Melnikov_2014': 'Bacteria',
+    'NUDT15_urn:mavedb:00000055-0': 'Human',
+    'NUDT15_urn:mavedb:00000055-a': 'Human',
+    'p53_urn:mavedb:00000059-a': 'Human',
+    'PTEN_urn:mavedb:00000013-a': 'Human',
+    'PTEN_urn:mavedb:00000054-a': 'Human',
+    'Q2N0S5_9HIV1_Q2N0S5_9HIV1_Haddox_2018': 'Virus',
+    'R1AB_SARS2_R1AB_SARS2_Flynn_growth_2022': 'Virus',
+    'RL401_YEAST_RL401_YEAST_Mavor_2016': 'Yeast',
+    'SARS-CoV-2_receptor_binding_domain_urn:mavedb:00000044-a': 'Virus',
+    'SARS-CoV-2_receptor_binding_domain_urn:mavedb:00000044-b': 'Virus',
+    'SUMO1_urn:mavedb:00000001-b': 'Human',
+    'TEM-1_beta-lactamase_urn:mavedb:00000070-a': 'Escherichia coli',
+    'TEM-1_beta-lactamase_urn:mavedb:00000086-c': 'Escherichia coli',
+    'TEM-1_beta-lactamase_urn:mavedb:00000086-d': 'Escherichia coli',
+    'TEM-1_beta-lactamase_urn:mavedb:00000086-e': 'Escherichia coli',
+    'TEM-17_beta-lactamase_urn:mavedb:00000085-b': 'Bacteria',
+    'TP53_(P72R)_urn:mavedb:00000068-c': 'Human',
+    'VIM-2_with_p.Met1_Phe2insGly_urn:mavedb:00000073-a': 'Bacteria',
+    'VIM-2_with_p.Met1_Phe2insGly_urn:mavedb:00000073-c': 'Bacteria',
+    'VIM-2_with_p.Met1_Phe2insGly_urn:mavedb:00000073-d': 'Bacteria',
+    'VIM-2_with_p.Met1_Phe2insGly_urn:mavedb:00000073-f': 'Bacteria',
+    'VIM-2_with_p.Met1_Phe2insGly_urn:mavedb:00000073-g': 'Bacteria',
+    'VIM-2_with_p.Met1_Phe2insGly_urn:mavedb:00000073-h': 'Bacteria',
+    'VKOR_urn:mavedb:00000078-a': 'Human',
+    'VKOR_urn:mavedb:00000078-b': 'Human'
 }
+
+
 
 
 class MaveGoldStandard:
@@ -126,7 +128,7 @@ class MaveGoldStandard:
 
         mave_goldstandard_dataframe = pd.DataFrame(rows, columns=column_names)
         mave_goldstandard_dataframe = _add_species_column(mave_goldstandard_dataframe,
-                                                          dictionary_species=DICTIONARY_PROTEINS_SPECIES,
+                                                          dictionary_species=PROTEIN_SPECIES_MAPPING,
                                                           column_name=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SPECIES)
 
         mave_goldstandard_dataframe = _add_SNP_dict_column(mave_goldstandard_dataframe)
