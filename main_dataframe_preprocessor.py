@@ -1,7 +1,7 @@
 from pathlib import Path
-
 from src.constants import COLUMN_NAMES_OF_MAVE_GS_DATAFRAME_LIST, TRAINING_FLAG_SUFFIX, MUTEPRED_TOOL_NAME, \
-    TOOL_SCORE_COLUMN_SUFFIX, AMINO_ACID_SEQUENCE_COLUMN_NAME, SNP_COLUMN_NAME
+    TOOL_SCORE_COLUMN_SUFFIX, AMINO_ACID_SEQUENCE_COLUMN_NAME, SNP_COLUMN_NAME, MAVE_DATAFRAME_PICKLE_FILE_NAME, \
+    TOOLS_LIST
 from src.dataframe_preprocessor import MaveGoldStandard, MutepredTrainingProcessor, dbNSFPProcessor
 from main import MAVE_GS_FILE_PATH
 from src.utils import pickle_dataframe
@@ -12,9 +12,19 @@ TRAINING_DATA_FILE_PATH = Path("Data/mutepred_training_data/wo_exclusive_hgmd_mp
 OUTPUT_DIR_DB_NSFP = Path("Data/dbNSFP_output_dir")
 PICKLED_DATAFRAMES_DIRECTORY_PATH = Path("Data/pickled_dataframes")
 
-
 MUTEPRED_TRAINING_FLAG_COLUMN_NAME = MUTEPRED_TOOL_NAME + TRAINING_FLAG_SUFFIX
 
+def add_data_from_list_of_tools(mave_gs_dataframe,
+                                db_nsfp_output_dir_path=OUTPUT_DIR_DB_NSFP,
+                                tool_list=TOOLS_LIST,
+                                snp_column_name=SNP_COLUMN_NAME):
+    for tool in tool_list:
+        dbNSFPProcessor.add_tool_score_column(mave_gs_dataframe,
+                                              db_nsfp_output_dir_path,
+                                              tool,
+                                              snp_column_name)
+
+    return mave_gs_dataframe
 
 if __name__ == '__main__':
     ## Dataframes
@@ -35,10 +45,10 @@ if __name__ == '__main__':
                                                     new_column_name=MUTEPRED_TRAINING_FLAG_COLUMN_NAME)
 
 
-    MAVE_GS_DATAFRAME = dbNSFPProcessor.add_tool_score_column(mave_gs_dataframe=MAVE_GS_DATAFRAME,
-                                                              db_nsfp_output_dir_path=OUTPUT_DIR_DB_NSFP,
-                                                              tool_name=MUTEPRED_TOOL_NAME,
-                                                              snp_column_name=SNP_COLUMN_NAME)
+    MAVE_GS_DATAFRAME = add_data_from_list_of_tools(MAVE_GS_DATAFRAME,
+                                                    db_nsfp_output_dir_path=OUTPUT_DIR_DB_NSFP,
+                                                    tool_list=TOOLS_LIST,
+                                                    snp_column_name=SNP_COLUMN_NAME)
 
     pickle_dataframe(dataframe=MAVE_GS_DATAFRAME,
                      file_path=PICKLED_DATAFRAMES_DIRECTORY_PATH,

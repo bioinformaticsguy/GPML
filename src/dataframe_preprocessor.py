@@ -250,7 +250,7 @@ class dbNSFPProcessor:
         return dict(filtered_tuples)
 
     @staticmethod
-    def add_tool_score_column(mave_gs_dataframe, db_nsfp_output_dir_path, tool_name, snp_column_name):
+    def add_tool_score_column(mave_gs_df, db_nsfp_output_dir_path, tool_name, snp_column_name):
         """
         Add a tool score column to a copy of the MAVE GoldStandard DataFrame.
 
@@ -265,13 +265,14 @@ class dbNSFPProcessor:
         """
 
         # Create a deep copy of the MAVE GoldStandard DataFrame
-        mave_gs_df_deep_copy = copy.deepcopy(mave_gs_dataframe)
+        # mave_gs_df_deep_copy = copy.deepcopy(mave_gs_dataframe)
+        # # mave_gs_df_deep_copy = mave_gs_dataframe
 
         # Create the column name for the tool score
         column_name = tool_name + TOOL_SCORE_COLUMN_SUFFIX
 
         # Add a new column to the deep copy DataFrame
-        mave_gs_df_deep_copy[column_name] = None
+        mave_gs_df[column_name] = None
 
         # Get a list of file paths for dbNSFP output files in the specified directory
         csv_file_names = [file for file in db_nsfp_output_dir_path.iterdir() if
@@ -293,8 +294,8 @@ class dbNSFPProcessor:
             )
 
             # Update the tool score column for the corresponding protein in the deep copy DataFrame
-            mave_gs_df_deep_copy.loc[
-                mave_gs_df_deep_copy[COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID] == protein_name, column_name] = [
+            mave_gs_df.loc[
+                mave_gs_df[COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID] == protein_name, column_name] = [
                 protein_snp_score_dictionary]
 
-        return mave_gs_df_deep_copy
+        return mave_gs_df
