@@ -7,8 +7,6 @@ from src.utils import pickle_dataframe
 ## Path and Strings
 AMINO_ACID_SEQUENCE_COLUMN_NAME = 'Prot_sequence'
 SNP_COLUMN_NAME = "HGVSp_ANNOVAR"
-MAVE_SCORE_DICTIONARY_COLUMN_NAME = "SNP_dict"
-# MAVE_SCORE_COLUMN_NAME = "Mave_score"
 MUTEPRED_TOOL_NAME = "MutPred"
 MUTEPRED_SCORE_COLUMN_NAME = MUTEPRED_TOOL_NAME + "_score"
 TRAINING_DATA_FILE_PATH = Path("Data/mutepred_training_data/wo_exclusive_hgmd_mp2_training_data_MavedbData.csv")

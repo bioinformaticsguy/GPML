@@ -19,4 +19,10 @@ if __name__ == '__main__':
     ONLY_HUMAN_MAVE_DF = CorelationUpdator.add_tool_corelation_and_snp_percentage_column(mave_goldstandard_df=ONLY_HUMAN_MAVE_DF,
                                                                                          tool_name=MUTEPRED_TOOL_NAME)
 
+    overall_score = ONLY_HUMAN_MAVE_DF["MutPred_pearson_correlation"].mean()
+    un_bias_score = ONLY_HUMAN_MAVE_DF[ONLY_HUMAN_MAVE_DF['in_mutepred_training'] == 0][
+        'MutPred_pearson_correlation'].mean()
+    bias = abs(un_bias_score - overall_score)
+
+
     print("Debug Pause")
