@@ -1,10 +1,10 @@
 from main_dataframe_preprocessor import MUTEPRED_SCORE_COLUMN_NAME
+from src.constants import PEARSON_CORELATION_SUFFIX, USED_SNP_PERCENTAGE_SUFFIX
 from src.dataframe_preprocessor import COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, \
     COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY
 from src.utils import get_mave_tool_scores_dataframe, get_correlation_and_percentage_used
 
-PEARSON_CORELATION_SUFFIX = "_pearson_correlation"
-USED_SNP_PERCENTAGE_SUFFIX = "_used_snp_percentage"
+
 
 class CorelationUpdator:
     @staticmethod

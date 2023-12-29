@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from src.constants import COLUMN_NAMES_OF_MAVE_GS_DATAFRAME_LIST
+from src.constants import COLUMN_NAMES_OF_MAVE_GS_DATAFRAME_LIST, TRAINING_FLAG_SUFFIX
 from src.dataframe_preprocessor import MaveGoldStandard, MutepredTrainingProcessor, dbNSFPProcessor
 from main import MAVE_GS_FILE_PATH
 from src.utils import pickle_dataframe
@@ -14,6 +14,9 @@ TRAINING_DATA_FILE_PATH = Path("Data/mutepred_training_data/wo_exclusive_hgmd_mp
 OUTPUT_DIR_DB_NSFP = Path("Data/dbNSFP_output_dir")
 PICKLED_DATAFRAMES_DIRECTORY_PATH = Path("Data/pickled_dataframes")
 MAVE_DATAFRAME_PICKLE_FILE_NAME = "MAVE_DATAFRAME.pkl"
+
+
+MUTEPRED_TRAINING_FLAG_COLUMN_NAME = MUTEPRED_TOOL_NAME + TRAINING_FLAG_SUFFIX
 
 
 if __name__ == '__main__':
@@ -32,7 +35,7 @@ if __name__ == '__main__':
     MAVE_GS_DATAFRAME = MaveGoldStandard. \
                         mark_rows_present_in_subset(superset_df=MAVE_GS_DATAFRAME,
                                                     subset_df=FILTERED_MAVE_GOLDSTANDARD_MUTEPRED_TRAINING,
-                                                    new_column_name="in_mutepred_training")
+                                                    new_column_name=MUTEPRED_TRAINING_FLAG_COLUMN_NAME)
 
 
     MAVE_GS_DATAFRAME = dbNSFPProcessor.add_tool_score_column(mave_gs_dataframe=MAVE_GS_DATAFRAME,

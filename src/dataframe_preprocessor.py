@@ -6,7 +6,7 @@ import pandas as pd
 
 from src.constants import COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP, \
     COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SCALED_EFFECT, COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SPECIES, \
-    COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY, PROTEIN_SPECIES_MAPPING
+    COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY, PROTEIN_SPECIES_MAPPING, TOOL_SCORE_COLUMN_SUFFIX
 from src.utils import get_dictonary_of_scores_maveDB, get_list_to_add_in_dataframe, get_single_letter_point_mutation, \
     get_protein_names_from_db_nsfp_output_directory
 
