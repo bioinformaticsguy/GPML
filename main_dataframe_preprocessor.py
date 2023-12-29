@@ -1,19 +1,16 @@
 from pathlib import Path
 
-from src.constants import COLUMN_NAMES_OF_MAVE_GS_DATAFRAME_LIST, TRAINING_FLAG_SUFFIX
+from src.constants import COLUMN_NAMES_OF_MAVE_GS_DATAFRAME_LIST, TRAINING_FLAG_SUFFIX, MUTEPRED_TOOL_NAME, \
+    TOOL_SCORE_COLUMN_SUFFIX, AMINO_ACID_SEQUENCE_COLUMN_NAME, SNP_COLUMN_NAME
 from src.dataframe_preprocessor import MaveGoldStandard, MutepredTrainingProcessor, dbNSFPProcessor
 from main import MAVE_GS_FILE_PATH
 from src.utils import pickle_dataframe
 
 ## Path and Strings
-AMINO_ACID_SEQUENCE_COLUMN_NAME = 'Prot_sequence'
-SNP_COLUMN_NAME = "HGVSp_ANNOVAR"
-MUTEPRED_TOOL_NAME = "MutPred"
-MUTEPRED_SCORE_COLUMN_NAME = MUTEPRED_TOOL_NAME + "_score"
+MUTEPRED_SCORE_COLUMN_NAME = MUTEPRED_TOOL_NAME + TOOL_SCORE_COLUMN_SUFFIX
 TRAINING_DATA_FILE_PATH = Path("Data/mutepred_training_data/wo_exclusive_hgmd_mp2_training_data_MavedbData.csv")
 OUTPUT_DIR_DB_NSFP = Path("Data/dbNSFP_output_dir")
 PICKLED_DATAFRAMES_DIRECTORY_PATH = Path("Data/pickled_dataframes")
-MAVE_DATAFRAME_PICKLE_FILE_NAME = "MAVE_DATAFRAME.pkl"
 
 
 MUTEPRED_TRAINING_FLAG_COLUMN_NAME = MUTEPRED_TOOL_NAME + TRAINING_FLAG_SUFFIX

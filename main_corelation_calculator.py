@@ -1,5 +1,5 @@
-from main_dataframe_preprocessor import PICKLED_DATAFRAMES_DIRECTORY_PATH, MAVE_DATAFRAME_PICKLE_FILE_NAME, \
-    MUTEPRED_TOOL_NAME
+from main_dataframe_preprocessor import PICKLED_DATAFRAMES_DIRECTORY_PATH, MUTEPRED_TOOL_NAME
+from src.constants import MAVE_DATAFRAME_PICKLE_FILE_NAME
 from src.utils import load_dataframe, filter_dataframe_by_species
 from src.corelation_calculator import CorelationUpdator
 
