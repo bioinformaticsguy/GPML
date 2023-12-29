@@ -1,5 +1,5 @@
 from main_dataframe_preprocessor import MUTEPRED_SCORE_COLUMN_NAME
-from src.constants import PEARSON_CORELATION_SUFFIX, USED_SNP_PERCENTAGE_SUFFIX
+from src.constants import PEARSON_CORELATION_SUFFIX, USED_SNP_PERCENTAGE_SUFFIX, TRAINING_FLAG_SUFFIX
 from src.dataframe_preprocessor import COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, \
     COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY
 from src.utils import get_mave_tool_scores_dataframe, get_correlation_and_percentage_used
@@ -63,5 +63,28 @@ class CorelationUpdator:
                                          mave_df_id_column_name] == protein_name, tool_snps_percentage_column] = used_rows_percentage
 
         return mave_goldstandard_df
+
+    @staticmethod
+    def calculate_tool_bias(df_with_spearman_scores,
+                            tool_name,
+                            pearson_corelation_suffix=PEARSON_CORELATION_SUFFIX,
+                            training_flag_suffix=TRAINING_FLAG_SUFFIX):
+        """
+        Calculates the bias of a tool based on Pearson correlation scores.
+
+        Parameters:
+        - df_with_spearman_scores (pd.DataFrame): DataFrame containing Spearman correlation scores.
+        - tool_name (str): Name of the tool for which bias is calculated.
+        - pearson_corelation_suffix (str): Suffix for the Pearson correlation column names.
+        - training_flag_suffix (str): Suffix for the training flag column names.
+
+        Returns:
+        float: Bias score representing the absolute difference between overall and unbiased tool scores.
+        """
+        overall_score = df_with_spearman_scores[tool_name + pearson_corelation_suffix].mean()
+        unbiased_score = df_with_spearman_scores[df_with_spearman_scores[tool_name + training_flag_suffix] == 0][
+            tool_name + pearson_corelation_suffix].mean()
+        bias = abs(unbiased_score - overall_score)
+        return bias
 
 
