@@ -3,7 +3,8 @@ from pathlib import Path
 import scipy.stats as stats
 import pandas as pd
 
-from src.constants import COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP
+from src.constants import COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP, NAME_OF_SPECIES_TO_FILTER, \
+    COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SPECIES
 
 
 def get_dictonary_of_scores_maveDB(file_path):
@@ -533,3 +534,20 @@ def load_dataframe(file_path, file_name):
         loaded_dataframe = pickle.load(file)
 
     return loaded_dataframe
+
+
+def filter_dataframe_by_species(df,
+                                species_column=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SPECIES,
+                                target_species=NAME_OF_SPECIES_TO_FILTER):
+    """
+    Filters a DataFrame based on a specified species.
+
+    Parameters:
+    - df (pd.DataFrame): The DataFrame to be filtered.
+    - species_column (str): The name of the column containing species information.
+    - target_species (str): The species to filter the DataFrame by.
+
+    Returns:
+    pd.DataFrame: Filtered DataFrame containing only rows with the specified species.
+    """
+    return df[df[species_column] == target_species].dropna()
