@@ -5,7 +5,6 @@ from src.dataframe_preprocessor import COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, \
 from src.utils import get_mave_tool_scores_dataframe, get_correlation_and_percentage_used
 
 
-
 class CorelationUpdator:
     @staticmethod
     def add_tool_correlation_and_snp_percentage_column(mave_goldstandard_df,
@@ -52,15 +51,16 @@ class CorelationUpdator:
                                                                  tool_score_dictionary_column_name=MUTEPRED_SCORE_COLUMN_NAME)
 
             # Calculate Pearson correlation and percentage of used rows
-            used_rows_percentage, pearson_correlation = get_correlation_and_percentage_used(mave_tool_scores_df,
-                                                                                            COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY,
-                                                                                            MUTEPRED_SCORE_COLUMN_NAME)
+            used_rows_percentage, pearson_correlation = get_correlation_and_percentage_used(
+                mave_tool_scores_df,
+                COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY,
+                MUTEPRED_SCORE_COLUMN_NAME)
 
             # Assign calculated values to the tool-specific columns based on the protein name
-            mave_goldstandard_df.loc[mave_goldstandard_df[
-                                         mave_df_id_column_name] == protein_name, tool_pearson_score_column] = pearson_correlation
-            mave_goldstandard_df.loc[mave_goldstandard_df[
-                                         mave_df_id_column_name] == protein_name, tool_snps_percentage_column] = used_rows_percentage
+            mave_goldstandard_df.loc[mave_goldstandard_df[mave_df_id_column_name] == \
+                                     protein_name, tool_pearson_score_column] = pearson_correlation
+            mave_goldstandard_df.loc[mave_goldstandard_df[mave_df_id_column_name] == \
+                                     protein_name, tool_snps_percentage_column] = used_rows_percentage
 
         return mave_goldstandard_df
 
@@ -86,5 +86,3 @@ class CorelationUpdator:
             tool_name + pearson_corelation_suffix].mean()
         bias = abs(unbiased_score - overall_score)
         return bias
-
-
