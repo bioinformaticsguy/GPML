@@ -48,8 +48,8 @@ class CorelationUpdator:
             # Create a DataFrame for MAVE and tool scores
             mave_tool_scores_df = get_mave_tool_scores_dataframe(mave_score_dict,
                                                                  tool_score_dict,
-                                                                 mave_score_dict_column_name=mave_score_dict_column_name,
-                                                                 tool_score_dict_column_name=MUTEPRED_SCORE_COLUMN_NAME)
+                                                                 mave_score_dictionary_column_name=mave_score_dict_column_name,
+                                                                 tool_score_dictionary_column_name=MUTEPRED_SCORE_COLUMN_NAME)
 
             # Calculate Pearson correlation and percentage of used rows
             used_rows_percentage, pearson_correlation = get_correlation_and_percentage_used(mave_tool_scores_df,
@@ -63,3 +63,5 @@ class CorelationUpdator:
                                          mave_df_id_column_name] == protein_name, tool_snps_percentage_column] = used_rows_percentage
 
         return mave_goldstandard_df
+
+

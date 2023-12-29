@@ -3,6 +3,9 @@ from pathlib import Path
 import scipy.stats as stats
 import pandas as pd
 
+from src.constants import COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP
+
+
 def get_dictonary_of_scores_maveDB(file_path):
     """
     This function takes the file which has the mutations and the sequences, 
@@ -435,7 +438,9 @@ def get_protein_names_from_db_nsfp_output_directory(directory_path):
     return protein_names_from_csv_files
 
 # TODO Move these function related to the caluclations of the pearson corelation to a new module.
-def get_mave_tool_scores_dataframe(mave_scores_dict: dict, tool_scores_dict: dict, mave_score_dictionary_column_name: str,
+def get_mave_tool_scores_dataframe(mave_scores_dict: dict,
+                                   tool_scores_dict: dict,
+                                   mave_score_dictionary_column_name: str,
                                    tool_score_dictionary_column_name: str) -> pd.DataFrame:
     """
     Create a DataFrame with MAVE and tool scores.
@@ -458,7 +463,7 @@ def get_mave_tool_scores_dataframe(mave_scores_dict: dict, tool_scores_dict: dic
                       index=[mave_score_dictionary_column_name, tool_score_dictionary_column_name]).T.reset_index()
 
     # Rename the columns
-    df.columns = ['SNPs', mave_score_dictionary_column_name, tool_score_dictionary_column_name]
+    df.columns = [COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP, mave_score_dictionary_column_name, tool_score_dictionary_column_name]
 
     return df
 

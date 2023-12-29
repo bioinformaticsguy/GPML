@@ -3,19 +3,13 @@ import pathlib
 import re
 import pandas
 import pandas as pd
+
+from src.constants import COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP, \
+    COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SCALED_EFFECT
 from src.utils import get_dictonary_of_scores_maveDB, get_list_to_add_in_dataframe, get_single_letter_point_mutation, \
     get_protein_names_from_db_nsfp_output_directory
 
 
-COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID = 'protein_name'
-COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP = 'snps'
-COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SCALED_EFFECT = 'scaled_effect'
-COLUMN_NAME_OF_MAVE_GOLD_STANDARD_PROTEIN_SEQUENCE = 'Prot_sequence'
-
-COLUMN_NAMES_OF_MAVE_GS_DATAFRAME_LIST = [COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID,
-                                          COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP,
-                                          COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SCALED_EFFECT,
-                                          COLUMN_NAME_OF_MAVE_GOLD_STANDARD_PROTEIN_SEQUENCE]
 
 COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SPECIES = "species"
 COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY = "mave_snps_scores_dictinary"

@@ -1,6 +1,7 @@
 from pathlib import Path
-from src.dataframe_preprocessor import MaveGoldStandard, MutepredTrainingProcessor, dbNSFPProcessor, \
-    COLUMN_NAMES_OF_MAVE_GS_DATAFRAME_LIST
+
+from src.constants import COLUMN_NAMES_OF_MAVE_GS_DATAFRAME_LIST
+from src.dataframe_preprocessor import MaveGoldStandard, MutepredTrainingProcessor, dbNSFPProcessor
 from main import MAVE_GS_FILE_PATH
 from src.utils import pickle_dataframe
 
