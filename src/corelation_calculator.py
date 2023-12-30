@@ -1,5 +1,5 @@
 from main_dataframe_preprocessor import MUTEPRED_SCORE_COLUMN_NAME
-from src.constants import PEARSON_CORELATION_SUFFIX, USED_SNP_PERCENTAGE_SUFFIX, TRAINING_FLAG_SUFFIX
+from src.constants import PEARSON_CORELATION_SUFFIX, USED_SNP_PERCENTAGE_SUFFIX, TRAINING_FLAG_SUFFIX, TOOLS_LIST
 from src.dataframe_preprocessor import COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, \
     COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY
 from src.utils import get_mave_tool_scores_dataframe, get_correlation_and_percentage_used
@@ -86,3 +86,33 @@ class CorelationUpdator:
             tool_name + pearson_corelation_suffix].mean()
         bias = abs(unbiased_score - overall_score)
         return bias
+
+    @staticmethod
+    def add_tool_data_for_multiple_tools(mave_goldstandard_df,
+                                         tools_names_list=TOOLS_LIST,
+                                         mave_df_id_column_name=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID,
+                                         mave_score_dict_column_name=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY):
+        """
+        Adds columns for tool-specific Pearson correlation and SNP usage percentage to the MAVE gold standard DataFrame
+        for multiple tools.
+
+        Parameters:
+        - mave_goldstandard_df (pd.DataFrame): MAVE gold standard DataFrame.
+        - tool_names (list): List of tool names for which scores are being calculated.
+        - mave_df_id_column_name (str, optional): Column name containing protein identifiers in the MAVE DataFrame.
+          Defaults to COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID.
+        - mave_score_dict_column_name (str, optional): Column name containing MAVE SNP dictionaries in the MAVE DataFrame.
+          Defaults to COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY.
+
+        Returns:
+        - pd.DataFrame: MAVE gold standard DataFrame with added tool-specific columns for all tools.
+        """
+        for tool_name in tools_names_list:
+            mave_goldstandard_df = CorelationUpdator.add_tool_correlation_and_snp_percentage_column(
+                mave_goldstandard_df=mave_goldstandard_df,
+                tool_name=tool_name,
+                mave_df_id_column_name = mave_df_id_column_name,
+                mave_score_dict_column_name=mave_score_dict_column_name)
+
+        return mave_goldstandard_df
+
