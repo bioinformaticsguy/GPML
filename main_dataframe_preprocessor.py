@@ -27,7 +27,6 @@ def add_data_from_list_of_tools(mave_gs_dataframe,
     return mave_gs_dataframe
 
 if __name__ == '__main__':
-    ## Dataframes
     MAVE_GS_DATAFRAME = MaveGoldStandard. \
                             get_dataframe_for_mave_gs_data(MAVE_GS_FILE_PATH,
                                                            column_names=COLUMN_NAMES_OF_MAVE_GS_DATAFRAME_LIST)

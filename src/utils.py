@@ -551,3 +551,22 @@ def filter_dataframe_by_species(df,
     pd.DataFrame: Filtered DataFrame containing only rows with the specified species.
     """
     return df[df[species_column] == target_species].dropna()
+
+
+def add_missing_columns(dataframe1, dataframe2):
+    """
+    Dynamically adds missing columns from dataframe2 to dataframe1 and copies values.
+
+    Parameters:
+    - dataframe1 (pd.DataFrame): Target DataFrame.
+    - dataframe2 (pd.DataFrame): DataFrame with additional columns.
+
+    Returns:
+    pd.DataFrame: DataFrame1 with missing columns added and values copied.
+    """
+    missing_columns = set(dataframe2.columns) - set(dataframe1.columns)
+
+    for column in missing_columns:
+        dataframe1[column] = dataframe2[column]
+
+    return dataframe1
