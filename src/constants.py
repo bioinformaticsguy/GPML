@@ -1,3 +1,5 @@
+from pathlib import Path
+
 COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID = 'protein_name'
 COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP = 'snps'
 COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SCALED_EFFECT = 'scaled_effect'
@@ -33,7 +35,9 @@ TRAINING_FLAG_SUFFIX = "_training_flag"
 
 ## File Names and Paths
 MAVE_DATAFRAME_PICKLE_FILE_NAME = "MAVE_DATAFRAME.pkl"
-
+PICKLED_DATAFRAMES_DIRECTORY_PATH = Path("Data/pickled_dataframes")
+TRAINING_DATA_FILE_PATH = Path("Data/mutepred_training_data/wo_exclusive_hgmd_mp2_training_data_MavedbData.csv")
+OUTPUT_DIR_DB_NSFP = Path("Data/dbNSFP_output_dir")
 
 
 PROTEIN_SPECIES_MAPPING = {

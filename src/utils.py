@@ -570,3 +570,7 @@ def add_missing_columns(dataframe1, dataframe2):
         dataframe1[column] = dataframe2[column]
 
     return dataframe1
+
+
+if __name__ == '__main__':
+    pass
