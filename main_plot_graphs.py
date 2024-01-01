@@ -1,4 +1,5 @@
-from src.constants import MAVE_DATAFRAME_PICKLE_FILE_NAME, PICKLED_DATAFRAMES_DIRECTORY_PATH, PEARSON_CORELATION_SUFFIX
+from src.constants import MAVE_DATAFRAME_PICKLE_FILE_NAME, PICKLED_DATAFRAMES_DIRECTORY_PATH, PEARSON_CORELATION_SUFFIX, \
+    PROTEIN_SHORT_MAPPING
 from src.utils import load_dataframe, filter_dataframe_by_species
 
 import matplotlib.pyplot as plt

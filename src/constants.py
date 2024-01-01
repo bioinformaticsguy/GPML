@@ -79,5 +79,45 @@ PROTEIN_SPECIES_MAPPING = {
     'VKOR_urn:mavedb:00000078-b': 'Human'
 }
 
+PROTEIN_SHORT_MAPPING = {
+    'A0A2Z5U3Z0_9INFA_A0A2Z5U3Z0_9INFA_Doud_2016': '9INFA',
+    'BLAT_ECOLX_BLAT_ECOLX_Deng_2012': 'BLAT_ECOL_2012',
+    'BLAT_ECOLX_BLAT_ECOLX_Jacquier_2013': 'BLAT_ECOL_2013',
+    'CBS_urn:mavedb:00000005-a': 'CBS_05-a',
+    'CCDB_ECOLI_CCDB_ECOLI_Tripathi_2016': 'CCDB_ECOLI_2016',
+    'CcdB_urn:mavedb:00000084-a': 'CcdB_84-a',
+    'CCR5_urn:mavedb:00000047-c': 'CCR547-c',
+    'CYP2C9_urn:mavedb:00000095-a': 'CYP2C9_95-a',
+    'CYP2C9_urn:mavedb:00000095-b': 'CYP2C9_95-b',
+    'IF1_ECOLI_IF1_ECOLI_Kelsic_2016': 'IF1_ECOLI_2016',
+    'KKA2_KLEPN_KKA2_KLEPN_Melnikov_2014': 'KKA2_KLEPN_2014',
+    'NUDT15_urn:mavedb:00000055-0': 'NUDT15_55-0',
+    'NUDT15_urn:mavedb:00000055-a': 'NUDT15_55-a',
+    'p53_urn:mavedb:00000059-a': 'p53_59-a',
+    'PTEN_urn:mavedb:00000013-a': 'PTEN_13-a',
+    'PTEN_urn:mavedb:00000054-a': 'PTEN_54-a',
+    'Q2N0S5_9HIV1_Q2N0S5_9HIV1_Haddox_2018': 'Q2N0S5_9HIV1_2018',
+    'R1AB_SARS2_R1AB_SARS2_Flynn_growth_2022': 'R1AB_SARS2_2022',
+    'RL401_YEAST_RL401_YEAST_Mavor_2016': 'RL401_YEAST_2016',
+    'SARS-CoV-2_receptor_binding_domain_urn:mavedb:00000044-a': 'SARS-CoV-2_44-a',
+    'SARS-CoV-2_receptor_binding_domain_urn:mavedb:00000044-b': 'SARS-CoV-2_44-b',
+    'SUMO1_urn:mavedb:00000001-b': 'SUMO1_01-b',
+    'TEM-1_beta-lactamase_urn:mavedb:00000070-a': 'TEM-1_beta-70-a',
+    'TEM-1_beta-lactamase_urn:mavedb:00000086-c': 'TEM-1_beta-86-c',
+    'TEM-1_beta-lactamase_urn:mavedb:00000086-d': 'TEM-1_beta-86-d',
+    'TEM-1_beta-lactamase_urn:mavedb:00000086-e': 'TEM-1_beta-86-e',
+    'TEM-17_beta-lactamase_urn:mavedb:00000085-b': 'TEM-17_beta-85-b',
+    'TP53_(P72R)_urn:mavedb:00000068-c': 'TP53_P72R_68-c',
+    'VIM-2_with_p.Met1_Phe2insGly_urn:mavedb:00000073-a': 'VIM-2_73-a',
+    'VIM-2_with_p.Met1_Phe2insGly_urn:mavedb:00000073-c': 'VIM-2_73-c',
+    'VIM-2_with_p.Met1_Phe2insGly_urn:mavedb:00000073-d': 'VIM-2_73-d',
+    'VIM-2_with_p.Met1_Phe2insGly_urn:mavedb:00000073-f': 'VIM-2_73-f',
+    'VIM-2_with_p.Met1_Phe2insGly_urn:mavedb:00000073-g': 'VIM-2_73-g',
+    'VIM-2_with_p.Met1_Phe2insGly_urn:mavedb:00000073-h': 'VIM-2_73-h',
+    'VKOR_urn:mavedb:00000078-a': 'VKOR_78-a',
+    'VKOR_urn:mavedb:00000078-b': 'VKOR_78-b'
+}
+
+
 if __name__ == '__main__':
     pass
