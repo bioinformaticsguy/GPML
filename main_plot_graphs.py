@@ -55,14 +55,14 @@ if __name__ == '__main__':
     from itertools import cycle
 
     # Sample data
-    # df = pd.DataFrame({
-    #     'protein_name': ['A', 'B', 'C'],
-    #     'tool1_pearson_correlation': [0.5, 0.7, 0.3],
-    #     'tool2_pearson_correlation': [0.8, 0.2, 0.6],
-    #     'tool3_pearson_correlation': [0.4, 0.9, 0.1]
-    # })
+    df = pd.DataFrame({
+        'protein_name': ['A', 'B', 'C'],
+        'tool1_pearson_correlation': [0.5, 0.7, None ],
+        'tool2_pearson_correlation': [0.8, 0.2, 0.6],
+        'tool3_pearson_correlation': [0.4, 0.9, 0.1]
+    })
 
-    df = LOADED_MAVE_DF
+    # df = LOADED_MAVE_DF
 
     columns_list = df.columns.tolist()
     filtered_columns_list = [column for column in columns_list if column.endswith(PEARSON_CORELATION_SUFFIX)]
