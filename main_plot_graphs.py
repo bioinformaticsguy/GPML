@@ -57,7 +57,7 @@ if __name__ == '__main__':
     # Sample data
     df = pd.DataFrame({
         'protein_name': ['A', 'B', 'C'],
-        'tool1_pearson_correlation': [0.5, 0.7, None ],
+        'tool1_pearson_correlation': [0.5, 0.7, 0.3],
         'tool2_pearson_correlation': [0.8, 0.2, 0.6],
         'tool3_pearson_correlation': [0.4, 0.9, 0.1]
     })
@@ -67,7 +67,9 @@ if __name__ == '__main__':
     columns_list = df.columns.tolist()
     filtered_columns_list = [column for column in columns_list if column.endswith(PEARSON_CORELATION_SUFFIX)]
 
-    legend = [value.rstrip(PEARSON_CORELATION_SUFFIX) for value in filtered_columns_list]
+    legend = filtered_columns_list
+
+    # legend = [value.rstrip(PEARSON_CORELATION_SUFFIX) for value in filtered_columns_list]
 
     x = df['protein_name'].tolist()
 
@@ -79,7 +81,7 @@ if __name__ == '__main__':
     fig, ax = plt.subplots()
 
     for column, label, color in zip(filtered_columns_list, legend, colors):
-        y = df[column].abs()
+        y = df[column].abs().tolist()
         ax.scatter(x, y, label=label, color=color)
 
     ax.set_xlabel('Protein Names', fontsize=14)
@@ -87,7 +89,7 @@ if __name__ == '__main__':
     ax.legend(title='Correlation Types', bbox_to_anchor=(1, 1), fontsize=12, labels=legend)
     ax.set_xticks(x)
     ax.set_xticklabels(x, rotation=45, fontsize=14)
-    fig.set_size_inches(12, 12)
+    # fig.set_size_inches(14, 14)
     fig.subplots_adjust(bottom=0.1)
 
     plt.show()
