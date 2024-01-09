@@ -10,3 +10,4 @@
 6. add plots which are relevant <br>
 7. find a new tool, add it's scores from dbnsfp files. <br>
 8.  find overlaps. <br>
+9. Add the column of the SNP's and remove those snps from the corelations.
