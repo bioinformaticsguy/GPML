@@ -299,3 +299,7 @@ class dbNSFPProcessor:
                 protein_snp_score_dictionary]
 
         return mave_gs_df
+
+
+if __name__ == '__main__':
+    pass

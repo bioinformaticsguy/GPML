@@ -19,13 +19,14 @@ COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY = "mave_snps_scores_dictinary"
 MUTEPRED_TOOL_NAME = "MutPred"
 SNP_COLUMN_NAME = "HGVSp_ANNOVAR"
 AMINO_ACID_SEQUENCE_COLUMN_NAME = 'Prot_sequence'
-TOOLS_LIST = ["PROVEAN",
-              "REVEL",
-              "MutPred",
-              "Polyphen2_HDIV",
-              "EVE",
-              "AlphaMissense"]
+# TOOLS_LIST = ["PROVEAN",
+#               "REVEL",
+#               "MutPred",
+#               "Polyphen2_HDIV",
+#               "EVE",
+#               "AlphaMissense"]
 
+TOOLS_LIST = ["MutPred"]
 
 ## Suffixes and Prefixes
 TOOL_SCORE_COLUMN_SUFFIX = "_score"

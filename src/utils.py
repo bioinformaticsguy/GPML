@@ -572,5 +572,10 @@ def add_missing_columns(dataframe1, dataframe2):
     return dataframe1
 
 
+def merge_and_add_column(main_df, other_df, main_id_column, other_id_column, new_column):
+    merged_df = pd.merge(main_df, other_df, left_on=main_id_column, right_on=other_id_column, how='left')
+    main_df[new_column] = merged_df[new_column]
+
+
 if __name__ == '__main__':
     pass
