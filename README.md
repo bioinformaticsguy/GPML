@@ -12,3 +12,4 @@
 8.  find overlaps. <br>
 9. Add the column of the SNP's and remove those snps from the corelations.
 10. Remove the bug of finding same corelations for all tools. It will also fix plot problem.
+11. Mutepred_score None to np.Nan update.
