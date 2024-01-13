@@ -22,12 +22,12 @@ MUTEPRED_AMINO_ACID_SUBSTITUTIONS_COLUMN_NAME = "Amino_acid_substitutions"
 
 SNP_COLUMN_NAME = "HGVSp_ANNOVAR"
 AMINO_ACID_SEQUENCE_COLUMN_NAME = 'Prot_sequence'
-# TOOLS_LIST = ["PROVEAN",
-#               "REVEL",
-#               "MutPred",
-#               "Polyphen2_HDIV",
-#               "EVE",
-#               "AlphaMissense"]
+TOOLS_LIST = ["PROVEAN",
+              "REVEL",
+              "MutPred",
+              "Polyphen2_HDIV",
+              "EVE",
+              "AlphaMissense"]
 
 TOOLS_LIST = ["MutPred"]
 
