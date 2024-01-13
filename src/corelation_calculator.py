@@ -44,6 +44,9 @@ class CorelationUpdator:
             tool_score_dict = mave_goldstandard_df.loc[
                 mave_goldstandard_df[mave_df_id_column_name] == protein_name, MUTEPRED_SCORE_COLUMN_NAME].values[0]
 
+            if tool_score_dict == None:
+                continue
+
             # Create a DataFrame for MAVE and tool scores
             mave_tool_scores_df = get_mave_tool_scores_dataframe(mave_score_dict,
                                                                  tool_score_dict,
@@ -111,8 +114,7 @@ class CorelationUpdator:
             mave_goldstandard_df = CorelationUpdator.add_tool_correlation_and_snp_percentage_column(
                 mave_goldstandard_df=mave_goldstandard_df,
                 tool_name=tool_name,
-                mave_df_id_column_name = mave_df_id_column_name,
+                mave_df_id_column_name=mave_df_id_column_name,
                 mave_score_dict_column_name=mave_score_dict_column_name)
 
         return mave_goldstandard_df
-

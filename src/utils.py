@@ -572,9 +572,94 @@ def add_missing_columns(dataframe1, dataframe2):
     return dataframe1
 
 
-def merge_and_add_column(main_df, other_df, main_id_column, other_id_column, new_column):
-    merged_df = pd.merge(main_df, other_df, left_on=main_id_column, right_on=other_id_column, how='left')
-    main_df[new_column] = merged_df[new_column]
+# def add_column_from_tool_df_to_mave_df(mave_df,
+#                                        tool_df,
+#                                        mave_df_prot_seq_col_name,
+#                                        tool_df_prot_seq_col_name,
+#                                        tool_col_to_add):
+#     """
+#     Merge a column from a tool DataFrame to a MAVE DataFrame based on a shared protein sequence column.
+#
+#     Parameters:
+#     - mave_df (pd.DataFrame): The MAVE DataFrame to which the column will be added.
+#     - tool_df (pd.DataFrame): The tool DataFrame containing the additional column.
+#     - mave_df_prot_seq_col_name (str): The column name in the MAVE DataFrame representing protein sequences.
+#     - tool_df_prot_seq_col_name (str): The column name in the tool DataFrame representing protein sequences.
+#     - tool_col_to_add (str): The name of the column from the tool DataFrame to be added to the MAVE DataFrame.
+#
+#     Returns:
+#     - pd.DataFrame: Merged DataFrame with the specified tool column added.
+#
+#     Note:
+#     Rows in the resulting DataFrame will be aligned based on matching protein sequence values.
+#     """
+#     return pd.merge(mave_df, tool_df[[tool_df_prot_seq_col_name, tool_col_to_add]],
+#                     left_on=mave_df_prot_seq_col_name, right_on=tool_df_prot_seq_col_name, how='left') \
+#                     .drop(columns=tool_df_prot_seq_col_name)
+
+
+def add_column_from_tool_df_to_mave_df(mave_df,
+                                       tool_df,
+                                       mave_df_prot_seq_col_name,
+                                       tool_df_prot_seq_col_name,
+                                       tool_col_to_add,
+                                       name_of_new_col):
+    """
+    Merge a column from a tool DataFrame to a MAVE DataFrame based on a shared protein sequence column.
+
+    Parameters:
+    - mave_df (pd.DataFrame): The MAVE DataFrame to which the column will be added.
+    - tool_df (pd.DataFrame): The tool DataFrame containing the additional column.
+    - mave_df_prot_seq_col_name (str): The column name in the MAVE DataFrame representing protein sequences.
+    - tool_df_prot_seq_col_name (str): The column name in the tool DataFrame representing protein sequences.
+    - tool_col_to_add (str): The name of the column from the tool DataFrame to be added to the MAVE DataFrame.
+
+    Returns:
+    - pd.DataFrame: Merged DataFrame with the specified tool column added.
+
+    Note:
+    Rows in the resulting DataFrame will be aligned based on matching protein sequence values.
+    """
+    # Check if inputs are DataFrames
+    if not isinstance(mave_df, pd.DataFrame) or not isinstance(tool_df, pd.DataFrame):
+        raise TypeError("Both mave_df and tool_df must be pandas DataFrames.")
+
+    # Check if specified columns exist in respective DataFrames
+    if mave_df_prot_seq_col_name not in mave_df.columns or tool_df_prot_seq_col_name not in tool_df.columns:
+        raise ValueError("Specified protein sequence columns do not exist in their respective DataFrames.")
+
+    # Check if the specified column to add exists in tool_df
+    if tool_col_to_add not in tool_df.columns:
+        raise ValueError(f"Specified column to add ({tool_col_to_add}) does not exist in tool_df.")
+
+    # Perform the merge
+    merged_df = pd.merge(mave_df, tool_df[[tool_df_prot_seq_col_name, tool_col_to_add]],
+                         left_on=mave_df_prot_seq_col_name, right_on=tool_df_prot_seq_col_name, how='left')
+
+    # Drop duplicated protein sequence column
+    merged_df = merged_df.drop(columns=[tool_df_prot_seq_col_name])
+
+    ## Rename the column
+    merged_df = merged_df.rename(columns={tool_col_to_add: name_of_new_col})
+
+    return merged_df
+
+
+def add_flag_column(df, target_column, flag_column_name):
+    """
+    Add a binary flag column to a DataFrame based on the presence of NaN values in a target column.
+
+    Parameters:
+    - df (pd.DataFrame): The DataFrame to which the flag column will be added.
+    - target_column (str): The name of the target column to check for NaN values.
+    - flag_column_name (str): The name of the new binary flag column.
+
+    Returns:
+    - pd.DataFrame: DataFrame with the new binary flag column added.
+    """
+    df[flag_column_name] = df[target_column].notnull().astype(int)
+    return df
+
 
 
 if __name__ == '__main__':

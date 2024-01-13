@@ -10,11 +10,11 @@ if __name__ == '__main__':
     LOADED_MAVE_DF = load_dataframe(file_path=PICKLED_DATAFRAMES_DIRECTORY_PATH,
                                         file_name=MAVE_DATAFRAME_PICKLE_FILE_NAME)
 
-    ONLY_HUMAN_MAVE_DF = filter_dataframe_by_species(LOADED_MAVE_DF)
+    # ONLY_HUMAN_MAVE_DF = filter_dataframe_by_species(LOADED_MAVE_DF)
 
 
     ONLY_HUMAN_MAVE_DF_WITH_CORELATIONS = CorelationUpdator. \
-        add_tool_data_for_multiple_tools(mave_goldstandard_df=ONLY_HUMAN_MAVE_DF,
+        add_tool_data_for_multiple_tools(mave_goldstandard_df=LOADED_MAVE_DF,
                                          tools_names_list=TOOLS_LIST)
 
     mutepred_tool_bias = CorelationUpdator. \
