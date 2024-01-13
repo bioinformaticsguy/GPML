@@ -1,3 +1,5 @@
+import numpy as np
+
 from main_dataframe_preprocessor import MUTEPRED_SCORE_COLUMN_NAME
 from src.constants import PEARSON_CORELATION_SUFFIX, USED_SNP_PERCENTAGE_SUFFIX, TRAINING_FLAG_SUFFIX, TOOLS_LIST
 from src.dataframe_preprocessor import COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, \
@@ -30,8 +32,8 @@ class CorelationUpdator:
         tool_snps_percentage_column = tool_name + USED_SNP_PERCENTAGE_SUFFIX
 
         # Initialize new columns with None
-        mave_goldstandard_df[tool_pearson_score_column] = None
-        mave_goldstandard_df[tool_snps_percentage_column] = None
+        mave_goldstandard_df[tool_pearson_score_column] = np.NaN
+        mave_goldstandard_df[tool_snps_percentage_column] = np.NaN
 
         # Extract protein names from the DataFrame
         protein_names = mave_goldstandard_df[mave_df_id_column_name].tolist()
