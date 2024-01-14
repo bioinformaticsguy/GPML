@@ -1,7 +1,8 @@
 import numpy as np
 
 from main_dataframe_preprocessor import MUTEPRED_SCORE_COLUMN_NAME
-from src.constants import PEARSON_CORELATION_SUFFIX, USED_SNP_PERCENTAGE_SUFFIX, TRAINING_FLAG_SUFFIX, TOOLS_LIST
+from src.constants import PEARSON_CORELATION_SUFFIX, USED_SNP_PERCENTAGE_SUFFIX, TRAINING_FLAG_SUFFIX, TOOLS_LIST, \
+    TOOL_SCORE_COLUMN_SUFFIX
 from src.dataframe_preprocessor import COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, \
     COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY
 from src.utils import get_mave_tool_scores_dataframe, get_correlation_and_percentage_used
@@ -12,7 +13,10 @@ class CorelationUpdator:
     def add_tool_correlation_and_snp_percentage_column(mave_goldstandard_df,
                                                        tool_name,
                                                        mave_df_id_column_name=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID,
-                                                       mave_score_dict_column_name=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY):
+                                                       mave_score_dict_column_name=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY,
+                                                       pearson_correlation_suffix=PEARSON_CORELATION_SUFFIX,
+                                                       used_snp_percentage_suffix=USED_SNP_PERCENTAGE_SUFFIX,
+                                                       tool_scorecolumn_suffix=TOOL_SCORE_COLUMN_SUFFIX):
         """
         Adds columns for tool-specific Pearson correlation and SNP usage percentage to the MAVE gold standard DataFrame.
 
@@ -28,8 +32,9 @@ class CorelationUpdator:
         - pd.DataFrame: MAVE gold standard DataFrame with added tool-specific columns.
         """
         # Define column names for tool-specific scores
-        tool_pearson_score_column = tool_name + PEARSON_CORELATION_SUFFIX
-        tool_snps_percentage_column = tool_name + USED_SNP_PERCENTAGE_SUFFIX
+        tool_pearson_score_column = tool_name + pearson_correlation_suffix
+        tool_snps_percentage_column = tool_name + used_snp_percentage_suffix
+        tool_score_column_name = tool_name + tool_scorecolumn_suffix
 
         # Initialize new columns with None
         mave_goldstandard_df[tool_pearson_score_column] = np.NaN
@@ -44,7 +49,7 @@ class CorelationUpdator:
             mave_score_dict = mave_goldstandard_df.loc[
                 mave_goldstandard_df[mave_df_id_column_name] == protein_name, mave_score_dict_column_name].values[0]
             tool_score_dict = mave_goldstandard_df.loc[
-                mave_goldstandard_df[mave_df_id_column_name] == protein_name, MUTEPRED_SCORE_COLUMN_NAME].values[0]
+                mave_goldstandard_df[mave_df_id_column_name] == protein_name, tool_score_column_name].values[0]
 
             if tool_score_dict == None:
                 continue
