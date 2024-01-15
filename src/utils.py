@@ -550,7 +550,7 @@ def filter_dataframe_by_species(df,
     Returns:
     pd.DataFrame: Filtered DataFrame containing only rows with the specified species.
     """
-    return df[df[species_column] == target_species].dropna()
+    return df[df[species_column] == target_species]
 
 
 def add_missing_columns(dataframe1, dataframe2):
@@ -570,32 +570,6 @@ def add_missing_columns(dataframe1, dataframe2):
         dataframe1[column] = dataframe2[column]
 
     return dataframe1
-
-
-# def add_column_from_tool_df_to_mave_df(mave_df,
-#                                        tool_df,
-#                                        mave_df_prot_seq_col_name,
-#                                        tool_df_prot_seq_col_name,
-#                                        tool_col_to_add):
-#     """
-#     Merge a column from a tool DataFrame to a MAVE DataFrame based on a shared protein sequence column.
-#
-#     Parameters:
-#     - mave_df (pd.DataFrame): The MAVE DataFrame to which the column will be added.
-#     - tool_df (pd.DataFrame): The tool DataFrame containing the additional column.
-#     - mave_df_prot_seq_col_name (str): The column name in the MAVE DataFrame representing protein sequences.
-#     - tool_df_prot_seq_col_name (str): The column name in the tool DataFrame representing protein sequences.
-#     - tool_col_to_add (str): The name of the column from the tool DataFrame to be added to the MAVE DataFrame.
-#
-#     Returns:
-#     - pd.DataFrame: Merged DataFrame with the specified tool column added.
-#
-#     Note:
-#     Rows in the resulting DataFrame will be aligned based on matching protein sequence values.
-#     """
-#     return pd.merge(mave_df, tool_df[[tool_df_prot_seq_col_name, tool_col_to_add]],
-#                     left_on=mave_df_prot_seq_col_name, right_on=tool_df_prot_seq_col_name, how='left') \
-#                     .drop(columns=tool_df_prot_seq_col_name)
 
 
 def add_column_from_tool_df_to_mave_df(mave_df,
