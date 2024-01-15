@@ -1,5 +1,4 @@
 import numpy as np
-
 from main_dataframe_preprocessor import MUTEPRED_SCORE_COLUMN_NAME
 from src.constants import PEARSON_CORELATION_SUFFIX, USED_SNP_PERCENTAGE_SUFFIX, TRAINING_FLAG_SUFFIX, TOOLS_LIST, \
     TOOL_SCORE_COLUMN_SUFFIX
