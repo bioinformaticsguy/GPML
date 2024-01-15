@@ -1,9 +1,7 @@
-
 from src.constants import MAVE_DATAFRAME_PICKLE_FILE_NAME, TOOLS_LIST, PICKLED_DATAFRAMES_DIRECTORY_PATH, \
     MUTEPRED_TOOL_NAME
-from src.utils import load_dataframe, pickle_dataframe, add_missing_columns
+from src.utils import load_dataframe, pickle_dataframe
 from src.corelation_calculator import CorelationUpdator
-
 
 
 if __name__ == '__main__':
