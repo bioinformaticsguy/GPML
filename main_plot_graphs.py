@@ -2,76 +2,23 @@ from src.constants import MAVE_DATAFRAME_PICKLE_FILE_NAME, PICKLED_DATAFRAMES_DI
     PROTEIN_SHORT_MAPPING
 from src.utils import load_dataframe, filter_dataframe_by_species
 from itertools import cycle
-
 import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
     LOADED_MAVE_DF = load_dataframe(file_path=PICKLED_DATAFRAMES_DIRECTORY_PATH,
                                         file_name=MAVE_DATAFRAME_PICKLE_FILE_NAME)
-    #
-    LOADED_MAVE_DF = filter_dataframe_by_species(LOADED_MAVE_DF)
-    #
-    # columns_list = LOADED_MAVE_DF.columns.tolist()
-    # filtered_columns_list = [column
-    #                          for column in columns_list
-    #                          if column.endswith(PEARSON_CORELATION_SUFFIX)]
-    #
-    # legend = [value.rstrip(PEARSON_CORELATION_SUFFIX) for value in filtered_columns_list]
-    #
-    # df = LOADED_MAVE_DF
-    #
-    # columns_list = filtered_columns_list
-    # x = [PROTEIN_SHORT_MAPPING[key] for key in df['protein_name'].tolist()]  # Assuming the first column is on the x-axis
-    #
-    # # Generating dynamic colors based on the number of legend entries
-    # num_colors = len(legend)
-    # color_cycle = cycle(plt.cm.get_cmap('tab10').colors)  # You can replace 'tab10' with other colormaps
-    # colors = [next(color_cycle) for _ in range(num_colors)]
-    #
-    # for column, label, color in zip(columns_list, legend, colors):
-    #     y = df[column].abs()  # Calculate absolute values
-    #     plt.scatter(x, y, label=label, color=color)
-    #
-    # fig_width = max(6, len(x) * 0.5)  # Minimum width of 6 inches, adjust as needed
-    # fig_height = max(8, len(columns_list) * 0.5)  # Minimum height of 8 inches, adjust as needed
-    #
-    #
-    #
-    #
-    # plt.xlabel('Protein Names', fontsize=14)  # Replace with your x-axis label
-    # plt.ylabel('Corelations', fontsize=14)  # Replace with your y-axis label
-    # plt.legend(title='Correlation Types', bbox_to_anchor=(1, 1), fontsize=12,  labels=legend)  # Adjust the legend title and position
-    # plt.xticks(rotation=45, fontsize=14)
-    # plt.gcf().set_size_inches(12, 10)  # Adjust the size as needed
-    #
-    # # plt.gcf().set_size_inches(fig_width, fig_height)
-    # plt.subplots_adjust(bottom=0.1)  # Adjust the bottom margin as needed
-    # plt.tight_layout()
-    #
-    # plt.show()
 
-    import pandas as pd
-    import matplotlib.pyplot as plt
-    from itertools import cycle
+    LOADED_MAVE_DF = filter_dataframe_by_species(LOADED_MAVE_DF)
 
     # Sample data
-    df = pd.DataFrame({
-        'protein_name': ['A', 'B', 'C'],
-        'tool1_pearson_correlation': [0.5, 0.7, 0.3],
-        'tool2_pearson_correlation': [0.8, 0.2, 0.6],
-        'tool3_pearson_correlation': [0.4, 0.9, 0.1]
-    })
-
-    # df = LOADED_MAVE_DF
+    df = LOADED_MAVE_DF
 
     columns_list = df.columns.tolist()
     filtered_columns_list = [column for column in columns_list if column.endswith(PEARSON_CORELATION_SUFFIX)]
 
-    legend = filtered_columns_list
+    legend = [value.rstrip(PEARSON_CORELATION_SUFFIX) for value in filtered_columns_list]
 
-    # legend = [value.rstrip(PEARSON_CORELATION_SUFFIX) for value in filtered_columns_list]
-
-    x = df['protein_name'].tolist()
+    x = [PROTEIN_SHORT_MAPPING[protein_name] for protein_name in df['protein_name'].tolist()]
 
     # Generating dynamic colors based on the number of legend entries
     num_colors = len(legend)
@@ -86,10 +33,10 @@ if __name__ == '__main__':
 
     ax.set_xlabel('Protein Names', fontsize=14)
     ax.set_ylabel('Correlations', fontsize=14)
-    ax.legend(title='Correlation Types', bbox_to_anchor=(1, 1), fontsize=12, labels=legend)
+    ax.legend(title='Correlation Types', fontsize=12, labels=legend)
     ax.set_xticks(x)
     ax.set_xticklabels(x, rotation=45, fontsize=14)
-    # fig.set_size_inches(14, 14)
+    fig.set_size_inches(20, 20)
     fig.subplots_adjust(bottom=0.1)
 
     plt.show()
