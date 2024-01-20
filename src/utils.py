@@ -635,6 +635,20 @@ def add_flag_column(df, target_column, flag_column_name):
     return df
 
 
+def exclude_snps(df, exclude_snps_list):
+    """
+    Exclude rows from a dataframe based on values in the 'snps' column.
+
+    Parameters:
+    - df (pd.DataFrame): The input dataframe.
+    - exclude_snps_list (list): List of SNPs to exclude.
+
+    Returns:
+    - pd.DataFrame: A new dataframe with rows excluded based on the 'snps' column.
+    """
+    return df[~df['snps'].isin(exclude_snps_list)]
+
+
 
 if __name__ == '__main__':
     pass
