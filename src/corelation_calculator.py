@@ -4,13 +4,14 @@ from src.constants import PEARSON_CORELATION_SUFFIX, USED_SNP_PERCENTAGE_SUFFIX,
     TOOL_SCORE_COLUMN_SUFFIX
 from src.dataframe_preprocessor import COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, \
     COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY
-from src.utils import get_mave_tool_scores_dataframe, get_correlation_and_percentage_used
+from src.utils import get_mave_tool_scores_dataframe, get_correlation_and_percentage_used, exclude_snps
 
 
 class CorelationUpdator:
     @staticmethod
     def add_tool_correlation_and_snp_percentage_column(mave_goldstandard_df,
                                                        tool_name,
+                                                       tool_training_snps_column_name = False,
                                                        mave_df_id_column_name=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID,
                                                        mave_score_dict_column_name=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY,
                                                        pearson_correlation_suffix=PEARSON_CORELATION_SUFFIX,
@@ -59,6 +60,12 @@ class CorelationUpdator:
                                                                  mave_score_dictionary_column_name=mave_score_dict_column_name,
                                                                  tool_score_dictionary_column_name=MUTEPRED_SCORE_COLUMN_NAME)
 
+            if tool_training_snps_column_name:
+                training_snps_list = mave_goldstandard_df.loc[mave_goldstandard_df[mave_df_id_column_name] == \
+                                                              protein_name, tool_training_snps_column_name]
+                mave_tool_scores_df = exclude_snps(df=mave_tool_scores_df, exclude_snps_list=training_snps_list)
+
+
             # Calculate Pearson correlation and percentage of used rows
             used_rows_percentage, pearson_correlation = get_correlation_and_percentage_used(
                 mave_tool_scores_df,
@@ -98,6 +105,7 @@ class CorelationUpdator:
 
     @staticmethod
     def add_tool_data_for_multiple_tools(mave_goldstandard_df,
+                                         tool_training_snps_column_name=False,
                                          tools_names_list=TOOLS_LIST,
                                          mave_df_id_column_name=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID,
                                          mave_score_dict_column_name=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY):
@@ -116,11 +124,20 @@ class CorelationUpdator:
         Returns:
         - pd.DataFrame: MAVE gold standard DataFrame with added tool-specific columns for all tools.
         """
-        for tool_name in tools_names_list:
-            mave_goldstandard_df = CorelationUpdator.add_tool_correlation_and_snp_percentage_column(
-                mave_goldstandard_df=mave_goldstandard_df,
-                tool_name=tool_name,
-                mave_df_id_column_name=mave_df_id_column_name,
-                mave_score_dict_column_name=mave_score_dict_column_name)
+        if tool_training_snps_column_name:
+            for tool_name in tools_names_list:
+                mave_goldstandard_df = CorelationUpdator.add_tool_correlation_and_snp_percentage_column(
+                    mave_goldstandard_df=mave_goldstandard_df,
+                    tool_name=tool_name,
+                    tool_training_snps_column_name=tool_training_snps_column_name,
+                    mave_df_id_column_name=mave_df_id_column_name,
+                    mave_score_dict_column_name=mave_score_dict_column_name)
+        else:
+            for tool_name in tools_names_list:
+                mave_goldstandard_df = CorelationUpdator.add_tool_correlation_and_snp_percentage_column(
+                    mave_goldstandard_df=mave_goldstandard_df,
+                    tool_name=tool_name,
+                    mave_df_id_column_name=mave_df_id_column_name,
+                    mave_score_dict_column_name=mave_score_dict_column_name)
 
         return mave_goldstandard_df
