@@ -1,16 +1,17 @@
 import pandas as pd
 
-# Your dataframe
-data = {'snps': ["K359E", "D234P", "T141M", "H513D", "T146I"],
-        'mave_snps_scores_dictinary': [0.8348246019731457, 0.014415572740724913, 1.2590526645570985, 0.5783830466766263, 0.12149939270369847],
-        'MutPred_score': [-0.44, None, -4.56, -2.79, -5.97]}
-
+# Sample DataFrame
+data = {'column1': [1, 2, 3, 4, 5],
+        'column2': ['A', 'B', 'A', 'C', 'A']}
 df = pd.DataFrame(data)
 
-# List of SNPs to exclude
-exclude_snps = ["K359E", "D234P", "H513D"]
+# Display the original DataFrame
+print("Original DataFrame:")
+print(df)
 
-# Exclude rows based on the "snps" column
-df_filtered = df[~df['snps'].isin(exclude_snps)]
+# Remove rows where 'column2' has the value 'A'
+df = df[df['column2'] != 'A']
 
-print(df_filtered)
+# Display the modified DataFrame
+print("\nDataFrame after removing rows with 'A' in 'column2':")
+print(df)
