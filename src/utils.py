@@ -674,8 +674,8 @@ def generate_tool_columns(tool_name,
     """
 
     if exclude_tool_training_snps_flag:
-        pearson_column = tool_name + exlude_training_snp_suffix + pearson_suffix
-        snps_percentage_column = tool_name + exlude_training_snp_suffix + snps_percentage_suffix
+        pearson_column = tool_name + pearson_suffix +exlude_training_snp_suffix
+        snps_percentage_column = tool_name + snps_percentage_suffix + exlude_training_snp_suffix
         score_column = tool_name + score_suffix
 
     else:
