@@ -646,6 +646,10 @@ def exclude_snps(df, exclude_snps_list):
     Returns:
     - pd.DataFrame: A new dataframe with rows excluded based on the 'snps' column.
     """
+
+    if np.any(pd.isna(exclude_snps_list)):
+        return df  # Return the same DataFrame if exclude_snps_list is nan
+
     return df[~df['snps'].isin(exclude_snps_list)]
 
 
