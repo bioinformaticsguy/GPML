@@ -6,7 +6,7 @@ from src.constants import COLUMN_NAMES_OF_MAVE_GS_DATAFRAME_LIST, TRAINING_FLAG_
 
 from src.dataframe_preprocessor import MaveGoldStandard, MutepredTrainingProcessor, dbNSFPProcessor
 from main import MAVE_GS_FILE_PATH
-from src.utils import pickle_dataframe, add_column_from_tool_df_to_mave_df, add_flag_column
+from src.utils import pickle_dataframe, add_column_from_tool_df_to_mave_df, add_flag_column, convert_column_to_list
 
 ## Path and Strings
 MUTEPRED_SCORE_COLUMN_NAME = MUTEPRED_TOOL_NAME + TOOL_SCORE_COLUMN_SUFFIX
@@ -31,6 +31,8 @@ if __name__ == '__main__':
 
     MUTEPRED_DATAFRAME = MutepredTrainingProcessor.get_mutepred_df(TRAINING_DATA_FILE_PATH)
 
+    MUTEPRED_DATAFRAME = convert_column_to_list(MUTEPRED_DATAFRAME, MUTEPRED_AMINO_ACID_SUBSTITUTIONS_COLUMN_NAME)
+
 
     MAVE_GS_DATAFRAME = add_column_from_tool_df_to_mave_df(mave_df=MAVE_GS_DATAFRAME,
                                                            tool_df=MUTEPRED_DATAFRAME,
@@ -43,15 +45,10 @@ if __name__ == '__main__':
                                         target_column=MUTEPRED_TRAINING_SNPS_COLUMN_NAME,
                                         flag_column_name=MUTEPRED_TRAINING_FLAG_COLUMN_NAME)
 
-
     MAVE_GS_DATAFRAME = add_data_from_list_of_tools(MAVE_GS_DATAFRAME,
                                                     db_nsfp_output_dir_path=OUTPUT_DIR_DB_NSFP,
                                                     tool_list=TOOLS_LIST,
                                                     snp_column_name=SNP_COLUMN_NAME)
-
-
-
-
 
     pickle_dataframe(dataframe=MAVE_GS_DATAFRAME,
                      file_path=PICKLED_DATAFRAMES_DIRECTORY_PATH,
