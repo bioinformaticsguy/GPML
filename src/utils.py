@@ -654,6 +654,68 @@ def exclude_snps(df, exclude_snps_list):
     return df[~df['snps'].isin(exclude_snps_list)]
 
 
+def generate_tool_columns(tool_name,
+                          exclude_tool_training_snps_flag,
+                          pearson_suffix=PEARSON_CORELATION_SUFFIX,
+                          snps_percentage_suffix=USED_SNP_PERCENTAGE_SUFFIX,
+                          score_suffix=TOOL_SCORE_COLUMN_SUFFIX,
+                          exlude_training_snp_suffix=EXCLUDE_TRAINING_SNP_SUFFIX):
+    """
+    Generates column names for a tool based on the provided tool name and suffixes.
+
+    Parameters:
+    - tool_name (str): Name of the tool.
+    - pearson_suffix (str): Suffix for the Pearson correlation column.
+    - snps_percentage_suffix (str): Suffix for the SNP percentage column.
+    - score_suffix (str): Suffix for the tool score column.
+
+    Returns:
+    - tuple: Tuple containing the generated column names for Pearson correlation, SNP percentage, and tool score.
+    """
+
+    if exclude_tool_training_snps_flag:
+        pearson_column = tool_name + exlude_training_snp_suffix + pearson_suffix
+        snps_percentage_column = tool_name + exlude_training_snp_suffix + snps_percentage_suffix
+        score_column = tool_name + score_suffix
+
+    else:
+        pearson_column = tool_name + pearson_suffix
+        snps_percentage_column = tool_name + snps_percentage_suffix
+        score_column = tool_name + score_suffix
+
+    return pearson_column, snps_percentage_column, score_column
+
+def get_training_snps_column_name(tool_name, tool_training_suffix=TRAINING_SNPS_COLUMN_SIFFIX):
+    """
+    Generates the column name for training SNPs based on the provided tool name.
+
+    Parameters:
+    - tool_name (str): Name of the tool.
+    - tool_training_suffix (str, optional): Suffix for the training SNPs column.
+
+    Returns:
+    - str: The generated column name for training SNPs.
+    """
+    return tool_name + tool_training_suffix
+
+def convert_column_to_list(df, column_name):
+    """
+    Convert a column with comma-separated strings to lists in a DataFrame.
+
+    Parameters:
+    - df (pd.DataFrame): Input DataFrame.
+    - column_name (str): Name of the column to be converted.
+
+    Returns:
+    - pd.DataFrame: Updated DataFrame with the specified column values as lists.
+    """
+    # Copy the DataFrame to avoid modifying the original
+    df_copy = df.copy()
+
+    # Apply the transformation to the specified column
+    df_copy[column_name] = df_copy[column_name].apply(lambda x: x.split(','))
+
+    return df_copy
 
 if __name__ == '__main__':
     pass
