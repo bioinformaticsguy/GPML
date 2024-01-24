@@ -22,14 +22,14 @@ MUTEPRED_AMINO_ACID_SUBSTITUTIONS_COLUMN_NAME = "Amino_acid_substitutions"
 
 SNP_COLUMN_NAME = "HGVSp_ANNOVAR"
 AMINO_ACID_SEQUENCE_COLUMN_NAME = 'Prot_sequence'
-TOOLS_LIST = ["PROVEAN",
+TOOLS_LIST = ["MutPred",
               "REVEL",
-              "MutPred",
+              "PROVEAN",
               "Polyphen2_HDIV",
               "EVE",
               "AlphaMissense"]
 
-TOOLS_LIST = ["MutPred"]
+# TOOLS_LIST = ["MutPred"]
 
 ## Suffixes and Prefixes
 TOOL_SCORE_COLUMN_SUFFIX = "_score"
@@ -37,6 +37,7 @@ PEARSON_CORELATION_SUFFIX = "_pearson_correlation"
 USED_SNP_PERCENTAGE_SUFFIX = "_used_snp_percentage"
 TRAINING_FLAG_SUFFIX = "_training_flag"
 TRAINING_SNPS_COLUMN_SIFFIX = "_training_snps"
+EXCLUDE_TRAINING_SNP_SUFFIX = "_excluded_training_snps"
 
 ## File Names and Paths
 MAVE_DATAFRAME_PICKLE_FILE_NAME = "MAVE_DATAFRAME.pkl"
