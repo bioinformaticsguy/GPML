@@ -29,7 +29,7 @@ if __name__ == '__main__':
 
     for column, label, color in zip(filtered_columns_list, legend, colors):
         y = df[column].abs().tolist()
-        ax.plot(x, y, label=label, color=color, linewidth=4)
+        ax.scatter(x, y, label=label, color=color, linewidth=4)
 
     ax.set_xlabel('Protein Names', fontsize=14)
     ax.set_ylabel('Correlations', fontsize=14)
