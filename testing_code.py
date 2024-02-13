@@ -1,19 +1,22 @@
-import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 
-# Sample data
-data = np.random.random((5, 5))
+# Create a dummy DataFrame
+data = {
+    'Category': ['A', 'B', 'A', 'C', 'B', 'A', 'A', 'B', 'C', 'C'],
+    'Value': [10, 20, 15, 25, 30, 12, 18, 22, 28, 35]
+}
+df = pd.DataFrame(data)
 
-# Create a heatmap
-plt.imshow(data, cmap='viridis', interpolation='nearest')
+# Count the frequency of each unique entry in the 'Category' column
+value_counts = df['Category'].value_counts()
 
-# Add a colorbar for reference
-plt.colorbar()
+# Plot the pie chart
+value_counts.plot.pie(autopct='%1.1f%%', startangle=90)
+plt.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
 
-# Set labels and title
-plt.xlabel('X-axis Label')
-plt.ylabel('Y-axis Label')
-plt.title('Heatmap Example')
+# Add a title
+plt.title('Pie Chart of Unique Entries in "Category" Column')
 
 # Show the plot
 plt.show()
