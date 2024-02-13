@@ -18,7 +18,11 @@ if __name__ == '__main__':
                                                        tool_name=MUTEPRED_TOOL_NAME,
                                                        exclude_tool_training_snps_flag=True)
 
+    mean_normal = LOADED_MAVE_DF["MutPred_pearson_correlation"].mean()
 
+    mean_no_bias = LOADED_MAVE_DF["MutPred_pearson_correlation_excluded_training_snps"].mean()
+
+    final_cal = abs(mean_no_bias - mean_normal)
 
     #
     # mutepred_tool_bias = CorelationUpdator. \

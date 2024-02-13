@@ -1,17 +1,19 @@
-import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
 
-# Sample DataFrame
-data = {'column1': [1, 2, 3, 4, 5],
-        'column2': ['A', 'B', 'A', 'C', 'A']}
-df = pd.DataFrame(data)
+# Sample data
+data = np.random.random((5, 5))
 
-# Display the original DataFrame
-print("Original DataFrame:")
-print(df)
+# Create a heatmap
+plt.imshow(data, cmap='viridis', interpolation='nearest')
 
-# Remove rows where 'column2' has the value 'A'
-df = df[df['column2'] != 'A']
+# Add a colorbar for reference
+plt.colorbar()
 
-# Display the modified DataFrame
-print("\nDataFrame after removing rows with 'A' in 'column2':")
-print(df)
+# Set labels and title
+plt.xlabel('X-axis Label')
+plt.ylabel('Y-axis Label')
+plt.title('Heatmap Example')
+
+# Show the plot
+plt.show()
