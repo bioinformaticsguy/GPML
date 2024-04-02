@@ -22,7 +22,11 @@ if __name__ == '__main__':
 
     mean_no_bias = LOADED_MAVE_DF["MutPred_pearson_correlation_excluded_training_snps"].mean()
 
-    final_cal = abs(mean_no_bias - mean_normal)
+
+    strict = CorelationUpdator.calculate_tool_bias(df_with_spearman_scores=LOADED_MAVE_DF,
+                        tool_name=MUTEPRED_TOOL_NAME)
+
+    relax = abs(mean_no_bias - mean_normal)
 
     #
     # mutepred_tool_bias = CorelationUpdator. \
