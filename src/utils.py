@@ -3,7 +3,7 @@ import numpy as np
 import scipy.stats as stats
 import pandas as pd
 
-from src.constants import COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP, NAME_OF_SPECIES_TO_FILTER, \
+from src.constants import COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP, SPECIE_NAME_HUMAN, \
     COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SPECIES, PEARSON_CORELATION_SUFFIX, USED_SNP_PERCENTAGE_SUFFIX, \
     TOOL_SCORE_COLUMN_SUFFIX, TRAINING_SNPS_COLUMN_SIFFIX, EXCLUDE_TRAINING_SNP_SUFFIX
 
@@ -538,8 +538,8 @@ def load_dataframe(file_path, file_name):
 
 
 def filter_dataframe_by_species(df,
-                                species_column=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SPECIES,
-                                target_species=NAME_OF_SPECIES_TO_FILTER):
+                                target_species,
+                                species_column=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SPECIES):
     """
     Filters a DataFrame based on a specified species.
 
