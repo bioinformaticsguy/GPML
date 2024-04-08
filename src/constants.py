@@ -11,7 +11,7 @@ COLUMN_NAMES_OF_MAVE_GS_DATAFRAME_LIST = [COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID,
                                           COLUMN_NAME_OF_MAVE_GOLD_STANDARD_PROTEIN_SEQUENCE]
 
 
-NAME_OF_SPECIES_TO_FILTER = "Human"
+SPECIE_NAME_HUMAN = "Human"
 
 
 COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SPECIES = "species"
@@ -40,7 +40,9 @@ TRAINING_SNPS_COLUMN_SIFFIX = "_training_snps"
 EXCLUDE_TRAINING_SNP_SUFFIX = "_excluded_training_snps"
 
 ## File Names and Paths
-MAVE_DATAFRAME_PICKLE_FILE_NAME = "MAVE_DATAFRAME.pkl"
+MAVE_DATAFRAME_PICKLE_FILE_NAME = "gold_std_df.pkl"
+MAVE_DATAFRAME_ONLY_HUMAN_PICKLE_FILE_NAME = "gold_std_df_only_human.pkl"
+
 PICKLED_DATAFRAMES_DIRECTORY_PATH = Path("Data/pickled_dataframes")
 TRAINING_DATA_FILE_PATH = Path("Data/mutepred_training_data/wo_exclusive_hgmd_mp2_training_data_MavedbData.csv")
 OUTPUT_DIR_DB_NSFP = Path("Data/dbNSFP_output_dir")
