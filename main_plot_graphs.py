@@ -9,7 +9,13 @@ if __name__ == '__main__':
 
     ONLY_HUMAN_DATABASE = filter_dataframe_by_species(LOADED_MAVE_DF)
 
+    # ONLY_HUMAN_DATABASE = ONLY_HUMAN_DATABASE.loc[ONLY_HUMAN_DATABASE['protein_name'] != 'CYP2C9_urn:mavedb:00000095-a']
+
+    ONLY_HUMAN_DATABASE.fillna(0, inplace=True)
+
     PlotGeneroator.plot_correlations(ONLY_HUMAN_DATABASE, PROTEIN_SHORT_MAPPING, PEARSON_CORELATION_SUFFIX)
 
+
+    # PlotGeneroator.plot_pie_with_counts(LOADED_MAVE_DF, "species")
 
     print("Debug Pause")
