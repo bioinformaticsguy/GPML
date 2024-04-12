@@ -762,6 +762,11 @@ def generate_amino_pssm_dict(amino_acids=AMINO_ACIDS_SINGLE_LETTER, default_valu
     """
     return {aa1+aa2: default_value for aa1, aa2 in itertools.product(amino_acids, repeat=2)}
 
+def remove_digits_from_key(key):
+    """
+    This function removes digits from a string key.
+    """
+    return ''.join([char for char in key if char.isalpha()])
 
 if __name__ == '__main__':
     pass
