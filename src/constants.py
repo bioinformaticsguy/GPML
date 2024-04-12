@@ -29,6 +29,8 @@ TOOLS_LIST = ["MutPred",
               "EVE",
               "AlphaMissense"]
 
+AMINO_ACIDS_SINGLE_LETTER = ['A', 'R', 'N', 'D', 'C', 'Q', 'E', 'G', 'H', 'I', 'L', 'K', 'M', 'F', 'P', 'S', 'T', 'W', 'Y', 'V']
+
 # TOOLS_LIST = ["MutPred"]
 
 ## Suffixes and Prefixes
@@ -42,6 +44,8 @@ EXCLUDE_TRAINING_SNP_SUFFIX = "_excluded_training_snps"
 ## File Names and Paths
 MAVE_DATAFRAME_PICKLE_FILE_NAME = "gold_std_df.pkl"
 MAVE_DATAFRAME_ONLY_HUMAN_PICKLE_FILE_NAME = "gold_std_df_only_human.pkl"
+MAVE_DATAFRAME_HUMAN_LOPO_MEAN_PICKLE_FILE_NAME = "gold_std_df_human_lopo_mean.pkl"
+MAVE_DATAFRAME_HUMAN_LOPO_MEAN_PICKLE_FILE_NAME_WITH_TOOL_SCORES = "gold_std_df_human_lopo_mean_with_tool_scores.pkl"
 
 PICKLED_DATAFRAMES_DIRECTORY_PATH = Path("Data/pickled_dataframes")
 TRAINING_DATA_FILE_PATH = Path("Data/mutepred_training_data/wo_exclusive_hgmd_mp2_training_data_MavedbData.csv")
