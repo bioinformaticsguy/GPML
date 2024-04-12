@@ -1,11 +1,14 @@
+import itertools
 import pickle
 import numpy as np
 import scipy.stats as stats
 import pandas as pd
+import json
 
-from src.constants import COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP, SPECIE_NAME_HUMAN, \
+from src.constants import COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP, \
     COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SPECIES, PEARSON_CORELATION_SUFFIX, USED_SNP_PERCENTAGE_SUFFIX, \
-    TOOL_SCORE_COLUMN_SUFFIX, TRAINING_SNPS_COLUMN_SIFFIX, EXCLUDE_TRAINING_SNP_SUFFIX
+    TOOL_SCORE_COLUMN_SUFFIX, TRAINING_SNPS_COLUMN_SIFFIX, EXCLUDE_TRAINING_SNP_SUFFIX, \
+    COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, AMINO_ACIDS_SINGLE_LETTER
 
 
 def get_dictonary_of_scores_maveDB(file_path):
@@ -716,6 +719,49 @@ def convert_column_to_list(df, column_name):
     df_copy[column_name] = df_copy[column_name].apply(lambda x: x.split(','))
 
     return df_copy
+
+def update_value_based_on_protein_name(df, column_name, value, protein_name,
+                                       id_column_name=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID):
+    """
+    Update a value in a specific column for a row that matches the protein_name.
+
+    Parameters:
+    - df (pd.DataFrame): The DataFrame to update.
+    - column_name (str): The name of the column to update.
+    - value: The new value to set.
+    - protein_name (str): The name of the protein to match.
+
+    Returns:
+    - pd.DataFrame: The updated DataFrame.
+    """
+    if isinstance(value, dict):
+        value = json.dumps(value)
+    df.loc[df[id_column_name] == protein_name, column_name] = value
+    return df
+
+def get_value_from_dataframe(df, id_column, id_value, value_column):
+    """
+    Retrieves a value from a DataFrame based on the provided id_column and id_value.
+
+    Parameters:
+    - df (pd.DataFrame): The DataFrame to retrieve the value from.
+    - id_column (str): The name of the column to match the id_value against.
+    - id_value: The value to match in the id_column.
+    - value_column (str): The name of the column to retrieve the value from.
+
+    Returns:
+    - The value from the value_column of the first row where id_column matches id_value.
+    """
+    return df.loc[df[id_column] == id_value, value_column].values[0]
+
+def generate_amino_pssm_dict(amino_acids=AMINO_ACIDS_SINGLE_LETTER, default_value=[]):
+    """
+    This dictionary that mimicks the blank PSSM matrix of amino acid substitutions.
+    Input: amino_acids (list): List of amino acids to generate the dictionary for.
+    Output: dict: Dictionary with amino acid pairs as keys and default_value as values.
+    """
+    return {aa1+aa2: default_value for aa1, aa2 in itertools.product(amino_acids, repeat=2)}
+
 
 if __name__ == '__main__':
     pass
