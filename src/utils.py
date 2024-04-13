@@ -754,19 +754,35 @@ def get_value_from_dataframe(df, id_column, id_value, value_column):
     """
     return df.loc[df[id_column] == id_value, value_column].values[0]
 
-def generate_amino_pssm_dict(amino_acids=AMINO_ACIDS_SINGLE_LETTER, default_value=[]):
+def generate_amino_pssm_dict(amino_acids=AMINO_ACIDS_SINGLE_LETTER):
     """
     This dictionary that mimicks the blank PSSM matrix of amino acid substitutions.
     Input: amino_acids (list): List of amino acids to generate the dictionary for.
-    Output: dict: Dictionary with amino acid pairs as keys and default_value as values.
+    Output: dict: Dictionary with amino acid pairs as keys and new empty list as values.
     """
-    return {aa1+aa2: default_value for aa1, aa2 in itertools.product(amino_acids, repeat=2)}
+    return {aa1+aa2: [] for aa1, aa2 in itertools.product(amino_acids, repeat=2)}
 
 def remove_digits_from_key(key):
     """
     This function removes digits from a string key.
     """
     return ''.join([char for char in key if char.isalpha()])
+
+def calculate_mean(lst):
+    """
+    Calculate the mean of a list.
+
+    Parameters:
+    - lst (list): The list to calculate the mean of.
+
+    Returns:
+    - float: The mean of the list if the list is not empty.
+    - None: If the list is empty.
+    """
+    if len(lst) == 0:
+        return None
+    else:
+        return sum(lst) / len(lst)
 
 if __name__ == '__main__':
     pass
