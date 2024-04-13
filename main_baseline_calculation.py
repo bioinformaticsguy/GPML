@@ -3,7 +3,8 @@ from src.constants import PICKLED_DATAFRAMES_DIRECTORY_PATH, MAVE_DATAFRAME_PICK
     COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY, COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SPECIES, \
     COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, MAVE_DATAFRAME_HUMAN_LOPO_MEAN_PICKLE_FILE_NAME, AMINO_ACIDS_SINGLE_LETTER
 from src.utils import load_dataframe, filter_dataframe_by_species, get_value_from_dataframe, \
-    update_value_based_on_protein_name, pickle_dataframe, generate_amino_pssm_dict
+    update_value_based_on_protein_name, pickle_dataframe, generate_amino_pssm_dict, remove_digits_from_key, \
+    calculate_mean
 
 if __name__ == '__main__':
     GOLD_STD_DF = load_dataframe(file_path=PICKLED_DATAFRAMES_DIRECTORY_PATH,
@@ -16,10 +17,65 @@ if __name__ == '__main__':
     protein_name_list = GOLD_STD_DF_HUMAN[COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID].tolist()
     lopo_dict = LopoBaseline.get_lopo_dict(protein_name_list=protein_name_list)
 
-    protein_one = protein_name_list[0]
+    def get_PSSM_dict_for_protein(protein_name, lopo_list, df):
+        """
+        This function calculates the mean of the PSSM values for each amino acid for a protein.
+        Input: protein_name, lopo_list, df
+        Output: amino_acid_pssm_dict
+        """
 
-    amino_acid_pssm_dict = generate_amino_pssm_dict(AMINO_ACIDS_SINGLE_LETTER)
+        amino_acid_pssm_dict = generate_amino_pssm_dict(AMINO_ACIDS_SINGLE_LETTER)
+        for lopo_protein in lopo_list:
+            snp_dict = get_value_from_dataframe(df=df,
+                                     id_column=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID,
+                                     id_value=lopo_protein,
+                                     value_column=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY)
+            for key, value in snp_dict.items():
+                pssm_key = remove_digits_from_key(key)
+                amino_acid_pssm_dict[pssm_key].append(value)
 
+        for key in amino_acid_pssm_dict:
+            mean_value = calculate_mean(amino_acid_pssm_dict[key])
+            amino_acid_pssm_dict[key] = mean_value
+
+        return protein_name, amino_acid_pssm_dict
+
+    # protein_name = "CBS_urn:mavedb:00000005-a"
+    # protein_name = "NUDT15_urn:mavedb:00000055-0"
+    protein_name = "VKOR_urn:mavedb:00000078-a"
+    lopo_list = lopo_dict[protein_name]
+    protein_name, amino_acid_pssm_dict_protein_one = get_PSSM_dict_for_protein(protein_name=protein_name,
+                                                                    lopo_list=lopo_list,
+                                                                   df=GOLD_STD_DF_HUMAN)
+
+    # amino_acid_pssm_dict = generate_amino_pssm_dict(AMINO_ACIDS_SINGLE_LETTER)
+    # for protein_name, lopo_list in lopo_dict.items():
+    #     for lopo_protein in lopo_list:
+    #         snp_dict = get_value_from_dataframe(df=GOLD_STD_DF_HUMAN,
+    #                                  id_column=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID,
+    #                                  id_value=lopo_protein,
+    #                                  value_column=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY)
+    #         for key, value in snp_dict.items():
+    #             pssm_key = remove_digits_from_key(key)
+    #
+    #             amino_acid_pssm_dict[pssm_key].append(value)
+    #
+    # for key in amino_acid_pssm_dict:
+    #     mean_value = calculate_mean(amino_acid_pssm_dict[key])
+    #     amino_acid_pssm_dict[key] = mean_value
+
+    print("Debug Pause")
+
+    # import statistics
+    #
+    #
+    # def update_dict_with_mean_values(dictionary):
+    #     for key in dictionary:
+    #         dictionary[key] = statistics.mean(dictionary[key])
+    #     return dictionary
+    #
+    #
+    # amino_acid_pssm_dict = update_dict_with_mean_values(amino_acid_pssm_dict)
 
 
 
@@ -77,14 +133,4 @@ if __name__ == '__main__':
     #
 
 
-    """
-    Sudo Code for PSSM baseline calculation
-    1. Leave 1st protein and take remaining 12 proteins.
-    2. Create an empty PSSM matrix.
-    3. Regardless of the position of the SNP's in the 12 proteins, calculate mean for each Unique amino acid substitution.
-    4. Update the mean values in the PSSM matrix.
-    5. Impute values for the 1st protein using the PSSM matrix for each SNP regardless of the position.
-    6. Repeat the process for all the proteins.
-    """
 
-    print("Debug Pause")
