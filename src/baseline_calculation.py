@@ -1,3 +1,5 @@
+import json
+
 from src.constants import AMINO_ACIDS_SINGLE_LETTER, COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, \
     COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY
 from src.utils import update_value_based_on_protein_name, get_value_from_dataframe, generate_amino_pssm_dict, \
@@ -146,4 +148,51 @@ class LopoBaseline:
         """
         pssm_value = pssm_dict[remove_digits_from_key(snp)]
         return pssm_value
+
+
+    def get_predicted_pssm_snp_scores(df, id_column_name, protein_name):
+        """
+        This function adds the PSSM predictions to the DataFrame.
+
+        """
+        pssm_dict = json.loads(get_value_from_dataframe(df,
+                                                 id_column=id_column_name,
+                                                 id_value=protein_name,
+                                                 value_column="PSSM"))
+
+
+
+        snp_dict = get_value_from_dataframe(df,
+                                             id_column=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID,
+                                             id_value=protein_name,
+                                             value_column=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY)
+
+
+
+
+        predicted_snp_dict = {key: LopoBaseline.get_pssm_predictions(snp=key, pssm_dict=pssm_dict)
+                       for key in snp_dict.keys()}
+
+        return predicted_snp_dict
+
+
+    @staticmethod
+    def add_pssm_predictions_to_df(df, id_column_name):
+        """
+        This function adds the PSSM predictions to the DataFrame.
+        """
+        protein_list = get_protein_name_list(df, id_column_name)
+
+        for protein_name in protein_list:
+            predic_dict = LopoBaseline.get_predicted_pssm_snp_scores(df,
+                                                                 COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, protein_name)
+
+            df = update_value_based_on_protein_name(df=df,
+                                                    column_name="PSSM_predic",
+                                                    value=predic_dict,
+                                                    protein_name=protein_name,
+                                                    id_column_name=id_column_name)
+
+        return df
+
 
