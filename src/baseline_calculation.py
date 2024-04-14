@@ -136,3 +136,14 @@ class LopoBaseline:
 
         return df
 
+
+    @staticmethod
+    def get_pssm_predictions(snp, pssm_dict):
+        """
+        This function returns the PSSM value for a given SNP.
+        input: snp, pssm_dict
+        output: pssm_value
+        """
+        pssm_value = pssm_dict[remove_digits_from_key(snp)]
+        return pssm_value
+
