@@ -1,4 +1,7 @@
-from src.utils import update_value_based_on_protein_name, get_value_from_dataframe
+from src.constants import AMINO_ACIDS_SINGLE_LETTER, COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, \
+    COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY
+from src.utils import update_value_based_on_protein_name, get_value_from_dataframe, generate_amino_pssm_dict, \
+    remove_digits_from_key, calculate_mean, get_protein_name_list
 
 
 class LopoBaseline:
@@ -80,10 +83,56 @@ class LopoBaseline:
         input: df (pd.DataFrame): The DataFrame to update.
         output: pd.DataFrame: The updated DataFrame.
         """
-
         mean_values = []
         for protein in lopo_list:
             protein_mean = get_value_from_dataframe(df, id_column, protein, value_column)
             mean_values.append(protein_mean)
 
         return sum(mean_values) / len(mean_values)
+    @staticmethod
+    def get_PSSM_dict_for_protein(lopo_list, df,
+                                  single_letter_amino_acids=AMINO_ACIDS_SINGLE_LETTER,
+                                  mave_gs_id_column=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID,
+                                  mave_gs_snp_dict_column_name=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY):
+        """
+        This function calculates the mean of the PSSM values for each amino acid for a protein.
+        Input: protein_name, lopo_list, df
+        Output: amino_acid_pssm_dict
+        """
+        amino_acid_pssm_dict = generate_amino_pssm_dict(single_letter_amino_acids)
+        for lopo_protein in lopo_list:
+            snp_dict = get_value_from_dataframe(df=df,
+                                     id_column=mave_gs_id_column,
+                                     id_value=lopo_protein,
+                                     value_column=mave_gs_snp_dict_column_name)
+            for key, value in snp_dict.items():
+                pssm_key = remove_digits_from_key(key)
+                amino_acid_pssm_dict[pssm_key].append(value)
+
+        for key in amino_acid_pssm_dict:
+            mean_value = calculate_mean(amino_acid_pssm_dict[key])
+            amino_acid_pssm_dict[key] = mean_value
+
+        return amino_acid_pssm_dict
+
+    @staticmethod
+    def add_pssm_column_to_df(df, id_column_name):
+        """
+        This function adds the PSSM column to the DataFrame.
+        input: df, protein_name, amino_acid_pssm_dict, id_column_name
+        output: df
+        """
+
+        protein_list = get_protein_name_list(df, id_column_name)
+        lopo_dict = LopoBaseline.get_lopo_dict(protein_list)
+
+        for protein_name, lopo_list in lopo_dict.items():
+            amino_acid_pssm_dict = LopoBaseline.get_PSSM_dict_for_protein(lopo_list=lopo_list, df=df)
+            df = update_value_based_on_protein_name(df=df,
+                                                    column_name="PSSM",
+                                                    value=amino_acid_pssm_dict,
+                                                    protein_name=protein_name,
+                                                    id_column_name=id_column_name)
+
+        return df
+
