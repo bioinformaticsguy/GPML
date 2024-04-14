@@ -784,5 +784,19 @@ def calculate_mean(lst):
     else:
         return sum(lst) / len(lst)
 
+
+def get_protein_name_list(df, column_name):
+    """
+    Extracts a list of protein names from a DataFrame based on the provided column name.
+
+    Parameters:
+    - df (pd.DataFrame): The DataFrame to extract the protein names from.
+    - column_name (str): The name of the column containing the protein names.
+
+    Returns:
+    - list: A list of protein names.
+    """
+    return df[column_name].tolist()
+
 if __name__ == '__main__':
     pass
