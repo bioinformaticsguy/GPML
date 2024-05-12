@@ -146,7 +146,10 @@ class LopoBaseline:
         input: snp, pssm_dict
         output: pssm_value
         """
-        pssm_value = pssm_dict[remove_digits_from_key(snp)]
+        # if isinstance(pssm_dict, str):
+        #     pssm_dict = json.loads(pssm_dict)
+        pssm_key = remove_digits_from_key(snp)
+        pssm_value = pssm_dict[remove_digits_from_key(pssm_key)]
         return pssm_value
 
 
@@ -155,10 +158,10 @@ class LopoBaseline:
         This function adds the PSSM predictions to the DataFrame.
 
         """
-        pssm_dict = json.loads(get_value_from_dataframe(df,
+        pssm_dict = get_value_from_dataframe(df,
                                                  id_column=id_column_name,
                                                  id_value=protein_name,
-                                                 value_column="PSSM"))
+                                                 value_column="PSSM")
 
 
 
@@ -187,8 +190,9 @@ class LopoBaseline:
             predic_dict = LopoBaseline.get_predicted_pssm_snp_scores(df,
                                                                  COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, protein_name)
 
+
             df = update_value_based_on_protein_name(df=df,
-                                                    column_name="PSSM_predic",
+                                                    column_name="baseline_score",
                                                     value=predic_dict,
                                                     protein_name=protein_name,
                                                     id_column_name=id_column_name)
