@@ -734,8 +734,8 @@ def update_value_based_on_protein_name(df, column_name, value, protein_name,
     Returns:
     - pd.DataFrame: The updated DataFrame.
     """
-    if isinstance(value, dict):
-        value = json.dumps(value)
+    # if isinstance(value, dict):
+    #     value = json.dumps(value)
     df.loc[df[id_column_name] == protein_name, column_name] = value
     return df
 
