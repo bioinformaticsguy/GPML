@@ -28,7 +28,7 @@ TOOLS_LIST = ["MutPred",
               "Polyphen2_HDIV",
               "EVE",
               "AlphaMissense",
-              "baseline"]
+              ]
 
 AMINO_ACIDS_SINGLE_LETTER = ['A', 'R', 'N', 'D', 'C', 'Q', 'E', 'G', 'H', 'I', 'L', 'K', 'M', 'F', 'P', 'S', 'T', 'W', 'Y', 'V']
 
