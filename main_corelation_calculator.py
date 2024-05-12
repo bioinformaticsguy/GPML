@@ -6,7 +6,7 @@ from src.corelation_calculator import CorelationUpdator
 
 if __name__ == '__main__':
     LOADED_MAVE_DF = load_dataframe(file_path=PICKLED_DATAFRAMES_DIRECTORY_PATH,
-                                        file_name=MAVE_DATAFRAME_PICKLE_FILE_NAME)
+                                        file_name="pssm_base.pkl")
 
     LOADED_MAVE_DF = CorelationUpdator. \
         add_tool_data_for_multiple_tools(LOADED_MAVE_DF,
