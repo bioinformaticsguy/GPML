@@ -798,5 +798,14 @@ def get_protein_name_list(df, column_name):
     """
     return df[column_name].tolist()
 
+def get_protein_list(dataframe, column_name=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID):
+    """
+    This function returns a list of proteins from a given dataframe.
+    Input: dataframe, column_name
+    Output: list of proteins
+    """
+    return dataframe[column_name].tolist()
+
+
 if __name__ == '__main__':
     pass
