@@ -45,6 +45,7 @@ class LopoBaseline:
 
         return df
 
+
     @staticmethod
     def leave_one_protein_out_lists(protein_name_list):
         """
@@ -61,22 +62,6 @@ class LopoBaseline:
             lopo_list = protein_name_list[:i] + protein_name_list[i + 1:]
             lopo_lists.append(lopo_list)
         return lopo_lists
-
-    def get_lopo_dict(protein_name_list):
-        """
-        Generate a dictionary where each key is a protein name and the value is a list of proteins with that protein left out.
-
-        Parameters:
-        - protein_name_list (list): The list of protein names.
-
-        Returns:
-        - dict: A dictionary where each key is a protein name and the value is a list of proteins with that protein left out.
-        """
-        lopo_dict = {}
-        for i in range(len(protein_name_list)):
-            lopo_list = protein_name_list[:i] + protein_name_list[i + 1:]
-            lopo_dict[protein_name_list[i]] = lopo_list
-        return lopo_dict
 
     @staticmethod
     def get_lopo_mean(df, id_column, value_column, lopo_list):
