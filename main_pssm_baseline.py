@@ -2,9 +2,9 @@ import copy
 
 from src.constants import PICKLED_DATAFRAMES_DIRECTORY_PATH, MAVE_DATAFRAME_PICKLE_FILE_NAME, SPECIE_NAME_HUMAN, \
     COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SPECIES, COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY, \
-    COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, COLUMN_NAME_OF_BASELINE_SCORES_DICTIONARY
-from src.utils import load_dataframe, filter_dataframe_by_species, get_value_from_dataframe, get_protein_list, \
-    update_value_based_on_protein_name, remove_digits_from_key
+    COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, COLUMN_NAME_OF_BASELINE_SCORES_DICTIONARY, \
+    MAVE_DATAFRAME_ONLY_HUMAN_WITH_BASELINE_PICKLE_FILE_NAME
+from src.utils import load_dataframe, filter_dataframe_by_species, get_protein_list, pickle_dataframe
 from src.pssm_baseline import pssmBaseline
 
 if __name__ == '__main__':
@@ -23,6 +23,10 @@ if __name__ == '__main__':
                                                           protein_name=protein_name,
                                                           dict_col_name=COLUMN_NAME_OF_BASELINE_SCORES_DICTIONARY,
                                                           default_value=False)
+
+    pickle_dataframe(dataframe=GOLD_STD_DF,
+                     file_path=PICKLED_DATAFRAMES_DIRECTORY_PATH,
+                     file_name=MAVE_DATAFRAME_ONLY_HUMAN_WITH_BASELINE_PICKLE_FILE_NAME)
 
 
 
