@@ -1,7 +1,7 @@
 import pandas as pd
 from src.constants import AMINO_ACIDS_SINGLE_LETTER, COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, \
     COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY
-from src.utils import get_value_from_dataframe
+from src.utils import get_value_from_dataframe, get_protein_list, remove_digits_from_key
 
 
 class pssmBaseline:
@@ -64,6 +64,46 @@ class pssmBaseline:
         if pssm_df.at[key[0], key[-1]][1] == 0:
             return 0
         return pssm_df.at[key[0], key[-1]][0] / pssm_df.at[key[0], key[-1]][1]
+
+    @staticmethod
+    def update_value_in_snp_scores_dict(dataframe,
+                                        id_column,
+                                        protein_name,
+                                        dict_col_name,
+                                        key,
+                                        value):
+
+        dataframe.loc[dataframe[id_column] == protein_name, dict_col_name].values[0][key] = value
+        return dataframe
+
+    @staticmethod
+    def update_all_values_in_snp_scores_dict(dataframe,
+                                             id_column,
+                                             protein_name,
+                                             dict_col_name,
+                                             default_value):
+        temp_keys = dataframe.loc[dataframe[id_column] == protein_name, dict_col_name].values[0].keys()
+        if default_value == None:
+            for key in temp_keys:
+                pssmBaseline.update_value_in_snp_scores_dict(dataframe,
+                                                id_column,
+                                                protein_name,
+                                                dict_col_name,
+                                                key,
+                                                default_value)
+        else:
+            lopo_dict = pssmBaseline.get_lopo_dict(get_protein_list(dataframe=dataframe))
+            protein_pssm = pssmBaseline.get_protein_pssm(dataframe=dataframe, lopo_list=lopo_dict[protein_name])
+            for key in temp_keys:
+                mean_value = pssmBaseline.get_mean_from_pssm(remove_digits_from_key(key), protein_pssm)
+                pssmBaseline.update_value_in_snp_scores_dict(dataframe,
+                                                id_column,
+                                                protein_name,
+                                                dict_col_name,
+                                                key,
+                                                mean_value)
+        return dataframe
+
 
 
 
