@@ -46,6 +46,7 @@ EXCLUDE_TRAINING_SNP_SUFFIX = "_excluded_training_snps"
 ## File Names and Paths
 MAVE_DATAFRAME_PICKLE_FILE_NAME = "gold_std_df.pkl"
 MAVE_DATAFRAME_ONLY_HUMAN_PICKLE_FILE_NAME = "gold_std_df_only_human.pkl"
+MAVE_DATAFRAME_ONLY_HUMAN_WITH_BASELINE_PICKLE_FILE_NAME = "gold_std_df_only_human_with_baseline.pkl"
 MAVE_DATAFRAME_HUMAN_LOPO_MEAN_PICKLE_FILE_NAME = "gold_std_df_human_lopo_mean.pkl"
 MAVE_DATAFRAME_HUMAN_LOPO_MEAN_PICKLE_FILE_NAME_WITH_TOOL_SCORES = "gold_std_df_human_lopo_mean_with_tool_scores.pkl"
 
