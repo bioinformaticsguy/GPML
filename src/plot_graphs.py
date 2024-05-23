@@ -1,15 +1,25 @@
 from itertools import cycle
+from operator import itemgetter
+
 import matplotlib.pyplot as plt
+import numpy as np
+from scipy.interpolate import UnivariateSpline
+
+from src.constants import PROTEIN_SHORT_MAPPING, PEARSON_CORELATION_SUFFIX
+
 
 class PlotGeneroator:
     @staticmethod
-    def plot_correlations(ONLY_HUMAN_DATABASE, PROTEIN_SHORT_MAPPING, PEARSON_CORELATION_SUFFIX):
-        columns_list = ONLY_HUMAN_DATABASE.columns.tolist()
-        filtered_columns_list = [column for column in columns_list if column.endswith(PEARSON_CORELATION_SUFFIX)]
+    def plot_correlations(dataframe,
+                          protein_short_mapping=PROTEIN_SHORT_MAPPING,
+                          pearson_corelation_suffix=PEARSON_CORELATION_SUFFIX):
+        dataframe.fillna(0, inplace=True)
+        columns_list = dataframe.columns.tolist()
+        filtered_columns_list = [column for column in columns_list if column.endswith(pearson_corelation_suffix)]
 
-        legend = [value.rstrip(PEARSON_CORELATION_SUFFIX) for value in filtered_columns_list]
+        legend = [value.rstrip(pearson_corelation_suffix) for value in filtered_columns_list]
 
-        x = [PROTEIN_SHORT_MAPPING[protein_name] for protein_name in ONLY_HUMAN_DATABASE['protein_name'].tolist()]
+        x = [protein_short_mapping[protein_name] for protein_name in dataframe['protein_name'].tolist()]
 
         # Generating dynamic colors based on the number of legend entries
         num_colors = len(legend)
@@ -19,25 +29,33 @@ class PlotGeneroator:
         fig, ax = plt.subplots()
 
         for column, label, color in zip(filtered_columns_list, legend, colors):
-            y = ONLY_HUMAN_DATABASE[column].abs().tolist()
+            y = dataframe[column].abs().tolist()
 
-            # # Add lines to join the points
-            ax.plot(x, y, label=label, color=color, linewidth=4)
-            # ax.scatter(x, y, label=label, color=color, linewidth=4, s=100)
+            # Create a UnivariateSpline object with your data
+            x_values = np.arange(len(y))
+            spline = UnivariateSpline(x_values, y, s=0.05)
 
+            # Generate new, smoother y values
+            ynew = spline(x_values)
 
-        ax.set_xlabel('Protein Names', fontsize=20)
+            if column == "pssmBaseline_pearson_correlation" and label == "pssmB":
+                ax.plot(x, ynew, label=label, color='black', linewidth=15, linestyle='--')
+            else:
+                ax.plot(x, ynew, label=label, color=color, linewidth=6)
+
+        ax.set_xlabel('Protein Names', fontsize=30)
         ax.set_ylabel('Correlations', fontsize=30)
-        ax.legend(title='Tool Name', fontsize=25, labels=legend)
+        ax.legend(title='Tool Name', title_fontsize=30, fontsize=25, labels=legend)
 
-        ax.set_xticks(x)
+        # ax.set_xticks(x)
+        fig.subplots_adjust(top=0.9)  # Adjust the top border
+        fig.subplots_adjust(bottom=0.2)  # Adjust the bottom border
         plt.tick_params(axis='y', labelsize=30)
         ax.set_xticklabels(x, rotation=45, fontsize=20, weight='bold')
-        fig.set_size_inches(21, 21)
-        fig.subplots_adjust(bottom=0.1)
+        fig.set_size_inches(22, 22)
+
 
         plt.gca().invert_xaxis()
-        # plt.gca().invert_yaxis()
 
         plt.show()
 
