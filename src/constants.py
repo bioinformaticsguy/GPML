@@ -123,7 +123,7 @@ PROTEIN_SHORT_MAPPING = {
     'TEM-1_beta-lactamase_urn:mavedb:00000086-d': 'TEM-1_beta-86-d',
     'TEM-1_beta-lactamase_urn:mavedb:00000086-e': 'TEM-1_beta-86-e',
     'TEM-17_beta-lactamase_urn:mavedb:00000085-b': 'TEM-17_beta-85-b',
-    'TP53_(P72R)_urn:mavedb:00000068-c': 'TP53_P72R_68-c',
+    'TP53_(P72R)_urn:mavedb:00000068-c': 'TP53_P72R-c',
     'VIM-2_with_p.Met1_Phe2insGly_urn:mavedb:00000073-a': 'VIM-2_73-a',
     'VIM-2_with_p.Met1_Phe2insGly_urn:mavedb:00000073-c': 'VIM-2_73-c',
     'VIM-2_with_p.Met1_Phe2insGly_urn:mavedb:00000073-d': 'VIM-2_73-d',
