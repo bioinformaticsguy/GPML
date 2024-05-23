@@ -16,7 +16,7 @@ SPECIE_NAME_HUMAN = "Human"
 
 COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SPECIES = "species"
 COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY = "mave_snps_scores_dictinary"
-COLUMN_NAME_OF_BASELINE_SCORES_DICTIONARY = "baseline_scores_dictionary"
+COLUMN_NAME_OF_BASELINE_SCORES_DICTIONARY = "pssmBaseline"
 MUTEPRED_TOOL_NAME = "MutPred"
 
 MUTEPRED_AMINO_ACID_SUBSTITUTIONS_COLUMN_NAME = "Amino_acid_substitutions"
@@ -47,6 +47,7 @@ EXCLUDE_TRAINING_SNP_SUFFIX = "_excluded_training_snps"
 MAVE_DATAFRAME_PICKLE_FILE_NAME = "gold_std_df.pkl"
 MAVE_DATAFRAME_ONLY_HUMAN_PICKLE_FILE_NAME = "gold_std_df_only_human.pkl"
 MAVE_DATAFRAME_ONLY_HUMAN_WITH_BASELINE_PICKLE_FILE_NAME = "gold_std_df_only_human_with_baseline.pkl"
+MAVE_DATAFRAME_ONLY_HUMAN_WITH_BASELINE_CORELATION_PICKLE_FILE_NAME = "gold_std_df_only_human_with_baseline_corelation.pkl"
 MAVE_DATAFRAME_HUMAN_LOPO_MEAN_PICKLE_FILE_NAME = "gold_std_df_human_lopo_mean.pkl"
 MAVE_DATAFRAME_HUMAN_LOPO_MEAN_PICKLE_FILE_NAME_WITH_TOOL_SCORES = "gold_std_df_human_lopo_mean_with_tool_scores.pkl"
 
