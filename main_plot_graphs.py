@@ -1,11 +1,14 @@
 from src.constants import MAVE_DATAFRAME_PICKLE_FILE_NAME, PICKLED_DATAFRAMES_DIRECTORY_PATH, PEARSON_CORELATION_SUFFIX, \
-    PROTEIN_SHORT_MAPPING
+    PROTEIN_SHORT_MAPPING, MAVE_DATAFRAME_ONLY_HUMAN_WITH_BASELINE_CORELATION_PICKLE_FILE_NAME
 from src.utils import load_dataframe, filter_dataframe_by_species
 from src.plot_graphs import PlotGeneroator
 
 if __name__ == '__main__':
     LOADED_MAVE_DF = load_dataframe(file_path=PICKLED_DATAFRAMES_DIRECTORY_PATH,
-                                        file_name="pssm_base.pkl")
+                                        file_name=MAVE_DATAFRAME_ONLY_HUMAN_WITH_BASELINE_CORELATION_PICKLE_FILE_NAME)
+
+
+    LOADED_MAVE_DF.drop("pssmBaseline_score_pearson_correlation", axis=1, inplace=True)
 
     # ONLY_HUMAN_DATABASE = filter_dataframe_by_species(LOADED_MAVE_DF)
 
