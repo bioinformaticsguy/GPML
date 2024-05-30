@@ -6,7 +6,8 @@ import pandas as pd
 
 from src.constants import COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP, \
     COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SCALED_EFFECT, COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SPECIES, \
-    COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY, PROTEIN_SPECIES_MAPPING, TOOL_SCORE_COLUMN_SUFFIX
+    COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY, PROTEIN_SPECIES_DICTMAP, TOOL_SCORE_COLUMN_SUFFIX, \
+    UNIPROT_ID_DICTMAP, COLUMN_NAME_OF_MAVE_GOLD_STANDARD_UNIPROT_ID
 
 from src.utils import get_dictonary_of_scores_maveDB, get_list_to_add_in_dataframe, get_single_letter_point_mutation, \
     get_protein_names_from_db_nsfp_output_directory
@@ -26,9 +27,9 @@ class MaveGoldStandard:
         - pd.DataFrame: A DataFrame constructed from the MAVE DB gold standard data.
         """
 
-        def _add_species_column(mave_gold_standard_df,
-                                dictionary_species,
-                                column_name=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SPECIES):
+        def _add_meta_data_column(mave_gold_standard_df,
+                                  dictionary_meta,
+                                  column_name=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SPECIES):
             """
                 Adds a new 'species' column to the provided DataFrame based on a mapping from protein names to species.
 
@@ -42,7 +43,7 @@ class MaveGoldStandard:
                 """
 
             mave_gold_standard_df[column_name] = mave_gold_standard_df[COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID]. \
-                                                    map(dictionary_species)
+                                                    map(dictionary_meta)
 
             return mave_gold_standard_df
 
@@ -74,9 +75,16 @@ class MaveGoldStandard:
             rows.append(row)
 
         mave_goldstandard_dataframe = pd.DataFrame(rows, columns=column_names)
-        mave_goldstandard_dataframe = _add_species_column(mave_goldstandard_dataframe,
-                                                          dictionary_species=PROTEIN_SPECIES_MAPPING,
-                                                          column_name=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SPECIES)
+        mave_goldstandard_dataframe = _add_meta_data_column(mave_goldstandard_dataframe,
+                                                            dictionary_meta=PROTEIN_SPECIES_DICTMAP,
+                                                            column_name=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SPECIES)
+
+        mave_goldstandard_dataframe = _add_meta_data_column(mave_goldstandard_dataframe,
+                                                            dictionary_meta=UNIPROT_ID_DICTMAP,
+                                                            column_name=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_UNIPROT_ID)
+
+
+
 
         mave_goldstandard_dataframe = _add_SNP_dict_column(mave_goldstandard_dataframe)
 
