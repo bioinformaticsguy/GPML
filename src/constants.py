@@ -26,10 +26,9 @@ DBNSFP_SNP_COLUMN_NAME = "HGVSp_ANNOVAR"
 AMINO_ACID_SEQUENCE_COLUMN_NAME = 'Prot_sequence'
 TOOLS_LIST = ["MutPred",
               "REVEL",
-              "PROVEAN",
-              "Polyphen2_HDIV",
               "EVE",
               "AlphaMissense",
+              "DEOGEN2"
               ]
 
 AMINO_ACIDS_SINGLE_LETTER = ['A', 'R', 'N', 'D', 'C', 'Q', 'E', 'G', 'H', 'I', 'L', 'K', 'M', 'F', 'P', 'S', 'T', 'W', 'Y', 'V']
@@ -37,7 +36,7 @@ AMINO_ACIDS_SINGLE_LETTER = ['A', 'R', 'N', 'D', 'C', 'Q', 'E', 'G', 'H', 'I', '
 # TOOLS_LIST = ["MutPred"]
 
 ## Suffixes and Prefixes
-TOOL_SCORE_COLUMN_SUFFIX = "_score"
+TOOL_SCORE_COLUMN_SUFFIX = "_rankscore"
 PEARSON_CORELATION_SUFFIX = "_pearson_correlation"
 USED_SNP_PERCENTAGE_SUFFIX = "_used_snp_percentage"
 TRAINING_FLAG_SUFFIX = "_training_flag"
@@ -53,7 +52,8 @@ MAVE_DATAFRAME_HUMAN_LOPO_MEAN_PICKLE_FILE_NAME = "gold_std_df_human_lopo_mean.p
 MAVE_DATAFRAME_HUMAN_LOPO_MEAN_PICKLE_FILE_NAME_WITH_TOOL_SCORES = "gold_std_df_human_lopo_mean_with_tool_scores.pkl"
 
 PICKLED_DATAFRAMES_DIRECTORY_PATH = Path("Data/pickled_dataframes")
-TRAINING_DATA_FILE_PATH = Path("Data/mutepred_training_data/wo_exclusive_hgmd_mp2_training_data_MavedbData.csv")
+MUTPRED_TRAINING_DATA_FILE_PATH = Path("Data/mutepred_training_data/wo_exclusive_hgmd_mp2_training_data_MavedbData.csv")
+DEOGEN2_TRAINING_DATA_FILE_PATH = Path("Data/deogen2_training_data/humsavar.txt")
 OUTPUT_DIR_DB_NSFP = Path("Data/dbNSFP_output_dir")
 
 
