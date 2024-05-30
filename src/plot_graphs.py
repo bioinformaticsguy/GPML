@@ -5,13 +5,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.interpolate import UnivariateSpline
 
-from src.constants import PROTEIN_SHORT_MAPPING, PEARSON_CORELATION_SUFFIX
+from src.constants import PROTEIN_SHORT_DICTMAP, PEARSON_CORELATION_SUFFIX
 
 
 class PlotGeneroator:
     @staticmethod
     def plot_correlations(dataframe,
-                          protein_short_mapping=PROTEIN_SHORT_MAPPING,
+                          protein_short_mapping=PROTEIN_SHORT_DICTMAP,
                           pearson_corelation_suffix=PEARSON_CORELATION_SUFFIX):
         dataframe.fillna(0, inplace=True)
         columns_list = dataframe.columns.tolist()
