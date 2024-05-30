@@ -1,5 +1,5 @@
 from src.constants import COLUMN_NAMES_OF_MAVE_GS_DATAFRAME_LIST, TRAINING_FLAG_SUFFIX, MUTEPRED_TOOL_NAME, \
-    TOOL_SCORE_COLUMN_SUFFIX, AMINO_ACID_SEQUENCE_COLUMN_NAME, SNP_COLUMN_NAME, MAVE_DATAFRAME_PICKLE_FILE_NAME, \
+    TOOL_SCORE_COLUMN_SUFFIX, AMINO_ACID_SEQUENCE_COLUMN_NAME, DBNSFP_SNP_COLUMN_NAME, MAVE_DATAFRAME_PICKLE_FILE_NAME, \
     TOOLS_LIST, OUTPUT_DIR_DB_NSFP, TRAINING_DATA_FILE_PATH, PICKLED_DATAFRAMES_DIRECTORY_PATH, \
     COLUMN_NAME_OF_MAVE_GOLD_STANDARD_PROTEIN_SEQUENCE, TRAINING_SNPS_COLUMN_SIFFIX, \
     MUTEPRED_AMINO_ACID_SUBSTITUTIONS_COLUMN_NAME, MAVE_DATAFRAME_HUMAN_LOPO_MEAN_PICKLE_FILE_NAME, \
@@ -39,9 +39,9 @@ if __name__ == '__main__':
                                         flag_column_name=MUTEPRED_TRAINING_FLAG_COLUMN_NAME)
 
     MAVE_GS_DATAFRAME = dbNSFPProcessor.add_data_from_list_of_tools(MAVE_GS_DATAFRAME,
-                                                                        db_nsfp_output_dir_path=OUTPUT_DIR_DB_NSFP,
-                                                                        tool_list=TOOLS_LIST,
-                                                                        snp_column_name=SNP_COLUMN_NAME)
+                                                                    db_nsfp_output_dir_path=OUTPUT_DIR_DB_NSFP,
+                                                                    tool_list=TOOLS_LIST,
+                                                                    snp_column_name=DBNSFP_SNP_COLUMN_NAME)
 
 
     # pickle_dataframe(dataframe=MAVE_GS_DATAFRAME_HUMAN_WITH_BASELINE,
