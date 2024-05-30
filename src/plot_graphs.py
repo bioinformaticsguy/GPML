@@ -33,7 +33,7 @@ class PlotGeneroator:
 
             # Create a UnivariateSpline object with your data
             x_values = np.arange(len(y))
-            spline = UnivariateSpline(x_values, y, s=0.05)
+            spline = UnivariateSpline(x_values, y, s=0.00)
 
             # Generate new, smoother y values
             ynew = spline(x_values)
@@ -90,4 +90,30 @@ class PlotGeneroator:
         plt.title(f'Distribution of Values: Counts and Percentages (Species)')
 
         # Show the plot
+        plt.show()
+
+    @staticmethod
+    def generate_bar_plot(species_tuple, data_dict):
+        y = np.arange(len(species_tuple))  # the label locations
+        height = 0.25  # the height of the bars
+        multiplier = 0
+
+        fig, ax = plt.subplots(layout='constrained')
+
+        for attribute, measurement in data_dict.items():
+            offset = height * multiplier
+            rects = ax.barh(y + offset, measurement, height, label=attribute)
+            ax.bar_label(rects, padding=3, fontsize=4)
+            multiplier += 1
+
+        # Add some text for labels, title and custom y-axis tick labels, etc.
+        ax.set_xlabel('Absolute Pearson correlation Values')
+        ax.set_ylabel('Protein Names')
+        # ax.set_title('Attributes by species')
+        ax.set_yticks(y + height)
+        ax.set_yticklabels(species_tuple, rotation=0)
+        ax.legend(loc='lower right', bbox_to_anchor=(1, 1), ncol=3, fontsize='x-small')
+        # ax.legend(loc='upper right', ncols=1)
+        ax.set_xlim(0, 0.6)
+
         plt.show()
