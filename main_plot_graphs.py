@@ -30,6 +30,4 @@ if __name__ == '__main__':
     dict_df = {k.replace("_pearson_correlation", ""): v for k, v in sorted_df.abs().to_dict('list').items()}
     PlotGeneroator.generate_bar_plot(protein_names, dict_df)
 
-
-
     print("Debug Pause")
