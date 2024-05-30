@@ -15,6 +15,7 @@ SPECIE_NAME_HUMAN = "Human"
 
 
 COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SPECIES = "species"
+COLUMN_NAME_OF_MAVE_GOLD_STANDARD_UNIPROT_ID = "uniprot_id"
 COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY = "mave_snps_scores_dictinary"
 COLUMN_NAME_OF_BASELINE_SCORES_DICTIONARY = "pssmBaseline"
 MUTEPRED_TOOL_NAME = "MutPred"
@@ -56,7 +57,7 @@ TRAINING_DATA_FILE_PATH = Path("Data/mutepred_training_data/wo_exclusive_hgmd_mp
 OUTPUT_DIR_DB_NSFP = Path("Data/dbNSFP_output_dir")
 
 
-PROTEIN_SPECIES_MAPPING = {
+PROTEIN_SPECIES_DICTMAP = {
     'A0A2Z5U3Z0_9INFA_A0A2Z5U3Z0_9INFA_Doud_2016': 'Virus',
     'BLAT_ECOLX_BLAT_ECOLX_Deng_2012': 'E-Coli',
     'BLAT_ECOLX_BLAT_ECOLX_Jacquier_2013': 'E-Coli',
@@ -95,7 +96,7 @@ PROTEIN_SPECIES_MAPPING = {
     'VKOR_urn:mavedb:00000078-b': 'Human'
 }
 
-PROTEIN_SHORT_MAPPING = {
+PROTEIN_SHORT_DICTMAP = {
     'A0A2Z5U3Z0_9INFA_A0A2Z5U3Z0_9INFA_Doud_2016': '9INFA',
     'BLAT_ECOLX_BLAT_ECOLX_Deng_2012': 'BLAT_ECOL_2012',
     'BLAT_ECOLX_BLAT_ECOLX_Jacquier_2013': 'BLAT_ECOL_2013',
@@ -132,6 +133,22 @@ PROTEIN_SHORT_MAPPING = {
     'VIM-2_with_p.Met1_Phe2insGly_urn:mavedb:00000073-h': 'VIM-2_73-h',
     'VKOR_urn:mavedb:00000078-a': 'VKOR_78-a',
     'VKOR_urn:mavedb:00000078-b': 'VKOR_78-b'
+}
+
+UNIPROT_ID_DICTMAP = {
+    "CBS_urn:mavedb:00000005-a": "P35520",
+    "CCR5_urn:mavedb:00000047-c": "P51681",
+    "CYP2C9_urn:mavedb:00000095-a": "P11712",
+    "CYP2C9_urn:mavedb:00000095-b": "P11712",
+    "NUDT15_urn:mavedb:00000055-0": "Q9NV35",
+    "NUDT15_urn:mavedb:00000055-a": "Q9NV35",
+    "p53_urn:mavedb:00000059-a": "P04637",
+    "PTEN_urn:mavedb:00000013-a": "P60484",
+    "PTEN_urn:mavedb:00000054-a": "P60484",
+    "SUMO1_urn:mavedb:00000001-b": "P63165",
+    "TP53_(P72R)_urn:mavedb:00000068-c": "P04637",
+    "VKOR_urn:mavedb:00000078-a": "Q9BQB6",
+    "VKOR_urn:mavedb:00000078-b": "Q9BQB6",
 }
 
 
