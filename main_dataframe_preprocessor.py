@@ -15,17 +15,7 @@ from src.utils import pickle_dataframe, add_column_from_tool_df_to_mave_df, add_
 MUTEPRED_SCORE_COLUMN_NAME = MUTEPRED_TOOL_NAME + TOOL_SCORE_COLUMN_SUFFIX
 MUTEPRED_TRAINING_FLAG_COLUMN_NAME = MUTEPRED_TOOL_NAME + TRAINING_FLAG_SUFFIX
 MUTEPRED_TRAINING_SNPS_COLUMN_NAME = MUTEPRED_TOOL_NAME + TRAINING_SNPS_COLUMN_SIFFIX
-def add_data_from_list_of_tools(mave_gs_dataframe,
-                                db_nsfp_output_dir_path=OUTPUT_DIR_DB_NSFP,
-                                tool_list=TOOLS_LIST,
-                                snp_column_name=SNP_COLUMN_NAME):
-    for tool in tool_list:
-        dbNSFPProcessor.add_tool_score_column(mave_gs_dataframe,
-                                              db_nsfp_output_dir_path,
-                                              tool,
-                                              snp_column_name)
 
-    return mave_gs_dataframe
 
 if __name__ == '__main__':
     MAVE_GS_DATAFRAME = MaveGoldStandard.get_dataframe_for_mave_gs_data(mave_gs_file_path=MAVE_GS_FILE_PATH,
@@ -48,7 +38,7 @@ if __name__ == '__main__':
                                         target_column=MUTEPRED_TRAINING_SNPS_COLUMN_NAME,
                                         flag_column_name=MUTEPRED_TRAINING_FLAG_COLUMN_NAME)
 
-    MAVE_GS_DATAFRAME = add_data_from_list_of_tools(MAVE_GS_DATAFRAME,
+    MAVE_GS_DATAFRAME = dbNSFPProcessor.add_data_from_list_of_tools(MAVE_GS_DATAFRAME,
                                                                         db_nsfp_output_dir_path=OUTPUT_DIR_DB_NSFP,
                                                                         tool_list=TOOLS_LIST,
                                                                         snp_column_name=SNP_COLUMN_NAME)
