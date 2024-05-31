@@ -31,6 +31,15 @@ TOOLS_LIST = ["MutPred",
               "DEOGEN2"
               ]
 
+DEOGEN_TRAINING_DF_COLUMNS = ["gene_name",
+                              "Swiss-Prot",
+                              "AA_change",
+                              "change_type",
+                              "variant",
+                              "dbSNP",
+                              "Disease_name",]
+
+
 AMINO_ACIDS_SINGLE_LETTER = ['A', 'R', 'N', 'D', 'C', 'Q', 'E', 'G', 'H', 'I', 'L', 'K', 'M', 'F', 'P', 'S', 'T', 'W', 'Y', 'V']
 
 # TOOLS_LIST = ["MutPred"]
