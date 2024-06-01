@@ -7,7 +7,8 @@ import pandas as pd
 from src.constants import COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP, \
     COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SCALED_EFFECT, COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SPECIES, \
     COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY, PROTEIN_SPECIES_DICTMAP, TOOL_SCORE_COLUMN_SUFFIX, \
-    UNIPROT_ID_DICTMAP, COLUMN_NAME_OF_MAVE_GOLD_STANDARD_UNIPROT_ID, OUTPUT_DIR_DB_NSFP, TOOLS_LIST, DBNSFP_SNP_COLUMN_NAME
+    UNIPROT_ID_DICTMAP, COLUMN_NAME_OF_MAVE_GOLD_STANDARD_UNIPROT_ID, OUTPUT_DIR_DB_NSFP, TOOLS_LIST, \
+    DBNSFP_SNP_COLUMN_NAME, DEOGEN_COLUMN_NAME_TO_FILTER, DEOGEN_VALUES_TO_FILTER
 
 from src.utils import get_dictonary_of_scores_maveDB, get_list_to_add_in_dataframe, get_single_letter_point_mutation, \
     get_protein_names_from_db_nsfp_output_directory
@@ -188,6 +189,40 @@ class MutepredTrainingProcessor:
         result_df.columns = [col.replace('_x', '') for col in result_df.columns]
 
         return result_df
+
+
+class deogen2TrainingProcessor:
+
+    @staticmethod
+    def get_deogen2_training__df(file_path, column_names):
+        """
+        Input: str file path
+        Output: returns a pandas dataframe of whole data
+        """
+        list_of_lines = []
+        with open(file_path) as file:
+            lines = file.readlines()
+            for line in lines[30:-6]:
+                # list_of_lines.append(line.split())
+                curr_list = line[:74].split() + [line[74:].strip()]
+                list_of_lines.append(curr_list)
+
+        df = pd.DataFrame(list_of_lines, columns=column_names)
+        return df
+
+    @staticmethod
+    def filter_unwanted_rows(df,
+                             column_name=DEOGEN_COLUMN_NAME_TO_FILTER,
+                             row_values_to_filter=DEOGEN_VALUES_TO_FILTER):
+        """
+         Filter unwanted rows from a dataframe.
+         Input: df: pandas dataframe
+         Output: pandas dataframe
+        """
+
+        for value in row_values_to_filter:
+            df = df.loc[df[column_name] != value]
+        return df
 
 
 class dbNSFPProcessor:
