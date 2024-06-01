@@ -39,6 +39,9 @@ DEOGEN_TRAINING_DF_COLUMNS = ["gene_name",
                               "dbSNP",
                               "Disease_name",]
 
+DEOGEN_VALUES_TO_FILTER = ["Unclassified"]
+DEOGEN_COLUMN_NAME_TO_FILTER = "variant"
+
 
 AMINO_ACIDS_SINGLE_LETTER = ['A', 'R', 'N', 'D', 'C', 'Q', 'E', 'G', 'H', 'I', 'L', 'K', 'M', 'F', 'P', 'S', 'T', 'W', 'Y', 'V']
 
