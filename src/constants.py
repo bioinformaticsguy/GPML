@@ -41,6 +41,9 @@ DEOGEN_TRAINING_DF_COLUMNS = ["gene_name",
 
 DEOGEN_VALUES_TO_FILTER = ["Unclassified"]
 DEOGEN_COLUMN_NAME_TO_FILTER = "variant"
+DEOGEN_UNIPROT_ID_COLUMN = "Swiss-Prot"
+DEOGEN_AMINO_ACID_CHANGE_COLUMN = "change_type"
+
 
 
 AMINO_ACIDS_SINGLE_LETTER = ['A', 'R', 'N', 'D', 'C', 'Q', 'E', 'G', 'H', 'I', 'L', 'K', 'M', 'F', 'P', 'S', 'T', 'W', 'Y', 'V']
