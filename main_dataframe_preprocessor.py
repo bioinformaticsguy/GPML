@@ -1,6 +1,6 @@
 import pandas as pd
 
-from src.constants import COLUMN_NAMES_OF_MAVE_GS_DATAFRAME_LIST, TRAINING_FLAG_SUFFIX, MUTEPRED_TOOL_NAME, \
+from src.constants import LIST_OF_COL_NAMES_OF_MAVE_GS_DF, TRAINING_FLAG_SUFFIX, MUTEPRED_TOOL_NAME, \
     TOOL_SCORE_COLUMN_SUFFIX, AMINO_ACID_SEQUENCE_COLUMN_NAME, DBNSFP_SNP_COLUMN_NAME, MAVE_DATAFRAME_PICKLE_FILE_NAME, \
     TOOLS_LIST, OUTPUT_DIR_DB_NSFP, MUTPRED_TRAINING_DATA_FILE_PATH, PICKLED_DATAFRAMES_DIRECTORY_PATH, \
     COL_NAME_OF_MAVE_GS_PROTEIN_SEQ, TRAINING_SNPS_COLUMN_SIFFIX, \
@@ -38,7 +38,7 @@ if __name__ == '__main__':
 
 
     MAVE_GS_DATAFRAME = MaveGoldStandard.get_dataframe_for_mave_gs_data(mave_gs_file_path=MAVE_GS_FILE_PATH,
-                                                                        column_names=COLUMN_NAMES_OF_MAVE_GS_DATAFRAME_LIST)
+                                                                        column_names=LIST_OF_COL_NAMES_OF_MAVE_GS_DF)
 
     MUTEPRED_DATAFRAME = MutepredTrainingProcessor.get_mutepred_df(MUTPRED_TRAINING_DATA_FILE_PATH)
     MUTEPRED_DATAFRAME = convert_column_to_list(MUTEPRED_DATAFRAME, MUTEPRED_AMINO_ACID_SUBSTITUTIONS_COLUMN_NAME)
