@@ -216,8 +216,8 @@ class deogen2TrainingProcessor:
                              row_values_to_filter=DEOGEN_VALUES_TO_FILTER):
         """
          Filter unwanted rows from a dataframe.
-         Input: df: pandas dataframe
-         Output: pandas dataframe
+         Input: df: pandas dataframe.
+         Output: pandas dataframe.
         """
 
         for value in row_values_to_filter:
