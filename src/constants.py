@@ -3,12 +3,12 @@ from pathlib import Path
 COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID = 'protein_name'
 COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP = 'snps'
 COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SCALED_EFFECT = 'scaled_effect'
-COLUMN_NAME_OF_MAVE_GOLD_STANDARD_PROTEIN_SEQUENCE = 'Prot_sequence'
+COL_NAME_OF_MAVE_GS_PROTEIN_SEQ = 'Prot_sequence'
 
 COLUMN_NAMES_OF_MAVE_GS_DATAFRAME_LIST = [COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID,
                                           COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP,
                                           COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SCALED_EFFECT,
-                                          COLUMN_NAME_OF_MAVE_GOLD_STANDARD_PROTEIN_SEQUENCE]
+                                          COL_NAME_OF_MAVE_GS_PROTEIN_SEQ]
 
 
 SPECIE_NAME_HUMAN = "Human"

@@ -8,7 +8,8 @@ from src.constants import COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, COLUMN_NAME_OF_M
     COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SCALED_EFFECT, COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SPECIES, \
     COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY, PROTEIN_SPECIES_DICTMAP, TOOL_SCORE_COLUMN_SUFFIX, \
     UNIPROT_ID_DICTMAP, COLUMN_NAME_OF_MAVE_GOLD_STANDARD_UNIPROT_ID, OUTPUT_DIR_DB_NSFP, TOOLS_LIST, \
-    DBNSFP_SNP_COLUMN_NAME, DEOGEN_COLUMN_NAME_TO_FILTER, DEOGEN_VALUES_TO_FILTER
+    DBNSFP_SNP_COLUMN_NAME, DEOGEN_COLUMN_NAME_TO_FILTER, DEOGEN_VALUES_TO_FILTER, DEOGEN_UNIPROT_ID_COLUMN, \
+    DEOGEN_AMINO_ACID_CHANGE_COLUMN
 
 from src.utils import get_dictonary_of_scores_maveDB, get_list_to_add_in_dataframe, get_single_letter_point_mutation, \
     get_protein_names_from_db_nsfp_output_directory
@@ -223,6 +224,29 @@ class deogen2TrainingProcessor:
         for value in row_values_to_filter:
             df = df.loc[df[column_name] != value]
         return df
+
+    @staticmethod
+    def get_overlaping_snp_list(deogen_training_df,
+                                uniprot_id,
+                                uniPprot_id_column_name=DEOGEN_UNIPROT_ID_COLUMN,
+                                amino_acid_change_column_name=DEOGEN_AMINO_ACID_CHANGE_COLUMN, ):
+
+        """
+        This function returns a list of SNPs for a given uniprot_id from the deogen2 training data.
+        Input:
+            deogen_training_df: pd.DataFrame
+            uniprot_id: str
+            uniPprot_id_column_name: str
+            amino_acid_change_column_name: str
+        Output:
+            snp_list: list
+        """
+
+        uniprot_id_df = deogen_training_df.loc[deogen_training_df[uniPprot_id_column_name] == uniprot_id]
+        snp_list = [get_single_letter_point_mutation(snp[2:]) for snp in
+                    uniprot_id_df[amino_acid_change_column_name].tolist()]
+
+        return snp_list
 
 
 class dbNSFPProcessor:
