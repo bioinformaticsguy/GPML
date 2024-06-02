@@ -19,16 +19,17 @@ COLUMN_NAME_OF_MAVE_GOLD_STANDARD_UNIPROT_ID = "uniprot_id"
 COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY = "mave_snps_scores_dictinary"
 COLUMN_NAME_OF_BASELINE_SCORES_DICTIONARY = "pssmBaseline"
 MUTEPRED_TOOL_NAME = "MutPred"
+DEOGEN_TOOL_NAME = "DEOGEN2"
 
 MUTEPRED_AMINO_ACID_SUBSTITUTIONS_COLUMN_NAME = "Amino_acid_substitutions"
 
 DBNSFP_SNP_COLUMN_NAME = "HGVSp_ANNOVAR"
 AMINO_ACID_SEQUENCE_COLUMN_NAME = 'Prot_sequence'
-TOOLS_LIST = ["MutPred",
+TOOLS_LIST = [MUTEPRED_TOOL_NAME,
               "REVEL",
               "EVE",
               "AlphaMissense",
-              "DEOGEN2"
+              DEOGEN_TOOL_NAME
               ]
 
 DEOGEN_TRAINING_DF_COLUMNS = ["gene_name",
