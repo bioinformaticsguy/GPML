@@ -3,12 +3,12 @@ from src.constants import LIST_OF_COL_NAMES_OF_MAVE_GS_DF, TRAINING_FLAG_SUFFIX,
     TOOLS_LIST, OUTPUT_DIR_DB_NSFP, MUTPRED_TRAINING_DATA_FILE_PATH, \
     COL_NAME_OF_MAVE_GS_PROTEIN_SEQ, TRAINING_SNPS_COLUMN_SIFFIX, \
     MUTEPRED_AMINO_ACID_SUBSTITUTIONS_COLUMN_NAME, DEOGEN2_TRAINING_DATA_FILE_PATH, \
-    DEOGEN_TRAINING_DF_COLUMNS, DEOGEN_TOOL_NAME
+    DEOGEN_TRAINING_DF_COLUMNS, DEOGEN_TOOL_NAME, PICKLED_DATAFRAMES_DIRECTORY_PATH, MAVE_DATAFRAME_PICKLE_FILE_NAME
 
 from src.dataframe_preprocessor import MaveGoldStandard, MutepredTrainingProcessor, dbNSFPProcessor, deogen2TrainingProcessor
 
 from main import MAVE_GS_FILE_PATH
-from src.utils import add_column_from_tool_df_to_mave_df, add_flag_column, convert_column_to_list
+from src.utils import add_column_from_tool_df_to_mave_df, add_flag_column, convert_column_to_list, pickle_dataframe
 
 ## Path and Strings
 MUTEPRED_TRAINING_FLAG_COLUMN_NAME = MUTEPRED_TOOL_NAME + TRAINING_FLAG_SUFFIX
@@ -55,8 +55,8 @@ if __name__ == '__main__':
                                                                     tool_list=TOOLS_LIST,
                                                                     snp_column_name=DBNSFP_SNP_COLUMN_NAME)
 
-    # pickle_dataframe(dataframe=MAVE_GS_DATAFRAME_HUMAN_WITH_BASELINE,
-    #                  file_path=PICKLED_DATAFRAMES_DIRECTORY_PATH,
-    #                  file_name=MAVE_DATAFRAME_ONLY_HUMAN_WITH_BASELINE_PICKLE_FILE_NAME)
+    pickle_dataframe(dataframe=MAVE_GS_DATAFRAME,
+                     file_path=PICKLED_DATAFRAMES_DIRECTORY_PATH,
+                     file_name=MAVE_DATAFRAME_PICKLE_FILE_NAME)
 
     print("Debug Pause")
