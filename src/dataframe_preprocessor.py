@@ -3,6 +3,7 @@ import pathlib
 import re
 import pandas
 import pandas as pd
+import numpy as np
 
 from src.constants import COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP, \
     COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SCALED_EFFECT, COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SPECIES, \
@@ -212,7 +213,7 @@ class deogen2TrainingProcessor:
         return df
 
     @staticmethod
-    def filter_unwanted_rows(df,
+    def filter_unwanted_rows(deogen_training_df,
                              column_name=DEOGEN_COLUMN_NAME_TO_FILTER,
                              row_values_to_filter=DEOGEN_VALUES_TO_FILTER):
         """
@@ -222,8 +223,8 @@ class deogen2TrainingProcessor:
         """
 
         for value in row_values_to_filter:
-            df = df.loc[df[column_name] != value]
-        return df
+            deogen_training_df = deogen_training_df.loc[deogen_training_df[column_name] != value]
+        return deogen_training_df
 
     @staticmethod
     def get_overlaping_snp_list(deogen_training_df,
@@ -247,6 +248,42 @@ class deogen2TrainingProcessor:
                     uniprot_id_df[amino_acid_change_column_name].tolist()]
 
         return snp_list
+
+    @staticmethod
+    def add_training_col_for_one_protein(mave_gs_df, deogen_training_df, protein_name, deogen_traininig_snp_col,
+                                         id_col=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID,
+                                         uniprot_id_col=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_UNIPROT_ID,):
+
+        """
+        This function adds the training column for one protein to the mave_gs_df
+        Input: mave_gs_df: DataFrame, deogen_training_df: DataFrame, protein_name: str
+        Output: mave_gs_df: DataFrame
+        """
+
+        if deogen_traininig_snp_col not in mave_gs_df.columns:
+            mave_gs_df[deogen_traininig_snp_col] = np.nan
+
+
+        curr_uni_prot_id = str(mave_gs_df.loc[mave_gs_df[id_col] == protein_name, uniprot_id_col].values[0])
+        list_of_snps = deogen2TrainingProcessor.get_overlaping_snp_list(deogen_training_df, curr_uni_prot_id, )
+
+        if len(list_of_snps) > 1:
+            mave_gs_df.loc[mave_gs_df[id_col] == protein_name, deogen_traininig_snp_col] = str(list_of_snps)
+
+        return mave_gs_df
+
+    @staticmethod
+    def add_training_col_for_all_proteins(mave_gs_df, deogen_training_df, deogen_traininig_snp_col,
+                                          id_col=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID,):
+
+        protein_names = mave_gs_df[id_col].tolist()
+        for protein_name in protein_names:
+            mave_gs_df = deogen2TrainingProcessor.add_training_col_for_one_protein(mave_gs_df,
+                                                                                   deogen_training_df,
+                                                                                   protein_name,
+                                                                                   deogen_traininig_snp_col,)
+
+        return  mave_gs_df
 
 
 class dbNSFPProcessor:
