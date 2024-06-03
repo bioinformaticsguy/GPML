@@ -115,6 +115,6 @@ class PlotGeneroator:
         ax.set_yticklabels(species_tuple, rotation=0)
         ax.legend(loc='lower right', bbox_to_anchor=(1, 1), ncol=3, fontsize='x-small')
         # ax.legend(loc='upper right', ncols=1)
-        ax.set_xlim(0, 0.6)
+        ax.set_xlim(0, 0.9)
 
         plt.show()
