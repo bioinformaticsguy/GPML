@@ -134,3 +134,8 @@ class CorelationUpdator:
                                                                tool_name=tool_name)
 
         return mave_goldstandard_df
+
+class DeogenCorelation:
+    @staticmethod
+    def add_deogen_baseline_corelation():
+        pass
