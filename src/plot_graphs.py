@@ -93,9 +93,8 @@ class PlotGeneroator:
         plt.show()
 
     @staticmethod
-    def generate_bar_plot(species_tuple, data_dict):
+    def generate_bar_plot(species_tuple, data_dict, file_name, height = 0.25):
         y = np.arange(len(species_tuple))  # the label locations
-        height = 0.25  # the height of the bars
         multiplier = 0
 
         # fig, ax = plt.subplots(layout='constrained')
@@ -115,6 +114,11 @@ class PlotGeneroator:
         ax.set_yticklabels(species_tuple, rotation=0)
         ax.legend(loc='lower right', bbox_to_anchor=(1, 1), ncol=3, fontsize='x-small')
         # ax.legend(loc='upper right', ncols=1)
-        ax.set_xlim(0, 0.9)
-
-        plt.show()
+        # all_values = [value for values in data_dict.values() for value in values]
+        # x_min = min(all_values)
+        # x_max = max(all_values)
+        #
+        # ax.set_xlim(x_min, x_max+0.05*x_max)
+        ax.set_xlim(0, 0.8)
+        fig.savefig(file_name, format='svg')
+        # plt.show()
