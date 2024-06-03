@@ -98,7 +98,8 @@ class PlotGeneroator:
         height = 0.25  # the height of the bars
         multiplier = 0
 
-        fig, ax = plt.subplots(layout='constrained')
+        # fig, ax = plt.subplots(layout='constrained')
+        fig, ax = plt.subplots(figsize=(10, 8), dpi=500, layout='constrained')
 
         for attribute, measurement in data_dict.items():
             offset = height * multiplier
