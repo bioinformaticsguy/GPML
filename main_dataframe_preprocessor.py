@@ -5,7 +5,7 @@ from src.constants import LIST_OF_COL_NAMES_OF_MAVE_GS_DF, TRAINING_FLAG_SUFFIX,
     MUTEPRED_AMINO_ACID_SUBSTITUTIONS_COLUMN_NAME, DEOGEN2_TRAINING_DATA_FILE_PATH, \
     DEOGEN_TRAINING_DF_COLUMNS, DEOGEN_TOOL_NAME, PICKLED_DATAFRAMES_DIRECTORY_PATH, MAVE_DATAFRAME_PICKLE_FILE_NAME
 
-from src.dataframe_preprocessor import MaveGoldStandard, MutepredTrainingProcessor, dbNSFPProcessor, deogen2TrainingProcessor
+from src.dataframe_preprocessor import MaveGoldStandard, MutepredTrainingProcessor, dbNSFPProcessor, Deogen2TrainingProcessor
 
 from main import MAVE_GS_FILE_PATH
 from src.utils import add_column_from_tool_df_to_mave_df, add_flag_column, convert_column_to_list, pickle_dataframe
@@ -22,12 +22,12 @@ if __name__ == '__main__':
     MAVE_GS_DATAFRAME = MaveGoldStandard.get_dataframe_for_mave_gs_data(mave_gs_file_path=MAVE_GS_FILE_PATH,
                                                                         column_names=LIST_OF_COL_NAMES_OF_MAVE_GS_DF)
 
-    DEOGEN2_TRAINING_DF = deogen2TrainingProcessor.get_deogen2_training__df(DEOGEN2_TRAINING_DATA_FILE_PATH, DEOGEN_TRAINING_DF_COLUMNS)
-    DEOGEN2_TRAINING_DF = deogen2TrainingProcessor.filter_unwanted_rows(DEOGEN2_TRAINING_DF)
+    DEOGEN2_TRAINING_DF = Deogen2TrainingProcessor.get_deogen2_training__df(DEOGEN2_TRAINING_DATA_FILE_PATH, DEOGEN_TRAINING_DF_COLUMNS)
+    DEOGEN2_TRAINING_DF = Deogen2TrainingProcessor.filter_unwanted_rows(DEOGEN2_TRAINING_DF)
 
-    MAVE_GS_DATAFRAME = deogen2TrainingProcessor.add_training_col_for_all_proteins(MAVE_GS_DATAFRAME,
-                                                                         DEOGEN2_TRAINING_DF,
-                                                                         DEOGEN_TRAINING_SNPS_COLUMN_NAME,)
+    MAVE_GS_DATAFRAME = Deogen2TrainingProcessor.add_training_col_for_all_proteins(MAVE_GS_DATAFRAME,
+                                                                                   DEOGEN2_TRAINING_DF,
+                                                                                   DEOGEN_TRAINING_SNPS_COLUMN_NAME, )
 
 
     MUTPRED_TRAINING_DF = MutepredTrainingProcessor.get_mutepred_df(MUTPRED_TRAINING_DATA_FILE_PATH)

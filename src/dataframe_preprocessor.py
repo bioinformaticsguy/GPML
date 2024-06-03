@@ -193,7 +193,7 @@ class MutepredTrainingProcessor:
         return result_df
 
 
-class deogen2TrainingProcessor:
+class Deogen2TrainingProcessor:
 
     @staticmethod
     def get_deogen2_training__df(file_path, column_names):
@@ -265,7 +265,7 @@ class deogen2TrainingProcessor:
 
 
         curr_uni_prot_id = str(mave_gs_df.loc[mave_gs_df[id_col] == protein_name, uniprot_id_col].values[0])
-        list_of_snps = deogen2TrainingProcessor.get_overlaping_snp_list(deogen_training_df, curr_uni_prot_id, )
+        list_of_snps = Deogen2TrainingProcessor.get_overlaping_snp_list(deogen_training_df, curr_uni_prot_id, )
 
         if len(list_of_snps) > 1:
             mave_gs_df.loc[mave_gs_df[id_col] == protein_name, deogen_traininig_snp_col] = str(list_of_snps)
@@ -278,10 +278,10 @@ class deogen2TrainingProcessor:
 
         protein_names = mave_gs_df[id_col].tolist()
         for protein_name in protein_names:
-            mave_gs_df = deogen2TrainingProcessor.add_training_col_for_one_protein(mave_gs_df,
+            mave_gs_df = Deogen2TrainingProcessor.add_training_col_for_one_protein(mave_gs_df,
                                                                                    deogen_training_df,
                                                                                    protein_name,
-                                                                                   deogen_traininig_snp_col,)
+                                                                                   deogen_traininig_snp_col, )
 
         return  mave_gs_df
 
