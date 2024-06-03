@@ -18,8 +18,8 @@ if __name__ == '__main__':
 
     id_column = "protein_name"
     baseline_column  = "pssmBaseline_pearson_correlation"
-    column1 = "MutPred_pearson_correlation"
-    column2 = "MutPred_pearson_correlation_excluded_training_snps"
+    column1 = "DEOGEN2_pearson_correlation"
+    column2 = "DEOGEN2_pearson_correlation_excluded_training_snps"
 
     column_names = [id_column, baseline_column, column1, column2]
     sorted_df = LOADED_MAVE_DF.loc[:, column_names].sort_values(by=baseline_column, ascending=True)
