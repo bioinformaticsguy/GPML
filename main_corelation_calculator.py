@@ -1,6 +1,7 @@
 from src.constants import MAVE_DATAFRAME_PICKLE_FILE_NAME, TOOLS_LIST, PICKLED_DATAFRAMES_DIRECTORY_PATH, \
     MUTEPRED_TOOL_NAME, MAVE_DATAFRAME_ONLY_HUMAN_WITH_BASELINE_PICKLE_FILE_NAME, \
-    COLUMN_NAME_OF_BASELINE_SCORES_DICTIONARY, MAVE_DATAFRAME_ONLY_HUMAN_WITH_BASELINE_CORELATION_PICKLE_FILE_NAME
+    COLUMN_NAME_OF_BASELINE_SCORES_DICTIONARY, MAVE_DATAFRAME_ONLY_HUMAN_WITH_BASELINE_CORELATION_PICKLE_FILE_NAME, \
+    DEOGEN_TOOL_NAME
 from src.utils import load_dataframe, pickle_dataframe, filter_dataframe_by_species
 from src.corelation_calculator import CorelationUpdator, DeogenCorelation
 
@@ -13,10 +14,18 @@ if __name__ == '__main__':
         add_tool_data_for_multiple_tools(MAVE_GS_DATAFRAME_HUMAN_WITH_BASELINE,
                                          tools_names_list=TOOLS_LIST)
 
+
+
+    # MAVE_GS_DATAFRAME_HUMAN_WITH_BASELINE = CorelationUpdator. \
+    #     add_tool_correlation_and_snp_percentage_column(mave_goldstandard_df=MAVE_GS_DATAFRAME_HUMAN_WITH_BASELINE,
+    #                                                    tool_name=DEOGEN_TOOL_NAME,
+    #                                                    exclude_tool_training_snps_flag=True)
+
     MAVE_GS_DATAFRAME_HUMAN_WITH_BASELINE = CorelationUpdator. \
         add_tool_correlation_and_snp_percentage_column(mave_goldstandard_df=MAVE_GS_DATAFRAME_HUMAN_WITH_BASELINE,
                                                        tool_name=MUTEPRED_TOOL_NAME,
                                                        exclude_tool_training_snps_flag=True)
+
 
     MAVE_GS_DATAFRAME_HUMAN_WITH_BASELINE = DeogenCorelation.add_deogen_baseline_corelation(MAVE_GS_DATAFRAME_HUMAN_WITH_BASELINE,)
 
