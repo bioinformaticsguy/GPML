@@ -3,7 +3,7 @@ import pickle
 import numpy as np
 import scipy.stats as stats
 import pandas as pd
-import json
+from scipy.stats import spearmanr
 
 from src.constants import COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP, \
     COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SPECIES, PEARSON_CORELATION_SUFFIX, USED_SNP_PERCENTAGE_SUFFIX, \
@@ -488,8 +488,11 @@ def get_correlation_and_percentage_used(df, column1_name, column2_name):
     # Drop rows with missing values in either of the columns
     valid_data = df.dropna(subset=[column1_name, column2_name])
 
-    # Calculate Pearson correlation
-    correlation = valid_data[column1_name].corr(valid_data[column2_name])
+    # Calculate correlation
+    pearson = valid_data[column1_name].corr(valid_data[column2_name])
+    spearman, _ = spearmanr(valid_data[column1_name], valid_data[column2_name])
+    correlation = spearman
+
 
     # Calculate the percentage of rows used
     percentage_used = (len(valid_data) / len(df)) * 100
