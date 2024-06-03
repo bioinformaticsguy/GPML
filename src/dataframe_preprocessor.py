@@ -4,6 +4,8 @@ import re
 import pandas
 import pandas as pd
 import numpy as np
+import ast
+
 
 from src.constants import COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP, \
     COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SCALED_EFFECT, COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SPECIES, \
@@ -270,6 +272,7 @@ class Deogen2TrainingProcessor:
         if len(list_of_snps) > 1:
             mave_gs_df.loc[mave_gs_df[id_col] == protein_name, deogen_traininig_snp_col] = str(list_of_snps)
 
+
         return mave_gs_df
 
     @staticmethod
@@ -282,6 +285,12 @@ class Deogen2TrainingProcessor:
                                                                                    deogen_training_df,
                                                                                    protein_name,
                                                                                    deogen_traininig_snp_col, )
+        for i in range(len(mave_gs_df)):
+            training_snps = mave_gs_df.at[i, deogen_traininig_snp_col]
+            if isinstance(training_snps, float):
+                mave_gs_df.at[i, deogen_traininig_snp_col] = []
+            if isinstance(training_snps, str):
+                mave_gs_df.at[i, deogen_traininig_snp_col] = ast.literal_eval(mave_gs_df.at[i, deogen_traininig_snp_col])
 
         return  mave_gs_df
 
