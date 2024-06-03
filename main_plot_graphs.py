@@ -12,8 +12,6 @@ if __name__ == '__main__':
                                     file_name=MAVE_DATAFRAME_ONLY_HUMAN_WITH_BASELINE_CORELATION_PICKLE_FILE_NAME)
 
 
-    LOADED_MAVE_DF.drop("pssmBaseline_score_pearson_correlation", axis=1, inplace=True)
-
     # PlotGeneroator.plot_correlations(LOADED_MAVE_DF)
     # PlotGeneroator.plot_pie_with_counts(LOADED_MAVE_DF, column_name="species")
 
