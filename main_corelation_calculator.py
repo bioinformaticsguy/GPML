@@ -16,10 +16,10 @@ if __name__ == '__main__':
 
 
 
-    # MAVE_GS_DATAFRAME_HUMAN_WITH_BASELINE = CorelationUpdator. \
-    #     add_tool_correlation_and_snp_percentage_column(mave_goldstandard_df=MAVE_GS_DATAFRAME_HUMAN_WITH_BASELINE,
-    #                                                    tool_name=DEOGEN_TOOL_NAME,
-    #                                                    exclude_tool_training_snps_flag=True)
+    MAVE_GS_DATAFRAME_HUMAN_WITH_BASELINE = CorelationUpdator. \
+        add_tool_correlation_and_snp_percentage_column(mave_goldstandard_df=MAVE_GS_DATAFRAME_HUMAN_WITH_BASELINE,
+                                                       tool_name=DEOGEN_TOOL_NAME,
+                                                       exclude_tool_training_snps_flag=True)
 
     MAVE_GS_DATAFRAME_HUMAN_WITH_BASELINE = CorelationUpdator. \
         add_tool_correlation_and_snp_percentage_column(mave_goldstandard_df=MAVE_GS_DATAFRAME_HUMAN_WITH_BASELINE,
