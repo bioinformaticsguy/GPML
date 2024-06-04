@@ -53,7 +53,7 @@ AMINO_ACIDS_SINGLE_LETTER = ['A', 'R', 'N', 'D', 'C', 'Q', 'E', 'G', 'H', 'I', '
 
 ## Suffixes and Prefixes
 TOOL_SCORE_COLUMN_SUFFIX = "_rankscore"
-PEARSON_CORELATION_SUFFIX = "_pearson_correlation"
+SPEAR_COR_SUFFIX = "_spear_cor"
 USED_SNP_PERCENTAGE_SUFFIX = "_used_snp_percentage"
 TRAINING_FLAG_SUFFIX = "_training_flag"
 TRAINING_SNPS_COLUMN_SIFFIX = "_training_snps"

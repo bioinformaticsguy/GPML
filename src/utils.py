@@ -6,7 +6,7 @@ import pandas as pd
 from scipy.stats import spearmanr
 
 from src.constants import COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP, \
-    COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SPECIES, PEARSON_CORELATION_SUFFIX, USED_SNP_PERCENTAGE_SUFFIX, \
+    COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SPECIES, SPEAR_COR_SUFFIX, USED_SNP_PERCENTAGE_SUFFIX, \
     TOOL_SCORE_COLUMN_SUFFIX, TRAINING_SNPS_COLUMN_SIFFIX, EXCLUDE_TRAINING_SNP_SUFFIX, \
     COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, AMINO_ACIDS_SINGLE_LETTER
 
@@ -662,7 +662,7 @@ def exclude_snps(df, exclude_snps_list):
 
 def generate_tool_columns(tool_name,
                           exclude_tool_training_snps_flag,
-                          pearson_suffix=PEARSON_CORELATION_SUFFIX,
+                          pearson_suffix=SPEAR_COR_SUFFIX,
                           snps_percentage_suffix=USED_SNP_PERCENTAGE_SUFFIX,
                           score_suffix=TOOL_SCORE_COLUMN_SUFFIX,
                           exlude_training_snp_suffix=EXCLUDE_TRAINING_SNP_SUFFIX):

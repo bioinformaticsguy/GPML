@@ -1,7 +1,7 @@
 from src.constants import MAVE_DATAFRAME_PICKLE_FILE_NAME, TOOLS_LIST, PICKLED_DATAFRAMES_DIRECTORY_PATH, \
     MUTEPRED_TOOL_NAME, MAVE_DATAFRAME_ONLY_HUMAN_WITH_BASELINE_PICKLE_FILE_NAME, \
     COLUMN_NAME_OF_BASELINE_SCORES_DICTIONARY, MAVE_DATAFRAME_ONLY_HUMAN_WITH_BASELINE_CORELATION_PICKLE_FILE_NAME, \
-    DEOGEN_TOOL_NAME
+    DEOGEN_TOOL_NAME, SPEAR_COR_SUFFIX, EXCLUDE_TRAINING_SNP_SUFFIX
 from src.utils import load_dataframe, pickle_dataframe, filter_dataframe_by_species
 from src.corelation_calculator import CorelationUpdator, DeogenCorelation
 
@@ -30,9 +30,9 @@ if __name__ == '__main__':
     MAVE_GS_DATAFRAME_HUMAN_WITH_BASELINE = DeogenCorelation.add_deogen_baseline_corelation(MAVE_GS_DATAFRAME_HUMAN_WITH_BASELINE,)
 
 
-    mean_normal = MAVE_GS_DATAFRAME_HUMAN_WITH_BASELINE["MutPred_pearson_correlation"].mean()
+    mean_normal = MAVE_GS_DATAFRAME_HUMAN_WITH_BASELINE[MUTEPRED_TOOL_NAME + SPEAR_COR_SUFFIX].mean()
 
-    mean_no_bias = MAVE_GS_DATAFRAME_HUMAN_WITH_BASELINE["MutPred_pearson_correlation_excluded_training_snps"].mean()
+    mean_no_bias = MAVE_GS_DATAFRAME_HUMAN_WITH_BASELINE[MUTEPRED_TOOL_NAME + SPEAR_COR_SUFFIX + EXCLUDE_TRAINING_SNP_SUFFIX].mean()
 
 
     strict = CorelationUpdator.calculate_tool_bias(df_with_spearman_scores=MAVE_GS_DATAFRAME_HUMAN_WITH_BASELINE,

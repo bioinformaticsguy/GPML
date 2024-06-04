@@ -5,14 +5,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.interpolate import UnivariateSpline
 
-from src.constants import PROTEIN_SHORT_DICTMAP, PEARSON_CORELATION_SUFFIX
+from src.constants import PROTEIN_SHORT_DICTMAP, SPEAR_COR_SUFFIX
 
 
 class PlotGeneroator:
     @staticmethod
     def plot_correlations(dataframe,
                           protein_short_mapping=PROTEIN_SHORT_DICTMAP,
-                          pearson_corelation_suffix=PEARSON_CORELATION_SUFFIX):
+                          pearson_corelation_suffix=SPEAR_COR_SUFFIX):
         dataframe.fillna(0, inplace=True)
         columns_list = dataframe.columns.tolist()
         filtered_columns_list = [column for column in columns_list if column.endswith(pearson_corelation_suffix)]
@@ -107,7 +107,7 @@ class PlotGeneroator:
             multiplier += 1
 
         # Add some text for labels, title and custom y-axis tick labels, etc.
-        ax.set_xlabel('Absolute Pearson correlation Values')
+        ax.set_xlabel("Absolute Spearman's correlation")
         ax.set_ylabel('Protein Names')
         # ax.set_title('Attributes by species')
         ax.set_yticks(y + height)

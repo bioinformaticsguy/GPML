@@ -1,5 +1,5 @@
 import numpy as np
-from src.constants import PEARSON_CORELATION_SUFFIX, TRAINING_FLAG_SUFFIX, TOOLS_LIST, \
+from src.constants import SPEAR_COR_SUFFIX, TRAINING_FLAG_SUFFIX, TOOLS_LIST, \
     COLUMN_NAME_OF_BASELINE_SCORES_DICTIONARY
 from src.dataframe_preprocessor import COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, \
     COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY
@@ -80,7 +80,7 @@ class CorelationUpdator:
     @staticmethod
     def calculate_tool_bias(df_with_spearman_scores,
                             tool_name,
-                            pearson_corelation_suffix=PEARSON_CORELATION_SUFFIX,
+                            pearson_corelation_suffix=SPEAR_COR_SUFFIX,
                             training_flag_suffix=TRAINING_FLAG_SUFFIX):
         """
         Calculates the bias of a tool based on Pearson correlation scores.
@@ -140,7 +140,7 @@ class DeogenCorelation:
                                        baseline_score_col_name=COLUMN_NAME_OF_BASELINE_SCORES_DICTIONARY,
                                        mave_df_id_column_name=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID,
                                        mave_score_dict_column_name=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY,
-                                       pearson_corelation_suffix=PEARSON_CORELATION_SUFFIX, ):
+                                       pearson_corelation_suffix=SPEAR_COR_SUFFIX, ):
 
 
         baseline_pearson_score_col = baseline_score_col_name + pearson_corelation_suffix
