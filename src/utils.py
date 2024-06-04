@@ -5,10 +5,10 @@ import scipy.stats as stats
 import pandas as pd
 from scipy.stats import spearmanr
 
-from src.constants import COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP, \
-    COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SPECIES, SPEAR_COR_SUFFIX, USED_SNP_PERCENTAGE_SUFFIX, \
-    TOOL_SCORE_COLUMN_SUFFIX, TRAINING_SNPS_COLUMN_SIFFIX, EXCLUDE_TRAINING_SNP_SUFFIX, \
-    COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, AMINO_ACIDS_SINGLE_LETTER
+from src.constants import COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SAVS, \
+    COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SPECIES, SPEAR_COR_SUFFIX, USED_SAV_PERCENTAGE_SUFFIX, \
+    TOOL_SCORE_COLUMN_SUFFIX, TRAINING_SAVS_COLUMN_SIFFIX, EXCLUDE_TRAINING_SAV_SUFFIX, \
+    COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, AMINO_ACIDS_SINGLE_LETTER, SAVS_STRING
 
 
 def get_dictonary_of_scores_maveDB(file_path):
@@ -468,7 +468,7 @@ def get_mave_tool_scores_dataframe(mave_scores_dict: dict,
                       index=[mave_score_dictionary_column_name, tool_score_dictionary_column_name]).T.reset_index()
 
     # Rename the columns
-    df.columns = [COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP, mave_score_dictionary_column_name, tool_score_dictionary_column_name]
+    df.columns = [COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SAVS, mave_score_dictionary_column_name, tool_score_dictionary_column_name]
 
     return df
 
@@ -642,7 +642,7 @@ def add_flag_column(df, target_column, flag_column_name):
     return df
 
 
-def exclude_snps(df, exclude_snps_list):
+def exclude_snps(df, exclude_snps_list, savs_string=SAVS_STRING):
     """
     Exclude rows from a dataframe based on values in the 'snps' column.
 
@@ -657,15 +657,15 @@ def exclude_snps(df, exclude_snps_list):
     if np.any(pd.isna(exclude_snps_list)):
         return df  # Return the same DataFrame if exclude_snps_list is nan
 
-    return df[~df['snps'].isin(exclude_snps_list)]
+    return df[~df[savs_string].isin(exclude_snps_list)]
 
 
 def generate_tool_columns(tool_name,
                           exclude_tool_training_snps_flag,
                           pearson_suffix=SPEAR_COR_SUFFIX,
-                          snps_percentage_suffix=USED_SNP_PERCENTAGE_SUFFIX,
+                          snps_percentage_suffix=USED_SAV_PERCENTAGE_SUFFIX,
                           score_suffix=TOOL_SCORE_COLUMN_SUFFIX,
-                          exlude_training_snp_suffix=EXCLUDE_TRAINING_SNP_SUFFIX):
+                          exlude_training_snp_suffix=EXCLUDE_TRAINING_SAV_SUFFIX):
     """
     Generates column names for a tool based on the provided tool name and suffixes.
 
@@ -691,7 +691,7 @@ def generate_tool_columns(tool_name,
 
     return pearson_column, snps_percentage_column, score_column
 
-def get_training_snps_column_name(tool_name, tool_training_suffix=TRAINING_SNPS_COLUMN_SIFFIX):
+def get_training_snps_column_name(tool_name, tool_training_suffix=TRAINING_SAVS_COLUMN_SIFFIX):
     """
     Generates the column name for training SNPs based on the provided tool name.
 

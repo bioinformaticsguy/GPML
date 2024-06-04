@@ -1,29 +1,31 @@
 from pathlib import Path
 
 COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID = 'protein_name'
-COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP = 'snps'
+COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SAVS = 'savs'
 COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SCALED_EFFECT = 'scaled_effect'
 COL_NAME_OF_MAVE_GS_PROTEIN_SEQ = 'Prot_sequence'
 
 LIST_OF_COL_NAMES_OF_MAVE_GS_DF = [COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID,
-                                   COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP,
+                                   COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SAVS,
                                    COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SCALED_EFFECT,
                                    COL_NAME_OF_MAVE_GS_PROTEIN_SEQ]
 
 
 SPECIE_NAME_HUMAN = "Human"
 
+SAVS_STRING = "savs"
+
 
 COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SPECIES = "species"
 COLUMN_NAME_OF_MAVE_GOLD_STANDARD_UNIPROT_ID = "uniprot_id"
-COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY = "mave_snps_scores_dictinary"
+COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SAV_DICTIONARY = "mave_savs_scores_dictinary"
 COLUMN_NAME_OF_BASELINE_SCORES_DICTIONARY = "pssmBaseline"
 MUTEPRED_TOOL_NAME = "MutPred"
 DEOGEN_TOOL_NAME = "DEOGEN2"
 
 MUTEPRED_AMINO_ACID_SUBSTITUTIONS_COLUMN_NAME = "Amino_acid_substitutions"
 
-DBNSFP_SNP_COLUMN_NAME = "HGVSp_ANNOVAR"
+DBNSFP_SAV_COLUMN_NAME = "HGVSp_ANNOVAR"
 AMINO_ACID_SEQUENCE_COLUMN_NAME = 'Prot_sequence'
 TOOLS_LIST = [MUTEPRED_TOOL_NAME,
               "REVEL",
@@ -54,10 +56,10 @@ AMINO_ACIDS_SINGLE_LETTER = ['A', 'R', 'N', 'D', 'C', 'Q', 'E', 'G', 'H', 'I', '
 ## Suffixes and Prefixes
 TOOL_SCORE_COLUMN_SUFFIX = "_rankscore"
 SPEAR_COR_SUFFIX = "_spear_cor"
-USED_SNP_PERCENTAGE_SUFFIX = "_used_snp_percentage"
+USED_SAV_PERCENTAGE_SUFFIX = "_used_sav_percentage"
 TRAINING_FLAG_SUFFIX = "_training_flag"
-TRAINING_SNPS_COLUMN_SIFFIX = "_training_snps"
-EXCLUDE_TRAINING_SNP_SUFFIX = "_excluded_training_snps"
+TRAINING_SAVS_COLUMN_SIFFIX = "_training_savs"
+EXCLUDE_TRAINING_SAV_SUFFIX = "_excluded_training_savs"
 
 ## File Names and Paths
 MAVE_DATAFRAME_PICKLE_FILE_NAME = "gold_std_df.pkl"

@@ -1,6 +1,6 @@
 import pandas as pd
 from src.constants import AMINO_ACIDS_SINGLE_LETTER, COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, \
-    COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY
+    COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SAV_DICTIONARY
 from src.utils import get_value_from_dataframe, get_protein_list, remove_digits_from_key
 
 
@@ -46,7 +46,7 @@ class pssmBaseline:
             protein_dict = get_value_from_dataframe(df=dataframe,
                                                     id_column=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID,
                                                     id_value=protein,
-                                                    value_column=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY)
+                                                    value_column=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SAV_DICTIONARY)
             for key, value in protein_dict.items():
                 if key[0] != key[-1]:
                     cur_tuple = pssm_df.at[key[0], key[-1]]

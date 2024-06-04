@@ -7,11 +7,11 @@ import numpy as np
 import ast
 
 
-from src.constants import COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP, \
+from src.constants import COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SAVS, \
     COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SCALED_EFFECT, COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SPECIES, \
-    COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY, PROTEIN_SPECIES_DICTMAP, TOOL_SCORE_COLUMN_SUFFIX, \
+    COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SAV_DICTIONARY, PROTEIN_SPECIES_DICTMAP, TOOL_SCORE_COLUMN_SUFFIX, \
     UNIPROT_ID_DICTMAP, COLUMN_NAME_OF_MAVE_GOLD_STANDARD_UNIPROT_ID, OUTPUT_DIR_DB_NSFP, TOOLS_LIST, \
-    DBNSFP_SNP_COLUMN_NAME, DEOGEN_COLUMN_NAME_TO_FILTER, DEOGEN_VALUES_TO_FILTER, DEOGEN_UNIPROT_ID_COLUMN, \
+    DBNSFP_SAV_COLUMN_NAME, DEOGEN_COLUMN_NAME_TO_FILTER, DEOGEN_VALUES_TO_FILTER, DEOGEN_UNIPROT_ID_COLUMN, \
     DEOGEN_AMINO_ACID_CHANGE_COLUMN
 
 from src.utils import get_dictonary_of_scores_maveDB, get_list_to_add_in_dataframe, get_single_letter_point_mutation, \
@@ -64,8 +64,8 @@ class MaveGoldStandard:
             """
 
             # Split 'SNPs' and 'scaled_effect' columns, then create a dictionary for each row
-            mave_gold_standard_df[COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY] = mave_gold_standard_df.apply(
-                lambda row: dict(zip(map(get_single_letter_point_mutation, row[COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP].split(';')),
+            mave_gold_standard_df[COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SAV_DICTIONARY] = mave_gold_standard_df.apply(
+                lambda row: dict(zip(map(get_single_letter_point_mutation, row[COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SAVS].split(';')),
                                      map(float, row[COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SCALED_EFFECT].split(';')))),
                 axis=1
             )
@@ -418,7 +418,7 @@ class dbNSFPProcessor:
     def add_data_from_list_of_tools(mave_gs_dataframe,
                                     db_nsfp_output_dir_path=OUTPUT_DIR_DB_NSFP,
                                     tool_list=TOOLS_LIST,
-                                    snp_column_name=DBNSFP_SNP_COLUMN_NAME):
+                                    snp_column_name=DBNSFP_SAV_COLUMN_NAME):
         """
         Add tool scores to the MAVE Gold Standard DataFrame
         Input: MAVE Gold Standard DataFrame, dbNSFP output directory path, list of tools, SNP column name

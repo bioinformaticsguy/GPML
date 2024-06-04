@@ -2,7 +2,7 @@ import numpy as np
 from src.constants import SPEAR_COR_SUFFIX, TRAINING_FLAG_SUFFIX, TOOLS_LIST, \
     COLUMN_NAME_OF_BASELINE_SCORES_DICTIONARY
 from src.dataframe_preprocessor import COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, \
-    COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY
+    COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SAV_DICTIONARY
 from src.utils import get_mave_tool_scores_dataframe, get_correlation_and_percentage_used, exclude_snps, \
     generate_tool_columns, get_training_snps_column_name
 
@@ -13,7 +13,7 @@ class CorelationUpdator:
                                                        tool_name,
                                                        exclude_tool_training_snps_flag=False,
                                                        mave_df_id_column_name=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID,
-                                                       mave_score_dict_column_name=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY):
+                                                       mave_score_dict_column_name=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SAV_DICTIONARY):
         """
         Adds columns for tool-specific Pearson correlation and SNP usage percentage to the MAVE gold standard DataFrame.
 
@@ -139,7 +139,7 @@ class DeogenCorelation:
     def add_deogen_baseline_corelation(mave_gs_df,
                                        baseline_score_col_name=COLUMN_NAME_OF_BASELINE_SCORES_DICTIONARY,
                                        mave_df_id_column_name=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID,
-                                       mave_score_dict_column_name=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY,
+                                       mave_score_dict_column_name=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SAV_DICTIONARY,
                                        pearson_corelation_suffix=SPEAR_COR_SUFFIX, ):
 
 

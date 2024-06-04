@@ -1,7 +1,7 @@
 import json
 
 from src.constants import AMINO_ACIDS_SINGLE_LETTER, COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, \
-    COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY
+    COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SAV_DICTIONARY
 from src.utils import update_value_based_on_protein_name, get_value_from_dataframe, generate_amino_pssm_dict, \
     remove_digits_from_key, calculate_mean, get_protein_name_list
 
@@ -80,7 +80,7 @@ class LopoBaseline:
     def get_PSSM_dict_for_protein(lopo_list, df,
                                   single_letter_amino_acids=AMINO_ACIDS_SINGLE_LETTER,
                                   mave_gs_id_column=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID,
-                                  mave_gs_snp_dict_column_name=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY):
+                                  mave_gs_snp_dict_column_name=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SAV_DICTIONARY):
         """
         This function calculates the mean of the PSSM values for each amino acid for a protein.
         Input: protein_name, lopo_list, df
@@ -151,9 +151,9 @@ class LopoBaseline:
 
 
         snp_dict = get_value_from_dataframe(df,
-                                             id_column=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID,
-                                             id_value=protein_name,
-                                             value_column=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SNP_DICTIONARY)
+                                            id_column=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID,
+                                            id_value=protein_name,
+                                            value_column=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SAV_DICTIONARY)
 
 
 
