@@ -103,7 +103,17 @@ class PlotGeneroator:
         for attribute, measurement in data_dict.items():
             offset = height * multiplier
             rects = ax.barh(y + offset, measurement, height, label=attribute)
+
+            for i, rect in enumerate(rects):
+                print(species_tuple[i])
+                # print(f"Width: {rect.get_width()}, Y: {rect.get_y()}, Height: {rect.get_height()}")
+                ax.text(rect.get_width() / 2, rect.get_y() + rect.get_height() / 2,
+                        ' ', ha='center', va='center', fontsize=4, color='white')
+
+
             ax.bar_label(rects, padding=3, fontsize=4)
+
+
             multiplier += 1
 
         # Add some text for labels, title and custom y-axis tick labels, etc.
