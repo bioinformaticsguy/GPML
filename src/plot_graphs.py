@@ -5,7 +5,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.interpolate import UnivariateSpline
 
-from src.constants import PROTEIN_SHORT_DICTMAP, SPEAR_COR_SUFFIX
+from src.constants import PROTEIN_SHORT_DICTMAP, SPEAR_COR_SUFFIX, PLOT_FORMAT, EXCLUDE_TRAINING_SAV_SUFFIX, \
+    TOOL_SCORE_COLUMN_SUFFIX, COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, TRAINING_SAVS_COLUMN_SIFFIX
+from src.utils import extract_value
 
 
 class PlotGeneroator:
@@ -93,25 +95,82 @@ class PlotGeneroator:
         plt.show()
 
     @staticmethod
-    def generate_bar_plot(species_tuple, data_dict, file_name, height = 0.25):
-        y = np.arange(len(species_tuple))  # the label locations
+    def generate_bar_plot(protein_names_list, data_dict, file_name, main_dataframe,
+                          height = 0.25,
+                          fig_height=12,
+                          legend_font_size="xx-large",
+                          barlabel_font_size=8,
+                          barlabel_flag=False):
+
+        short_protein_names = [PROTEIN_SHORT_DICTMAP[name] for name in protein_names_list]
+
+        y = np.arange(len(short_protein_names))  # the label locations
         multiplier = 0
 
         # fig, ax = plt.subplots(layout='constrained')
-        fig, ax = plt.subplots(figsize=(10, 8), dpi=500, layout='constrained')
+        fig, ax = plt.subplots(figsize=(10, fig_height), dpi=500, layout='constrained')
 
         for attribute, measurement in data_dict.items():
             offset = height * multiplier
             rects = ax.barh(y + offset, measurement, height, label=attribute)
 
             for i, rect in enumerate(rects):
-                print(species_tuple[i])
-                # print(f"Width: {rect.get_width()}, Y: {rect.get_y()}, Height: {rect.get_height()}")
-                ax.text(rect.get_width() / 2, rect.get_y() + rect.get_height() / 2,
-                        ' ', ha='center', va='center', fontsize=4, color='white')
+                if attribute.replace("_excluded_training_savs", "") != "pssmBaseline" and "_excluded_training_savs" in attribute:
+                    exc_savs = extract_value(df=main_dataframe,
+                                             id_column=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID,
+                                             row_value=protein_names_list[i],
+                                             target_col_name=attribute.replace("_excluded_training_savs", "")+TRAINING_SAVS_COLUMN_SIFFIX)
+
+                    all_savs = extract_value(df=main_dataframe,
+                                             id_column=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID,
+                                             row_value=protein_names_list[i],
+                                             target_col_name=attribute.replace("_excluded_training_savs", "")+TOOL_SCORE_COLUMN_SUFFIX)
 
 
-            ax.bar_label(rects, padding=3, fontsize=4)
+
+                    # mave_sav_num = "mave_savs_scores_dictinary"
+
+                    devided = round(exc_savs / all_savs, 3)
+
+                    perc = "{:.2f}%".format(devided * 100)
+                    #
+                    # print(protein_names_list[i],
+                    #       attribute.replace("_excluded_training_savs", "")+EXCLUDE_TRAINING_SAV_SUFFIX,
+                    #       attribute.replace("_excluded_training_savs", "")+TOOL_SCORE_COLUMN_SUFFIX,
+                    #       exc_savs, all_savs, devided, perc, mave_sav_num)
+                    # print(f"Width: {rect.get_width()}, Y: {rect.get_y()}, Height: {rect.get_height()}")
+
+                    # To put in center: rect.get_width() / 2 or -0.00001
+                    ax.text(-0.00001, rect.get_y() + rect.get_height() / 2,
+                            str(exc_savs) + ' / ' + str(all_savs) + " = " + str(perc),
+                            ha='left', va='center', fontsize=barlabel_font_size, color='white', weight='bold')
+                if attribute.replace("_excluded_training_savs", "") != "pssmBaseline" and "_excluded_training_savs" not in attribute:
+                    mave_sav_num = extract_value(df=main_dataframe,
+                                             id_column=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID,
+                                             row_value=protein_names_list[i],
+                                             target_col_name="mave_savs_scores_dictinary")
+
+                    all_savs = extract_value(df=main_dataframe,
+                                             id_column=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID,
+                                             row_value=protein_names_list[i],
+                                             target_col_name=attribute.replace("_excluded_training_savs", "")+TOOL_SCORE_COLUMN_SUFFIX)
+
+                    devided = round(all_savs / mave_sav_num  , 3)
+
+                    perc = "{:.2f}%".format(devided * 100)
+
+
+                    ax.text(rect.get_width() / 2, rect.get_y() + rect.get_height() / 2,
+                            str(all_savs) + ' / ' + str(mave_sav_num) + " = " + str(perc),
+                            ha='left', va='center', fontsize=barlabel_font_size, color='white', weight='bold')
+
+                    print(protein_names_list[i], all_savs, mave_sav_num, attribute)
+
+
+
+
+            if barlabel_flag:
+                ax.bar_label(rects, padding=3, fontsize=barlabel_font_size, weight='bold')
 
 
             multiplier += 1
@@ -121,14 +180,14 @@ class PlotGeneroator:
         ax.set_ylabel('Protein Names')
         # ax.set_title('Attributes by species')
         ax.set_yticks(y + height)
-        ax.set_yticklabels(species_tuple, rotation=0)
-        ax.legend(loc='lower right', bbox_to_anchor=(1, 1), ncol=3, fontsize='x-small')
+        ax.set_yticklabels(short_protein_names, rotation=0)
+        ax.legend(loc='lower right', bbox_to_anchor=(1, 1), ncol=3, fontsize=legend_font_size)
         # ax.legend(loc='upper right', ncols=1)
         # all_values = [value for values in data_dict.values() for value in values]
         # x_min = min(all_values)
         # x_max = max(all_values)
         #
         # ax.set_xlim(x_min, x_max+0.05*x_max)
-        ax.set_xlim(0, 0.8)
-        fig.savefig(file_name, format='svg')
-        # plt.show()
+        ax.set_xlim(0, 0.75)
+        fig.savefig(file_name, format=PLOT_FORMAT)
+        plt.show()

@@ -13,8 +13,8 @@ class pssmBaseline:
         Input: amino_acid_list
         Output: df with amino_acids as both row and column names with (0, 0) in each cell.
         """
-        return pd.DataFrame(data=[[(0, 0) for _ in amino_acid_list] for _ in amino_acid_list],
-                            index=amino_acid_list, columns=amino_acid_list)
+        return pd.DataFrame(data=[[(1, 1) if i == j else (0, 0) for j in amino_acid_list] for i in amino_acid_list],
+             index=amino_acid_list, columns=amino_acid_list)
 
     @staticmethod
     def get_lopo_dict(protein_name_list):

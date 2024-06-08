@@ -1,4 +1,5 @@
 import itertools
+import math
 import pickle
 import numpy as np
 import scipy.stats as stats
@@ -808,6 +809,29 @@ def get_protein_list(dataframe, column_name=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID
     Output: list of proteins
     """
     return dataframe[column_name].tolist()
+
+def extract_value(df, id_column, row_value, target_col_name):
+    """
+    Extract a value from a DataFrame given the id column name, row value, and target column name.
+
+    Parameters:
+        df (DataFrame): The DataFrame containing the data.
+        id_column (str): The name of the id column.
+        row_value (str): The value in the id column for the row of interest.
+        target_col_name (str): The name of the column from which to extract the value.
+
+    Returns:
+        The value in column1 for the row where id_column equals row_value. If no such row exists, returns None.
+    """
+    row = df[df[id_column] == row_value]
+    if not row.empty:
+        value = row[target_col_name].values[0]
+        try:
+            return len(value)
+        except TypeError:
+            return 0
+    else:
+        return 0
 
 
 if __name__ == '__main__':
