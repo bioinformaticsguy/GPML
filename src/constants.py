@@ -76,6 +76,7 @@ PICKLED_DATAFRAMES_DIRECTORY_PATH = Path("Data/pickled_dataframes")
 MUTPRED_TRAINING_DATA_FILE_PATH = Path("Data/mutepred_training_data/wo_exclusive_hgmd_mp2_training_data_MavedbData.csv")
 DEOGEN2_TRAINING_DATA_FILE_PATH = Path("Data/deogen2_training_data/humsavar.txt")
 OUTPUT_DIR_DB_NSFP = Path("Data/dbNSFP_output_dir")
+CLINVAR_DATA_FILE_PATH = Path("Data/clinvar_from_alpha.smlf")
 
 
 PROTEIN_SPECIES_DICTMAP = {
