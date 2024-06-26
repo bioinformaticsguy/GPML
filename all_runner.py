@@ -8,3 +8,6 @@ scripts = ["main_dataframe_preprocessor.py",
 
 for script in scripts:
     subprocess.call(["python", script])
+
+
+print("Debug Pause")
