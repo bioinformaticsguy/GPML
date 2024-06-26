@@ -34,8 +34,7 @@ TOOLS_LIST = [MUTEPRED_TOOL_NAME,
               "REVEL",
               "EVE",
               "AlphaMissense",
-              DEOGEN_TOOL_NAME,
-              FATHMM_TOOL_NAME]
+              DEOGEN_TOOL_NAME,]
 
 DEOGEN_TRAINING_DF_COLUMNS = ["gene_name",
                               "Swiss-Prot",
@@ -57,7 +56,7 @@ AMINO_ACIDS_SINGLE_LETTER = ['A', 'R', 'N', 'D', 'C', 'Q', 'E', 'G', 'H', 'I', '
 # TOOLS_LIST = ["MutPred"]
 
 ## Suffixes and Prefixes
-TOOL_SCORE_COLUMN_SUFFIX = "_rankscore"
+TOOL_SCORE_COLUMN_SUFFIX = "_score"
 SPEAR_COR_SUFFIX = "_spear_cor"
 USED_SAV_PERCENTAGE_SUFFIX = "_used_sav_percentage"
 TRAINING_FLAG_SUFFIX = "_training_flag"
