@@ -24,6 +24,7 @@ COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SAV_DICTIONARY = "mave_savs_scores_dictinary"
 COLUMN_NAME_OF_BASELINE_SCORES_DICTIONARY = "pssmBaseline"
 MUTEPRED_TOOL_NAME = "MutPred"
 DEOGEN_TOOL_NAME = "DEOGEN2"
+FATHMM_TOOL_NAME = "FATHMM"
 
 MUTEPRED_AMINO_ACID_SUBSTITUTIONS_COLUMN_NAME = "Amino_acid_substitutions"
 
@@ -33,8 +34,8 @@ TOOLS_LIST = [MUTEPRED_TOOL_NAME,
               "REVEL",
               "EVE",
               "AlphaMissense",
-              DEOGEN_TOOL_NAME
-              ]
+              DEOGEN_TOOL_NAME,
+              FATHMM_TOOL_NAME]
 
 DEOGEN_TRAINING_DF_COLUMNS = ["gene_name",
                               "Swiss-Prot",
