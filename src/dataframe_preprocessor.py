@@ -148,11 +148,56 @@ class ClinPredTrainingProcessor:
         Input: str file path
         Output: returns a pandas dataframe of whole data
         """
-        header_list = ["uniprot_id", "snp", "val"]
+        header_list = [COLUMN_NAME_OF_MAVE_GOLD_STANDARD_UNIPROT_ID, "snp", "val"]
         df = pd.read_csv(file_path, sep='\t')
         df.columns = header_list
 
         return df
+
+    @staticmethod
+    def add_savs_of_one_protein(mave_df,
+                                clinphred_df,
+                                protein_name,
+                                clinphred_sav_column_name,
+                                protein_name_id_col_name=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID,
+                                uniprot_id_col_name=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_UNIPROT_ID):
+
+        uniprot_id = mave_df.loc[mave_df[protein_name_id_col_name] == protein_name, uniprot_id_col_name].values[0]
+        filtered_df = clinphred_df[clinphred_df[COLUMN_NAME_OF_MAVE_GOLD_STANDARD_UNIPROT_ID] == uniprot_id]
+        sav_list = filtered_df["snp"].tolist()
+
+        if clinphred_sav_column_name not in mave_df.columns:
+            mave_df[clinphred_sav_column_name] = np.nan
+
+        if len(sav_list) > 1:
+            mave_df.loc[mave_df[protein_name_id_col_name] == protein_name, clinphred_sav_column_name] = str(sav_list)
+
+        return mave_df
+
+    @staticmethod
+    def add_training_col_for_all_proteins(mave_gs_df,
+                                          clinphred_df,
+                                          clinphred_sav_column_name,
+                                          protein_name_id_col_name=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID,):
+
+        protein_names = mave_gs_df[protein_name_id_col_name].tolist()
+        for protein_name in protein_names:
+            mave_gs_df = ClinPredTrainingProcessor.add_savs_of_one_protein(mave_df=mave_gs_df,
+                                                                           clinphred_df=clinphred_df,
+                                                                           protein_name=protein_name,
+                                                                           clinphred_sav_column_name=clinphred_sav_column_name)
+        for i in range(len(mave_gs_df)):
+            training_snps = mave_gs_df.at[i, clinphred_sav_column_name]
+            if isinstance(training_snps, float):
+                mave_gs_df.at[i, clinphred_sav_column_name] = []
+            if isinstance(training_snps, str):
+                mave_gs_df.at[i, clinphred_sav_column_name] = ast.literal_eval(mave_gs_df.at[i, clinphred_sav_column_name])
+
+        return  mave_gs_df
+
+
+
+
 
 
 
