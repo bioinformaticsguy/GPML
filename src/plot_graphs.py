@@ -141,7 +141,7 @@ class PlotGeneroator:
                     # print(f"Width: {rect.get_width()}, Y: {rect.get_y()}, Height: {rect.get_height()}")
 
                     # To put in center: rect.get_width() / 2 or -0.00001
-                    ax.text(-0.00001, rect.get_y() + rect.get_height() / 2,
+                    ax.text(rect.get_width() / 2, rect.get_y() + rect.get_height() / 2,
                             str(exc_savs) + ' / ' + str(all_savs) + " = " + str(perc),
                             ha='left', va='center', fontsize=barlabel_font_size, color='white', weight='bold')
                 if attribute.replace("_excluded_training_savs", "") != "pssmBaseline" and "_excluded_training_savs" not in attribute:
