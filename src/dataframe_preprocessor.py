@@ -12,7 +12,7 @@ from src.constants import COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, COLUMN_NAME_OF_M
     COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SAV_DICTIONARY, PROTEIN_SPECIES_DICTMAP, TOOL_SCORE_COLUMN_SUFFIX, \
     UNIPROT_ID_DICTMAP, COLUMN_NAME_OF_MAVE_GOLD_STANDARD_UNIPROT_ID, OUTPUT_DIR_DB_NSFP, TOOLS_LIST, \
     DBNSFP_SAV_COLUMN_NAME, DEOGEN_COLUMN_NAME_TO_FILTER, DEOGEN_VALUES_TO_FILTER, DEOGEN_UNIPROT_ID_COLUMN, \
-    DEOGEN_AMINO_ACID_CHANGE_COLUMN
+    DEOGEN_AMINO_ACID_CHANGE_COLUMN, CLINVAR_DATA_FILE_PATH
 
 from src.utils import get_dictonary_of_scores_maveDB, get_list_to_add_in_dataframe, get_single_letter_point_mutation, \
     get_protein_names_from_db_nsfp_output_directory
@@ -140,6 +140,22 @@ class MaveGoldStandard:
         return superset_df
 
 
+class ClinPredTrainingProcessor:
+    @staticmethod
+    def get_clinvar_df(file_path=CLINVAR_DATA_FILE_PATH):
+        """
+        this function reads the clinvar data file and returns a pandas dataframe
+        Input: str file path
+        Output: returns a pandas dataframe of whole data
+        """
+        header_list = ["uniprot_id", "snp", "val"]
+        df = pd.read_csv(file_path, sep='\t')
+        df.columns = header_list
+
+        return df
+
+
+
 class MutepredTrainingProcessor:
     @staticmethod
     def get_mutepred_df(file_path: pathlib.Path) -> pandas.DataFrame:
@@ -162,7 +178,6 @@ class MutepredTrainingProcessor:
         Input:
             dataframe_to_filter -> pandas.dataframe
             dataframe_with_common_values -> pandas.dataframe
-            sequence_list -> python list with strings of sequences
             df_sequence_column_name -> name of column containing sequences
 
         Output:
@@ -198,7 +213,7 @@ class MutepredTrainingProcessor:
 class Deogen2TrainingProcessor:
 
     @staticmethod
-    def get_deogen2_training__df(file_path, column_names):
+    def get_deogen2_training_df(file_path, column_names):
         """
         Input: str file path
         Output: returns a pandas dataframe of whole data
