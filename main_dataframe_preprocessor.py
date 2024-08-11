@@ -4,7 +4,8 @@ from src.constants import LIST_OF_COL_NAMES_OF_MAVE_GS_DF, TRAINING_FLAG_SUFFIX,
     COL_NAME_OF_MAVE_GS_PROTEIN_SEQ, TRAINING_SAVS_COLUMN_SIFFIX, \
     MUTEPRED_AMINO_ACID_SUBSTITUTIONS_COLUMN_NAME, DEOGEN2_TRAINING_DATA_FILE_PATH, \
     DEOGEN_TRAINING_DF_COLUMNS, DEOGEN_TOOL_NAME, PICKLED_DATAFRAMES_DIRECTORY_PATH, MAVE_DATAFRAME_PICKLE_FILE_NAME, \
-    CLINPRED_TOOL_NAME, PRIMATEAI_TOOL_NAME, FATHMM_TOOL_NAME, MUTATION_TASTER
+    CLINPRED_TOOL_NAME, PRIMATEAI_TOOL_NAME, FATHMM_TOOL_NAME, MUTATION_TASTER, COLUMN_NAME_OF_MAVE_SNPS, \
+    COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SAV_DICTIONARY
 
 from src.dataframe_preprocessor import MaveGoldStandard, MutepredTrainingProcessor, dbNSFPProcessor, \
     Deogen2TrainingProcessor, ClinPredTrainingProcessor
@@ -36,6 +37,9 @@ if __name__ == '__main__':
 
     MAVE_GS_DATAFRAME = MaveGoldStandard.get_dataframe_for_mave_gs_data(mave_gs_file_path=MAVE_GS_FILE_PATH,
                                                                         column_names=LIST_OF_COL_NAMES_OF_MAVE_GS_DF)
+
+    MAVE_GS_DATAFRAME[COLUMN_NAME_OF_MAVE_SNPS] = MAVE_GS_DATAFRAME[COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SAV_DICTIONARY].apply(lambda x: len(x) if isinstance(x, dict) else 0)
+
 
     MAVE_GS_DATAFRAME = dbNSFPProcessor.add_data_from_list_of_tools(MAVE_GS_DATAFRAME,
                                                                     db_nsfp_output_dir_path=OUTPUT_DIR_DB_NSFP,
