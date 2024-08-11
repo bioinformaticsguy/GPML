@@ -17,6 +17,7 @@ SPECIE_NAME_HUMAN = "Human"
 SAVS_STRING = "savs"
 
 PLOT_FORMAT = 'png'
+TABLE_FORMAT = "csv"
 
 
 COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SPECIES = "species"
@@ -79,9 +80,11 @@ MAVE_DATAFRAME_ONLY_HUMAN_WITH_BASELINE_CORELATION_PICKLE_FILE_NAME = "gold_std_
 MAVE_DATAFRAME_HUMAN_LOPO_MEAN_PICKLE_FILE_NAME = "gold_std_df_human_lopo_mean.pkl"
 MAVE_DATAFRAME_HUMAN_LOPO_MEAN_PICKLE_FILE_NAME_WITH_TOOL_SCORES = "gold_std_df_human_lopo_mean_with_tool_scores.pkl"
 PIE_PLOT_FILE_NAME = "pie_plot"
+HUMAN_PROTEIN_TABLE = "human_protein_table"
 
 ## Paths
 PLOTS_DIRECTORY_PATH = Path("Plots")
+TABLES_DIRECTORY_PATH = Path("Tables")
 PICKLED_DATAFRAMES_DIRECTORY_PATH = Path("Data/pickled_dataframes")
 MUTPRED_TRAINING_DATA_FILE_PATH = Path("Data/mutepred_training_data/wo_exclusive_hgmd_mp2_training_data_MavedbData.csv")
 DEOGEN2_TRAINING_DATA_FILE_PATH = Path("Data/deogen2_training_data/humsavar.txt")
