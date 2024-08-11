@@ -68,7 +68,8 @@ class PlotGeneroator:
                              plot_path=PLOTS_DIRECTORY_PATH,
                              file_name=PIE_PLOT_FILE_NAME,
                              plot_format=PLOT_FORMAT,
-                             title=False):
+                             title=False,
+                             show=False):
         """
         Generate a pie chart with percentage and count labels for unique entries in the specified column of a DataFrame.
 
@@ -105,9 +106,8 @@ class PlotGeneroator:
 
         fig.savefig(plot_path, format=PLOT_FORMAT)
 
-
-        # Show the plot
-        plt.show()
+        if show:
+            plt.show()
 
     @staticmethod
     def generate_bar_plot(protein_names_list, data_dict, file_name, main_dataframe,
@@ -117,7 +117,8 @@ class PlotGeneroator:
                           legend_font_size="xx-large",
                           barlabel_font_size=8,
                           barlabel_flag=False,
-                          removed_snp_flag_value=True,):
+                          removed_snp_flag_value=True,
+                          show=False,):
 
         short_protein_names = [PROTEIN_SHORT_DICTMAP[name] for name in protein_names_list]
 
@@ -204,4 +205,5 @@ class PlotGeneroator:
         # ax.set_xlim(x_min, x_max+0.05*x_max)
         ax.set_xlim(0, 0.75)
         fig.savefig(file_name, format=PLOT_FORMAT)
-        plt.show()
+        if show:
+            plt.show()
