@@ -1,12 +1,14 @@
 from itertools import cycle
 from operator import itemgetter
+from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.interpolate import UnivariateSpline
 
 from src.constants import PROTEIN_SHORT_DICTMAP, SPEAR_COR_SUFFIX, PLOT_FORMAT, EXCLUDE_TRAINING_SAV_SUFFIX, \
-    TOOL_SCORE_COLUMN_SUFFIX, COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, TRAINING_SAVS_COLUMN_SIFFIX
+    TOOL_SCORE_COLUMN_SUFFIX, COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, TRAINING_SAVS_COLUMN_SIFFIX, PIE_PLOT_FILE_NAME, \
+    PLOTS_DIRECTORY_PATH
 from src.utils import extract_value
 
 
@@ -62,7 +64,11 @@ class PlotGeneroator:
         plt.show()
 
     @staticmethod
-    def plot_pie_with_counts(df, column_name):
+    def plot_pie_with_counts(df, column_name,
+                             plot_path=PLOTS_DIRECTORY_PATH,
+                             file_name=PIE_PLOT_FILE_NAME,
+                             plot_format=PLOT_FORMAT,
+                             title=False):
         """
         Generate a pie chart with percentage and count labels for unique entries in the specified column of a DataFrame.
 
@@ -74,6 +80,8 @@ class PlotGeneroator:
             None
         """
 
+        plot_path = Path(plot_path) / f"{file_name}.{plot_format}"
+
         # Count the frequency of each unique entry in the specified column
         value_counts = df[column_name].value_counts()
 
@@ -82,6 +90,9 @@ class PlotGeneroator:
         # Plot the pie chart
         labels = [f"{label} ({count})" for label, count in zip(value_counts.index, value_counts.values)]
 
+        # Create a figure object
+        fig = plt.figure()
+
         # plt.pie(value_counts.values, labels=labels, startangle=140)
         plt.pie(value_counts.values, labels=labels, startangle=140, autopct='%1.1f%%')
 
@@ -89,18 +100,24 @@ class PlotGeneroator:
         # value_counts.plot.pie()
 
         # Add a title
-        plt.title(f'Distribution of Values: Counts and Percentages (Species)')
+        if title:
+            plt.title(f'Distribution of Values: Counts and Percentages (Species)')
+
+        fig.savefig(plot_path, format=PLOT_FORMAT)
+
 
         # Show the plot
         plt.show()
 
     @staticmethod
     def generate_bar_plot(protein_names_list, data_dict, file_name, main_dataframe,
+                          padding=0.01,  # adjust this value as needed
                           height = 0.25,
                           fig_height=12,
                           legend_font_size="xx-large",
                           barlabel_font_size=8,
-                          barlabel_flag=False):
+                          barlabel_flag=False,
+                          removed_snp_flag_value=True,):
 
         short_protein_names = [PROTEIN_SHORT_DICTMAP[name] for name in protein_names_list]
 
@@ -141,10 +158,11 @@ class PlotGeneroator:
                     # print(f"Width: {rect.get_width()}, Y: {rect.get_y()}, Height: {rect.get_height()}")
 
                     # To put in center: rect.get_width() / 2 or -0.00001
-                    ax.text(rect.get_width() / 2, rect.get_y() + rect.get_height() / 2,
-                            str(exc_savs) + ' / ' + str(all_savs) + " = " + str(perc),
-                            ha='left', va='center', fontsize=barlabel_font_size, color='white', weight='bold')
-                if attribute.replace("_excluded_training_savs", "") != "pssmBaseline" and "_excluded_training_savs" not in attribute:
+                    ax.text(rect.get_width() + padding, rect.get_y() + rect.get_height() / 2,
+                            '(' + str(exc_savs) + ' / ' + str(all_savs) + " = " + str(perc) + ')',
+                            ha='left', va='center', fontsize=barlabel_font_size, color='black', weight='normal')
+
+                if attribute.replace("_excluded_training_savs", "") != "pssmBaseline" and "_excluded_training_savs" not in attribute and removed_snp_flag_value:
                     mave_sav_num = extract_value(df=main_dataframe,
                                              id_column=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID,
                                              row_value=protein_names_list[i],
@@ -153,25 +171,21 @@ class PlotGeneroator:
                     all_savs = extract_value(df=main_dataframe,
                                              id_column=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID,
                                              row_value=protein_names_list[i],
-                                             target_col_name=attribute.replace("_excluded_training_savs", "")+TOOL_SCORE_COLUMN_SUFFIX)
+                                             target_col_name=attribute.replace("_excluded_training_savs", "") + TOOL_SCORE_COLUMN_SUFFIX )
 
                     devided = round(all_savs / mave_sav_num  , 3)
 
                     perc = "{:.2f}%".format(devided * 100)
 
 
-                    ax.text(rect.get_width() / 2, rect.get_y() + rect.get_height() / 2,
-                            str(all_savs) + ' / ' + str(mave_sav_num) + " = " + str(perc),
-                            ha='left', va='center', fontsize=barlabel_font_size, color='white', weight='bold')
+                    ax.text(rect.get_width() + padding, rect.get_y() + rect.get_height() / 2,
+                             '(' + str(all_savs) + ' / ' + str(mave_sav_num) + " = " + str(perc) + ')' ,
+                            ha='left', va='center', fontsize=barlabel_font_size, color='black', weight='normal')
 
                     print(protein_names_list[i], all_savs, mave_sav_num, attribute)
 
-
-
-
             if barlabel_flag:
-                ax.bar_label(rects, padding=3, fontsize=barlabel_font_size, weight='bold')
-
+                ax.bar_label(rects, padding=3, fontsize=barlabel_font_size, weight='normal')
 
             multiplier += 1
 
@@ -186,7 +200,7 @@ class PlotGeneroator:
         # all_values = [value for values in data_dict.values() for value in values]
         # x_min = min(all_values)
         # x_max = max(all_values)
-        #
+
         # ax.set_xlim(x_min, x_max+0.05*x_max)
         ax.set_xlim(0, 0.75)
         fig.savefig(file_name, format=PLOT_FORMAT)

@@ -639,7 +639,10 @@ def add_flag_column(df, target_column, flag_column_name):
     Returns:
     - pd.DataFrame: DataFrame with the new binary flag column added.
     """
-    df[flag_column_name] = df[target_column].notnull().astype(int)
+    if df.empty:
+        df[flag_column_name] = 0
+    else:
+        df[flag_column_name] = df[target_column].notnull().astype(int)
     return df
 
 

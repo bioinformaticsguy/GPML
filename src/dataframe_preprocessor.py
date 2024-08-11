@@ -12,7 +12,7 @@ from src.constants import COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, COLUMN_NAME_OF_M
     COLUMN_NAME_OF_MAVE_GOLD_STANDARD_SAV_DICTIONARY, PROTEIN_SPECIES_DICTMAP, TOOL_SCORE_COLUMN_SUFFIX, \
     UNIPROT_ID_DICTMAP, COLUMN_NAME_OF_MAVE_GOLD_STANDARD_UNIPROT_ID, OUTPUT_DIR_DB_NSFP, TOOLS_LIST, \
     DBNSFP_SAV_COLUMN_NAME, DEOGEN_COLUMN_NAME_TO_FILTER, DEOGEN_VALUES_TO_FILTER, DEOGEN_UNIPROT_ID_COLUMN, \
-    DEOGEN_AMINO_ACID_CHANGE_COLUMN, CLINVAR_DATA_FILE_PATH
+    DEOGEN_AMINO_ACID_CHANGE_COLUMN, CLINVAR_DATA_FILE_PATH, ALTERNATIVE_COLUMN_SUFFIX
 
 from src.utils import get_dictonary_of_scores_maveDB, get_list_to_add_in_dataframe, get_single_letter_point_mutation, \
     get_protein_names_from_db_nsfp_output_directory
@@ -189,7 +189,7 @@ class ClinPredTrainingProcessor:
         for i in range(len(mave_gs_df)):
             training_snps = mave_gs_df.at[i, clinphred_sav_column_name]
             if isinstance(training_snps, float):
-                mave_gs_df.at[i, clinphred_sav_column_name] = []
+                mave_gs_df.at[i, clinphred_sav_column_name] = np.nan
             if isinstance(training_snps, str):
                 mave_gs_df.at[i, clinphred_sav_column_name] = ast.literal_eval(mave_gs_df.at[i, clinphred_sav_column_name])
 
@@ -348,7 +348,7 @@ class Deogen2TrainingProcessor:
         for i in range(len(mave_gs_df)):
             training_snps = mave_gs_df.at[i, deogen_traininig_snp_col]
             if isinstance(training_snps, float):
-                mave_gs_df.at[i, deogen_traininig_snp_col] = []
+                mave_gs_df.at[i, deogen_traininig_snp_col] = np.nan
             if isinstance(training_snps, str):
                 mave_gs_df.at[i, deogen_traininig_snp_col] = ast.literal_eval(mave_gs_df.at[i, deogen_traininig_snp_col])
 
@@ -391,7 +391,8 @@ class dbNSFPProcessor:
         return True if len(unique_names_in_output_directory) == 0 else False
 
     @staticmethod
-    def get_protein_dictionary_snps_scores(dbNSFP_protein_dataframe, snp_column_name, tool_score_column_name):
+    def get_protein_dictionary_snps_scores(dbNSFP_protein_dataframe, snp_column_name, tool_score_column_name, tool_name,
+                                           alternative_col_suffix = ALTERNATIVE_COLUMN_SUFFIX):
 
         def _extract_snp_and_score(snp_str, score_str):
             """
@@ -413,6 +414,10 @@ class dbNSFPProcessor:
             return list(set(list(zip(snps, scores))))
 
         values_list = []
+
+        if tool_score_column_name not in dbNSFP_protein_dataframe.columns:
+            tool_score_column_name = tool_name + alternative_col_suffix
+
 
         for _, row in dbNSFP_protein_dataframe.iterrows():
             for tuple_snp_score in _extract_snp_and_score(snp_str=row[snp_column_name],
@@ -464,7 +469,8 @@ class dbNSFPProcessor:
             protein_snp_score_dictionary = dbNSFPProcessor.get_protein_dictionary_snps_scores(
                 dbNSFP_protein_dataframe=protein_dataframe,
                 snp_column_name=snp_column_name,
-                tool_score_column_name=column_name
+                tool_score_column_name=column_name,
+                tool_name=tool_name,
             )
 
             # Update the tool score column for the corresponding protein in the deep copy DataFrame

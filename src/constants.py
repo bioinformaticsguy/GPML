@@ -26,6 +26,10 @@ MUTEPRED_TOOL_NAME = "MutPred"
 DEOGEN_TOOL_NAME = "DEOGEN2"
 FATHMM_TOOL_NAME = "FATHMM"
 CLINPRED_TOOL_NAME = "ClinPred"
+PRIMATEAI_TOOL_NAME = "PrimateAI"
+
+MUTATION_TASTER = "MutationTaster"
+
 
 MUTEPRED_AMINO_ACID_SUBSTITUTIONS_COLUMN_NAME = "Amino_acid_substitutions"
 
@@ -36,7 +40,10 @@ TOOLS_LIST = [MUTEPRED_TOOL_NAME,
               "EVE",
               "AlphaMissense",
               DEOGEN_TOOL_NAME,
-              CLINPRED_TOOL_NAME,]
+              CLINPRED_TOOL_NAME,
+              PRIMATEAI_TOOL_NAME,
+              FATHMM_TOOL_NAME,
+              MUTATION_TASTER,]
 
 DEOGEN_TRAINING_DF_COLUMNS = ["gene_name",
                               "Swiss-Prot",
@@ -51,28 +58,28 @@ DEOGEN_COLUMN_NAME_TO_FILTER = "variant"
 DEOGEN_UNIPROT_ID_COLUMN = "Swiss-Prot"
 DEOGEN_AMINO_ACID_CHANGE_COLUMN = "change_type"
 
-
-
 AMINO_ACIDS_SINGLE_LETTER = ['A', 'R', 'N', 'D', 'C', 'Q', 'E', 'G', 'H', 'I', 'L', 'K', 'M', 'F', 'P', 'S', 'T', 'W', 'Y', 'V']
-
-# TOOLS_LIST = ["MutPred"]
 
 ## Suffixes and Prefixes
 TOOL_SCORE_COLUMN_SUFFIX = "_rankscore"
+ALTERNATIVE_COLUMN_SUFFIX = "_converted_rankscore"
 SPEAR_COR_SUFFIX = "_spear_cor"
+STRICT_COR_SUFFIX = "_strict_cor"
 USED_SAV_PERCENTAGE_SUFFIX = "_used_sav_percentage"
 TRAINING_FLAG_SUFFIX = "_training_flag"
 TRAINING_SAVS_COLUMN_SIFFIX = "_training_savs"
 EXCLUDE_TRAINING_SAV_SUFFIX = "_excluded_training_savs"
 
-## File Names and Paths
+## File Names
 MAVE_DATAFRAME_PICKLE_FILE_NAME = "gold_std_df.pkl"
 MAVE_DATAFRAME_ONLY_HUMAN_PICKLE_FILE_NAME = "gold_std_df_only_human.pkl"
 MAVE_DATAFRAME_ONLY_HUMAN_WITH_BASELINE_PICKLE_FILE_NAME = "gold_std_df_only_human_with_baseline.pkl"
 MAVE_DATAFRAME_ONLY_HUMAN_WITH_BASELINE_CORELATION_PICKLE_FILE_NAME = "gold_std_df_only_human_with_baseline_corelation.pkl"
 MAVE_DATAFRAME_HUMAN_LOPO_MEAN_PICKLE_FILE_NAME = "gold_std_df_human_lopo_mean.pkl"
 MAVE_DATAFRAME_HUMAN_LOPO_MEAN_PICKLE_FILE_NAME_WITH_TOOL_SCORES = "gold_std_df_human_lopo_mean_with_tool_scores.pkl"
+PIE_PLOT_FILE_NAME = "pie_plot"
 
+## Paths
 PLOTS_DIRECTORY_PATH = Path("Plots")
 PICKLED_DATAFRAMES_DIRECTORY_PATH = Path("Data/pickled_dataframes")
 MUTPRED_TRAINING_DATA_FILE_PATH = Path("Data/mutepred_training_data/wo_exclusive_hgmd_mp2_training_data_MavedbData.csv")
@@ -83,15 +90,15 @@ CLINVAR_DATA_FILE_PATH = Path("Data/clinvar_from_alpha.smlf")
 
 PROTEIN_SPECIES_DICTMAP = {
     'A0A2Z5U3Z0_9INFA_A0A2Z5U3Z0_9INFA_Doud_2016': 'Virus',
-    'BLAT_ECOLX_BLAT_ECOLX_Deng_2012': 'E-Coli',
-    'BLAT_ECOLX_BLAT_ECOLX_Jacquier_2013': 'E-Coli',
+    'BLAT_ECOLX_BLAT_ECOLX_Deng_2012': 'Escherichia coli',
+    'BLAT_ECOLX_BLAT_ECOLX_Jacquier_2013': 'Escherichia coli',
     'CBS_urn:mavedb:00000005-a': 'Human',
-    'CCDB_ECOLI_CCDB_ECOLI_Tripathi_2016': 'E-Coli',
-    'CcdB_urn:mavedb:00000084-a': 'E-Coli',
+    'CCDB_ECOLI_CCDB_ECOLI_Tripathi_2016': 'Escherichia coli',
+    'CcdB_urn:mavedb:00000084-a': 'Escherichia coli',
     'CCR5_urn:mavedb:00000047-c': 'Human',
     'CYP2C9_urn:mavedb:00000095-a': 'Human',
     'CYP2C9_urn:mavedb:00000095-b': 'Human',
-    'IF1_ECOLI_IF1_ECOLI_Kelsic_2016': 'E-Coli',
+    'IF1_ECOLI_IF1_ECOLI_Kelsic_2016': 'Escherichia coli',
     'KKA2_KLEPN_KKA2_KLEPN_Melnikov_2014': 'Bacteria',
     'NUDT15_urn:mavedb:00000055-0': 'Human',
     'NUDT15_urn:mavedb:00000055-a': 'Human',
