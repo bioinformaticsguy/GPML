@@ -16,7 +16,6 @@ import argparse
 from pathlib import Path
 
 from src.constants import (
-    PICKLED_DIR,
     MAVE_DATAFRAME_PICKLE_FILE_NAME,
     MAVE_DATAFRAME_ONLY_HUMAN_WITH_BASELINE_CORELATION_PICKLE_FILE_NAME,
     PLOTS_DIRECTORY_PATH,
@@ -33,11 +32,9 @@ from src.constants import (
     SPEAR_COR_SUFFIX,
     STRICT_COR_SUFFIX,
 )
+from src.constants import PICKLED_DATAFRAMES_DIRECTORY_PATH
 from src.utils import load_dataframe
 from src.plot_graphs import PlotGeneroator
-
-# Shorthand
-PICKLED_DATAFRAMES_DIRECTORY_PATH = Path("Data/pickled_dataframes")
 
 TOOLS_WITH_TRAINING_DATA = [
     MUTEPRED_TOOL_NAME,
