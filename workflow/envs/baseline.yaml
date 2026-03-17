@@ -1,0 +1,11 @@
+name: gpml_baseline
+# PSSM baseline setup and LOPO cross-validation calculation.
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9
+  - pandas=1.4
+  - numpy=1.23
+  - scipy=1.9
+  - scikit-learn=1.0

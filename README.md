@@ -12,6 +12,13 @@ GPML computes Spearman rank correlations between experimental MAVE measurements 
 
 ```
 GPML/
+├── Snakefile                               # Pipeline entry point
+├── install.sh                              # Database download and setup script
+├── gpml_env.yml                            # Full monolithic conda environment
+│
+├── config/
+│   └── config.yaml                         # Pipeline paths and parameters
+│
 ├── src/                                    # Core library modules
 │   ├── constants.py                        # Global config, column names, protein mappings
 │   ├── utils.py                            # Shared utility functions
@@ -24,21 +31,36 @@ GPML/
 │   ├── tables_generator.py                 # Summary table generation
 │   └── parallel_script.py                  # Parallel processing utilities
 │
-├── main.py                                 # Data loading and path initialization
-├── main_dataframe_preprocessor.py          # Step 1: Build master DataFrame
-├── main_pssm_baseline.py                   # Step 2: Add PSSM baseline columns
-├── main_baseline_calculation.py            # Step 3: Compute PSSM baseline scores
-├── main_corelation_calculator.py           # Step 4: Calculate Spearman correlations
-├── main_dbNSFP.py                          # dbNSFP score integration and analysis
-├── main_mutepred_overlap.py                # MutPred training overlap analysis
-├── main_plot_graphs.py                     # Step 5: Generate comparison plots
-├── main_tables.py                          # Step 6: Generate summary tables
-├── all_runner.py                           # Full pipeline orchestrator
-├── parallel_main.py                        # Parallel dbNSFP processing
-├── testing_code.py                         # Development and testing scripts
+├── workflow/
+│   ├── rules/                              # Snakemake rule modules
+│   │   ├── preprocess.smk                  # Step 1: Data integration
+│   │   ├── baseline.smk                    # Step 2: PSSM baseline setup + calculation
+│   │   ├── correlation.smk                 # Step 3: Spearman correlations
+│   │   ├── plots.smk                       # Step 4: Visualization
+│   │   └── tables.smk                      # Step 5: Summary tables
+│   ├── envs/                               # Per-step conda environments
+│   │   ├── preprocess.yaml
+│   │   ├── baseline.yaml
+│   │   ├── correlation.yaml
+│   │   ├── plots.yaml
+│   │   └── tables.yaml
+│   └── scripts/                            # Python scripts called by Snakemake rules
+│       ├── main.py                         # Path definitions and data loading
+│       ├── main_dataframe_preprocessor.py  # Step 1: Build master DataFrame
+│       ├── main_pssm_baseline.py           # Step 2a: Add PSSM baseline columns
+│       ├── main_baseline_calculation.py    # Step 2b: Compute PSSM baseline scores
+│       ├── main_corelation_calculator.py   # Step 3: Calculate Spearman correlations
+│       ├── main_plot_graphs.py             # Step 4: Generate comparison plots
+│       ├── main_tables.py                  # Step 5: Generate summary tables
+│       ├── main_dbNSFP.py                  # dbNSFP score integration and analysis
+│       ├── main_mutepred_overlap.py        # MutPred training overlap analysis
+│       ├── parallel_main.py                # Parallel dbNSFP processing
+│       ├── all_runner.py                   # Legacy sequential runner (superseded by Snakefile)
+│       └── testing_code.py                 # Development and testing scripts
 │
 ├── Data/                                   # Input and cached data (git-ignored)
 │   ├── mave_gs_data/                       # MAVE gold standard FASTA files
+│   ├── dbNSFP/                             # dbNSFP database files (from install.sh)
 │   ├── dbNSFP_input_dir/                   # dbNSFP query inputs
 │   ├── dbNSFP_output_dir/                  # dbNSFP tool score outputs
 │   ├── mutepred_scores/                    # MutPred prediction outputs
@@ -46,8 +68,7 @@ GPML/
 │   └── HandPickedMSAs/                     # Multiple sequence alignments
 │
 ├── Plots/                                  # Generated figures (git-ignored)
-├── Tables/                                 # Generated summary tables (git-ignored)
-└── gpml_env.yml                            # Conda environment specification
+└── Tables/                                 # Generated summary tables (git-ignored)
 ```
 
 ## Pipeline

@@ -1,0 +1,9 @@
+name: gpml_tables
+# Summary table generation (protein name, UniProt ID, SNP counts).
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9
+  - pandas=1.4
+  - numpy=1.23

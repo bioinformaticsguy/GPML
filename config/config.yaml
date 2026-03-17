@@ -1,0 +1,29 @@
+# ---------------------------------------------------------------------------
+# GPML pipeline configuration
+#
+# NOTE: The paths here must match the constants in src/constants.py.
+# They are used by Snakemake to track file dependencies — the Python scripts
+# themselves still read paths from src/constants.py directly.
+# ---------------------------------------------------------------------------
+
+# Output directories
+pickled_dir: "Data/pickled_dataframes"
+plots_dir:   "Plots"
+tables_dir:  "Tables"
+
+# Input data files
+mave_gs_file:     "Data/mave_gs_data/mave_db_gold_standard_only_sequences.fasta"
+dbnsfp_output_dir: "Data/dbNSFP_output_dir"
+mutpred_training: "Data/mutepred_training_data/wo_exclusive_hgmd_mp2_training_data_MavedbData.csv"
+deogen2_training: "Data/deogen2_training_data/humsavar.txt"
+clinvar_data:     "Data/clinvar_from_alpha.smlf"
+
+# Intermediate pickle filenames (must match src/constants.py)
+gold_std_pkl:       "gold_std_df.pkl"
+human_baseline_pkl: "gold_std_df_only_human_with_baseline.pkl"
+pssm_base_pkl:      "pssm_base.pkl"
+correlation_pkl:    "gold_std_df_only_human_with_baseline_corelation.pkl"
+
+# Final output names
+human_protein_table: "human_protein_table"
+plot_format:         "png"
