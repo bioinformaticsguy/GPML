@@ -11,7 +11,7 @@
 rule preprocess:
     input:
         mave_gs   = config["mave_gs_file"],
-        dbnsfp    = directory(config["dbnsfp_output_dir"]),
+        dbnsfp    = config["dbnsfp_output_dir"],
         mutpred   = config["mutpred_training"],
         deogen2   = config["deogen2_training"],
         clinvar   = config["clinvar_data"],
