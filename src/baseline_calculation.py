@@ -124,17 +124,16 @@ class LopoBaseline:
         input: df, protein_name, amino_acid_pssm_dict, id_column_name
         output: df
         """
-
         protein_list = get_protein_name_list(df, id_column_name)
         lopo_dict = LopoBaseline.get_lopo_dict(protein_list)
 
+        # Initialise as object dtype so pandas stores dicts as single cell values
+        df["PSSM"] = None
+
         for protein_name, lopo_list in lopo_dict.items():
             amino_acid_pssm_dict = LopoBaseline.get_PSSM_dict_for_protein(lopo_list=lopo_list, df=df)
-            df = update_value_based_on_protein_name(df=df,
-                                                    column_name="PSSM",
-                                                    value=amino_acid_pssm_dict,
-                                                    protein_name=protein_name,
-                                                    id_column_name=id_column_name)
+            idx = df.loc[df[id_column_name] == protein_name].index[0]
+            df.at[idx, "PSSM"] = amino_acid_pssm_dict
 
         return df
 
@@ -186,16 +185,14 @@ class LopoBaseline:
         """
         protein_list = get_protein_name_list(df, id_column_name)
 
+        # Initialise as object dtype so pandas stores dicts as single cell values
+        df["baseline_score"] = None
+
         for protein_name in protein_list:
             predic_dict = LopoBaseline.get_predicted_pssm_snp_scores(df,
                                                                  COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, protein_name)
-
-
-            df = update_value_based_on_protein_name(df=df,
-                                                    column_name="baseline_score",
-                                                    value=predic_dict,
-                                                    protein_name=protein_name,
-                                                    id_column_name=id_column_name)
+            idx = df.loc[df[id_column_name] == protein_name].index[0]
+            df.at[idx, "baseline_score"] = predic_dict
 
         return df
 
