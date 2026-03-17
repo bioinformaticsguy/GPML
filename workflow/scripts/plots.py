@@ -1,25 +1,29 @@
 """
 plots.py — Step 4
 
-Generates a species pie chart and a bar plot comparing strict Spearman
-correlations for all tools with known training data, sorted by PSSM baseline.
+Generates one plot per invocation, selected via --type:
+  pie        : species distribution pie chart
+  bar-strict : bar plot with training SNPs excluded (strict correlations)
+  bar-all    : bar plot across all SNPs (no exclusion)
 
-Input  : Data/pickled_dataframes/gold_std_df_only_human_with_baseline_corelation.pkl
-         Data/pickled_dataframes/gold_std_df.pkl
-Output : Plots/pie_plot.png
-         Plots/MutPredDEOGEN2ClinPredPrimateAIall_exclude.png
+Usage:
+  python workflow/scripts/plots.py --type pie
+  python workflow/scripts/plots.py --type bar-strict
+  python workflow/scripts/plots.py --type bar-all
 """
 
+import argparse
 from pathlib import Path
 
 from src.constants import (
-    PICKLED_DATAFRAMES_DIRECTORY_PATH,
+    PICKLED_DIR,
     MAVE_DATAFRAME_PICKLE_FILE_NAME,
     MAVE_DATAFRAME_ONLY_HUMAN_WITH_BASELINE_CORELATION_PICKLE_FILE_NAME,
     PLOTS_DIRECTORY_PATH,
     PLOT_FORMAT,
     COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID,
     COLUMN_NAME_OF_BASELINE_SCORES_DICTIONARY,
+    TOOLS_LIST,
     MUTEPRED_TOOL_NAME,
     DEOGEN_TOOL_NAME,
     CLINPRED_TOOL_NAME,
@@ -31,6 +35,9 @@ from src.constants import (
 )
 from src.utils import load_dataframe
 from src.plot_graphs import PlotGeneroator
+
+# Shorthand
+PICKLED_DATAFRAMES_DIRECTORY_PATH = Path("Data/pickled_dataframes")
 
 TOOLS_WITH_TRAINING_DATA = [
     MUTEPRED_TOOL_NAME,
@@ -45,35 +52,40 @@ ID_COL       = COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID
 BASELINE_COL = COLUMN_NAME_OF_BASELINE_SCORES_DICTIONARY + SPEAR_COR_SUFFIX
 
 
-if __name__ == "__main__":
-
+def plot_pie():
     full_df = load_dataframe(
         file_path=PICKLED_DATAFRAMES_DIRECTORY_PATH,
         file_name=MAVE_DATAFRAME_PICKLE_FILE_NAME,
     )
+    PlotGeneroator.plot_pie_with_counts(full_df, column_name="species")
+
+
+def plot_bar(use_strict: bool):
     corr_df = load_dataframe(
         file_path=PICKLED_DATAFRAMES_DIRECTORY_PATH,
         file_name=MAVE_DATAFRAME_ONLY_HUMAN_WITH_BASELINE_CORELATION_PICKLE_FILE_NAME,
     )
 
-    # --- Pie chart: species breakdown across the full MAVE database ---
-    PlotGeneroator.plot_pie_with_counts(full_df, column_name="species")
+    if use_strict:
+        tools      = TOOLS_WITH_TRAINING_DATA
+        cor_suffix = STRICT_COR_SUFFIX
+        file_name  = PLOTS_DIRECTORY_PATH / f"bar_strict.{PLOT_FORMAT}"
+    else:
+        tools      = TOOLS_LIST
+        cor_suffix = SPEAR_COR_SUFFIX
+        file_name  = PLOTS_DIRECTORY_PATH / f"bar_all.{PLOT_FORMAT}"
 
-    # --- Bar plot: strict correlations for all tools with training data ---
-    strict_cols   = [tool + STRICT_COR_SUFFIX for tool in TOOLS_WITH_TRAINING_DATA]
-    column_names  = [ID_COL, BASELINE_COL] + strict_cols
+    cor_cols  = [tool + cor_suffix for tool in tools]
+    columns   = [ID_COL, BASELINE_COL] + cor_cols
 
-    sorted_df     = corr_df.loc[:, column_names].sort_values(by=BASELINE_COL, ascending=True)
+    sorted_df     = corr_df.loc[:, columns].sort_values(by=BASELINE_COL, ascending=True)
     protein_names = sorted_df.pop(ID_COL).tolist()
-    dict_df       = {k.replace(SPEAR_COR_SUFFIX, ""): v for k, v in sorted_df.abs().to_dict("list").items()}
-
-    bar_plot_name = "".join(TOOLS_WITH_TRAINING_DATA[:4]) + "all_exclude." + PLOT_FORMAT
-    bar_plot_path = PLOTS_DIRECTORY_PATH / Path(bar_plot_name)
+    dict_df       = {k.replace(cor_suffix, ""): v for k, v in sorted_df.abs().to_dict("list").items()}
 
     PlotGeneroator.generate_bar_plot(
         protein_names,
         dict_df,
-        bar_plot_path,
+        file_name,
         corr_df,
         height=0.123,
         fig_height=12,
@@ -83,3 +95,21 @@ if __name__ == "__main__":
         barlabel_flag=True,
         removed_snp_flag_value=False,
     )
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--type",
+        required=True,
+        choices=["pie", "bar-strict", "bar-all"],
+        help="Which plot to generate",
+    )
+    args = parser.parse_args()
+
+    if args.type == "pie":
+        plot_pie()
+    elif args.type == "bar-strict":
+        plot_bar(use_strict=True)
+    elif args.type == "bar-all":
+        plot_bar(use_strict=False)

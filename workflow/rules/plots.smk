@@ -1,23 +1,46 @@
 # plots.smk
 #
-# Step 4: Generate publication-ready plots comparing prediction tool
-# performance, sorted by PSSM baseline correlation.
-#
-# Input  : gold_std_df_only_human_with_baseline_corelation.pkl, gold_std_df.pkl
-# Output : Plots/pie_plot.png
-#          Plots/MutPredDEOGEN2ClinPredPrimateAIall_exclude.png
+# One rule per plot type. The Snakefile's `rule all` uses config["enabled_plots"]
+# to decide which of these are required, so commenting a plot out of
+# config/config.yaml is all that's needed to skip it.
 
 
-rule plots:
+rule plot_pie:
+    input:
+        pkl = f"{config['pickled_dir']}/{config['gold_std_pkl']}",
+    output:
+        f"{config['plots_dir']}/pie_plot.{config['plot_format']}",
+    log:
+        "logs/plot_pie.log",
+    conda:
+        "../envs/plots.yaml"
+    shell:
+        "PYTHONPATH=. python workflow/scripts/plots.py --type pie > {log} 2>&1"
+
+
+rule plot_bar_strict:
     input:
         correlation_pkl = f"{config['pickled_dir']}/{config['correlation_pkl']}",
         gold_std_pkl    = f"{config['pickled_dir']}/{config['gold_std_pkl']}",
     output:
-        pie  = f"{config['plots_dir']}/pie_plot.{config['plot_format']}",
-        bars = f"{config['plots_dir']}/MutPredDEOGEN2ClinPredPrimateAIall_exclude.{config['plot_format']}",
+        f"{config['plots_dir']}/bar_strict.{config['plot_format']}",
     log:
-        "logs/plots.log",
+        "logs/plot_bar_strict.log",
     conda:
         "../envs/plots.yaml"
     shell:
-        "PYTHONPATH=. python workflow/scripts/plots.py > {log} 2>&1"
+        "PYTHONPATH=. python workflow/scripts/plots.py --type bar-strict > {log} 2>&1"
+
+
+rule plot_bar_all:
+    input:
+        correlation_pkl = f"{config['pickled_dir']}/{config['correlation_pkl']}",
+        gold_std_pkl    = f"{config['pickled_dir']}/{config['gold_std_pkl']}",
+    output:
+        f"{config['plots_dir']}/bar_all.{config['plot_format']}",
+    log:
+        "logs/plot_bar_all.log",
+    conda:
+        "../envs/plots.yaml"
+    shell:
+        "PYTHONPATH=. python workflow/scripts/plots.py --type bar-all > {log} 2>&1"

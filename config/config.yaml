@@ -27,3 +27,9 @@ correlation_pkl:    "gold_std_df_only_human_with_baseline_corelation.pkl"
 # Final output names
 human_protein_table: "human_protein_table"
 plot_format:         "png"
+
+# Which plots to generate — comment out any you don't want
+enabled_plots:
+  - pie_chart       # species distribution pie chart
+  - bar_strict      # bar plot: correlations with training SNPs excluded
+  - bar_all         # bar plot: correlations across all SNPs (no exclusion)

@@ -27,6 +27,13 @@ PLOTS_DIR   = config["plots_dir"]
 TABLES_DIR  = config["tables_dir"]
 FMT         = config["plot_format"]
 
+# Map config plot names to their output file paths
+PLOT_OUTPUT_MAP = {
+    "pie_chart":  f"{PLOTS_DIR}/pie_plot.{FMT}",
+    "bar_strict": f"{PLOTS_DIR}/bar_strict.{FMT}",
+    "bar_all":    f"{PLOTS_DIR}/bar_all.{FMT}",
+}
+
 # ---------------------------------------------------------------------------
 # Rule all — defines the final outputs that drive the whole pipeline
 # ---------------------------------------------------------------------------
@@ -34,8 +41,7 @@ FMT         = config["plot_format"]
 rule all:
     input:
         f"{TABLES_DIR}/{config['human_protein_table']}.csv",
-        f"{PLOTS_DIR}/pie_plot.{FMT}",
-        f"{PLOTS_DIR}/MutPredDEOGEN2ClinPredPrimateAIall_exclude.{FMT}",
+        [PLOT_OUTPUT_MAP[p] for p in config["enabled_plots"]],
 
 
 # ---------------------------------------------------------------------------
