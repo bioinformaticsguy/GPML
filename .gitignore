@@ -5,3 +5,7 @@
 .DS_Store
 /Plots
 /Data
+
+
+
+.snakemake
