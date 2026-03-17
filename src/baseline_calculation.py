@@ -77,6 +77,21 @@ class LopoBaseline:
 
         return sum(mean_values) / len(mean_values)
     @staticmethod
+    def get_lopo_dict(protein_list):
+        """
+        Build a dict mapping each protein name to its LOPO list
+        (all other proteins in the dataset).
+
+        Parameters:
+        - protein_list (list): Full list of protein names.
+
+        Returns:
+        - dict: {protein_name: [all other protein names]}
+        """
+        lopo_lists = LopoBaseline.leave_one_protein_out_lists(protein_list)
+        return {protein_list[i]: lopo_lists[i] for i in range(len(protein_list))}
+
+    @staticmethod
     def get_PSSM_dict_for_protein(lopo_list, df,
                                   single_letter_amino_acids=AMINO_ACIDS_SINGLE_LETTER,
                                   mave_gs_id_column=COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID,
