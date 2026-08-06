@@ -11,7 +11,7 @@ rule plot_pie:
     output:
         f"{config['plots_dir']}/pie_plot.{config['plot_format']}",
     log:
-        "logs/plot_pie.log",
+        "logs/rules/plot_pie.log",
     threads: _rule_threads("plot_pie", 1)
     resources:
         mem_mb=lambda wc, attempt: _rule_mem_mb("plot_pie", 4000, attempt),
@@ -30,7 +30,7 @@ rule plot_bar_strict:
     output:
         f"{config['plots_dir']}/bar_strict.{config['plot_format']}",
     log:
-        "logs/plot_bar_strict.log",
+        "logs/rules/plot_bar_strict.log",
     threads: _rule_threads("plot_bar_strict", 1)
     resources:
         mem_mb=lambda wc, attempt: _rule_mem_mb("plot_bar_strict", 4000, attempt),
@@ -49,7 +49,7 @@ rule plot_bar_all:
     output:
         f"{config['plots_dir']}/bar_all.{config['plot_format']}",
     log:
-        "logs/plot_bar_all.log",
+        "logs/rules/plot_bar_all.log",
     threads: _rule_threads("plot_bar_all", 1)
     resources:
         mem_mb=lambda wc, attempt: _rule_mem_mb("plot_bar_all", 4000, attempt),
@@ -70,7 +70,7 @@ rule plot_tool_comparison:
     output:
         f"{config['plots_dir']}/{{tool}}.{config['plot_format']}",
     log:
-        "logs/plot_tool_comparison_{tool}.log",
+        "logs/rules/plot_tool_comparison_{tool}.log",
     wildcard_constraints:
         tool="MutPred|DEOGEN2|ClinPred|PrimateAI|FATHMM|MutationTaster",
     threads: _rule_threads("plot_tool_comparison", 1)
@@ -91,7 +91,7 @@ rule plot_tool_strict:
     output:
         f"{config['plots_dir']}/{{tool}}_strict_cor.{config['plot_format']}",
     log:
-        "logs/plot_tool_strict_{tool}.log",
+        "logs/rules/plot_tool_strict_{tool}.log",
     wildcard_constraints:
         tool="MutPred|DEOGEN2|ClinPred|PrimateAI|FATHMM|MutationTaster",
     threads: _rule_threads("plot_tool_strict", 1)
@@ -112,7 +112,7 @@ rule plot_all_tools_all_exclude:
     output:
         f"{config['plots_dir']}/all_tools_all_exclude.{config['plot_format']}",
     log:
-        "logs/plot_all_tools_all_exclude.log",
+        "logs/rules/plot_all_tools_all_exclude.log",
     threads: _rule_threads("plot_all_tools_all_exclude", 1)
     resources:
         mem_mb=lambda wc, attempt: _rule_mem_mb("plot_all_tools_all_exclude", 8000, attempt),
@@ -131,7 +131,7 @@ rule plot_all_tools_non_exclude:
     output:
         f"{config['plots_dir']}/all_tools_non_exclude.{config['plot_format']}",
     log:
-        "logs/plot_all_tools_non_exclude.log",
+        "logs/rules/plot_all_tools_non_exclude.log",
     threads: _rule_threads("plot_all_tools_non_exclude", 1)
     resources:
         mem_mb=lambda wc, attempt: _rule_mem_mb("plot_all_tools_non_exclude", 4000, attempt),
@@ -150,7 +150,7 @@ rule plot_normal_corr:
     output:
         f"{config['plots_dir']}/normal_corr.{config['plot_format']}",
     log:
-        "logs/plot_normal_corr.log",
+        "logs/rules/plot_normal_corr.log",
     threads: _rule_threads("plot_normal_corr", 1)
     resources:
         mem_mb=lambda wc, attempt: _rule_mem_mb("plot_normal_corr", 4000, attempt),
@@ -168,7 +168,7 @@ rule plot_mean_bar:
     output:
         f"{config['plots_dir']}/mean_bar.{config['plot_format']}",
     log:
-        "logs/plot_mean_bar.log",
+        "logs/rules/plot_mean_bar.log",
     threads: _rule_threads("plot_mean_bar", 1)
     resources:
         mem_mb=lambda wc, attempt: _rule_mem_mb("plot_mean_bar", 4000, attempt),

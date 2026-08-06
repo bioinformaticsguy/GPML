@@ -18,7 +18,7 @@ rule pssm_setup:
     output:
         pkl = f"{config['pickled_dir']}/{config['human_baseline_pkl']}",
     log:
-        "logs/pssm_setup.log",
+        "logs/rules/pssm_setup.log",
     threads: _rule_threads("pssm_setup", 1)
     resources:
         mem_mb=lambda wc, attempt: _rule_mem_mb("pssm_setup", 8000, attempt),
@@ -36,7 +36,7 @@ rule pssm_baseline_calc:
     output:
         pkl = f"{config['pickled_dir']}/{config['pssm_base_pkl']}",
     log:
-        "logs/pssm_baseline_calc.log",
+        "logs/rules/pssm_baseline_calc.log",
     threads: _rule_threads("pssm_baseline_calc", 4)
     resources:
         mem_mb=lambda wc, attempt: _rule_mem_mb("pssm_baseline_calc", 16000, attempt),

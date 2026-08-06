@@ -145,8 +145,9 @@ Submit the controller after the preflight succeeds:
 bash scripts/slurm/submit_gpml_controller.local.sh
 ```
 
-Child job logs are written to `logs/slurm/`, controller logs to `logs/`, and
-active jobs can be viewed with:
+Controller logs are written to `logs/controller/`, stable per-rule logs to
+`logs/rules/`, and SLURM child-job logs to `logs/slurm/`. Active jobs can be
+viewed with:
 
 ```bash
 bash scripts/slurm/show_gpml_jobs.sh

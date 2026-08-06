@@ -113,7 +113,7 @@ rule all:
 
 onstart:
     shell(
-        "mkdir -p logs "
+        "mkdir -p logs/controller logs/rules logs/slurm "
         "{config[pickled_dir]} "
         "{config[plots_dir]} "
         "{config[tables_dir]}"

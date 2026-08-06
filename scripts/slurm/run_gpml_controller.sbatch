@@ -2,8 +2,8 @@
 # GPML SLURM controller.  This lightweight job runs Snakemake while the SLURM
 # executor plugin submits each workflow rule as a separate child job.
 #SBATCH --job-name=gpml-controller
-#SBATCH --output=logs/%j_%u_%N_gpml_controller.out
-#SBATCH --error=logs/%j_%u_%N_gpml_controller.err
+#SBATCH --output=logs/controller/%j_%u_%N_gpml_controller.out
+#SBATCH --error=logs/controller/%j_%u_%N_gpml_controller.err
 set -euo pipefail
 
 usage() {
@@ -57,9 +57,9 @@ fi
 [[ -f "$CONFIG_FILE" ]] || { echo "ERROR: config file not found: $CONFIG_FILE" >&2; exit 1; }
 [[ -f "$WORKFLOW_PROFILE/config.yaml" ]] || { echo "ERROR: profile not found: $WORKFLOW_PROFILE/config.yaml" >&2; exit 1; }
 
-mkdir -p logs logs/slurm .snakemake/locks
+mkdir -p logs/controller logs/rules logs/slurm .snakemake/locks
 TIMESTAMP=$(date +%Y%m%dT%H%M%S)
-RUN_LOG="logs/controller_${TIMESTAMP}_${SLURM_JOB_ID:-interactive}.log"
+RUN_LOG="logs/controller/controller_${TIMESTAMP}_${SLURM_JOB_ID:-interactive}.log"
 exec > >(tee -a "$RUN_LOG") 2>&1
 
 # shellcheck disable=SC1091
@@ -92,7 +92,7 @@ fi
 MAX_CORES=$((MAX_JOBS * MAX_THREADS_PER_JOB))
 echo "GPML SLURM controller: ${SLURM_JOB_ID:-interactive}"
 echo "Config: $CONFIG_FILE | profile: $WORKFLOW_PROFILE | child jobs: $MAX_JOBS | CPU cap: $MAX_CORES"
-echo "Controller log: $RUN_LOG | child logs: logs/slurm"
+echo "Controller logs: logs/controller | rule logs: logs/rules | child logs: logs/slurm"
 if [[ "${GPML_UNLOCK:-0}" == "1" ]]; then
     echo "WARNING: removing Snakemake lock because GPML_UNLOCK=1."
     snakemake --snakefile Snakefile --configfile "$CONFIG_FILE" "${CONFIG_ARGS[@]}" --unlock || true

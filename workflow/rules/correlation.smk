@@ -15,7 +15,7 @@ rule correlation:
     output:
         pkl = f"{config['pickled_dir']}/{config['correlation_pkl']}",
     log:
-        "logs/correlation.log",
+        "logs/rules/correlation.log",
     threads: _rule_threads("correlation", 2)
     resources:
         mem_mb=lambda wc, attempt: _rule_mem_mb("correlation", 16000, attempt),

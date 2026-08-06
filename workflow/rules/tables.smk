@@ -13,7 +13,7 @@ rule tables:
     output:
         csv = f"{config['tables_dir']}/{config['human_protein_table']}.csv",
     log:
-        "logs/tables.log",
+        "logs/rules/tables.log",
     threads: _rule_threads("tables", 1)
     resources:
         mem_mb=lambda wc, attempt: _rule_mem_mb("tables", 4000, attempt),

@@ -16,9 +16,9 @@ export GPML_MAX_JOBS="10"
 export GPML_MAX_THREADS_PER_JOB="4"
 export GPML_UNLOCK="0"
 
-mkdir -p logs
+mkdir -p logs/controller
 sbatch --partition="$GPML_SHORT_PARTITION" --time=1-00:00:00 --nodes=1 \
     --cpus-per-task=1 --mem=4GB --job-name=gpml-controller \
-    --output=logs/%j_%u_%N_gpml_controller.out \
-    --error=logs/%j_%u_%N_gpml_controller.err \
+    --output=logs/controller/%j_%u_%N_gpml_controller.out \
+    --error=logs/controller/%j_%u_%N_gpml_controller.err \
     scripts/slurm/run_gpml_controller.sbatch "$@"

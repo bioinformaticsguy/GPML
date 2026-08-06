@@ -18,7 +18,7 @@ rule preprocess:
     output:
         pkl = f"{config['pickled_dir']}/{config['gold_std_pkl']}",
     log:
-        "logs/preprocess.log",
+        "logs/rules/preprocess.log",
     threads: _rule_threads("preprocess", 2)
     resources:
         mem_mb=lambda wc, attempt: _rule_mem_mb("preprocess", 32000, attempt),
