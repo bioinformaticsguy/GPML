@@ -81,6 +81,20 @@ PLOT_OUTPUT_MAP = {
     "bar_all":    f"{PLOTS_DIR}/bar_all.{FMT}",
     "mutpred_comparison": f"{PLOTS_DIR}/MutPred.{FMT}",
     "deogen2_comparison": f"{PLOTS_DIR}/DEOGEN2.{FMT}",
+    "clinpred_comparison": f"{PLOTS_DIR}/ClinPred.{FMT}",
+    "primateai_comparison": f"{PLOTS_DIR}/PrimateAI.{FMT}",
+    "fathmm_comparison": f"{PLOTS_DIR}/FATHMM.{FMT}",
+    "mutationtaster_comparison": f"{PLOTS_DIR}/MutationTaster.{FMT}",
+    "mutpred_strict": f"{PLOTS_DIR}/MutPred_strict_cor.{FMT}",
+    "deogen2_strict": f"{PLOTS_DIR}/DEOGEN2_strict_cor.{FMT}",
+    "clinpred_strict": f"{PLOTS_DIR}/ClinPred_strict_cor.{FMT}",
+    "primateai_strict": f"{PLOTS_DIR}/PrimateAI_strict_cor.{FMT}",
+    "fathmm_strict": f"{PLOTS_DIR}/FATHMM_strict_cor.{FMT}",
+    "mutationtaster_strict": f"{PLOTS_DIR}/MutationTaster_strict_cor.{FMT}",
+    "all_tools_all_exclude": f"{PLOTS_DIR}/all_tools_all_exclude.{FMT}",
+    "all_tools_non_exclude": f"{PLOTS_DIR}/all_tools_non_exclude.{FMT}",
+    "normal_corr": f"{PLOTS_DIR}/normal_corr.{FMT}",
+    "mean_bar": f"{PLOTS_DIR}/mean_bar.{FMT}",
 }
 
 # ---------------------------------------------------------------------------

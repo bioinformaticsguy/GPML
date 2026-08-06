@@ -62,40 +62,119 @@ rule plot_bar_all:
 
 
 # Legacy per-tool comparisons.  These retain the historical output filenames
-# while making the plots reproducible workflow targets.
-rule plot_mutpred_comparison:
+# while making all six thesis-era tool plots reproducible workflow targets.
+rule plot_tool_comparison:
     input:
         correlation_pkl = f"{config['pickled_dir']}/{config['correlation_pkl']}",
         gold_std_pkl    = f"{config['pickled_dir']}/{config['gold_std_pkl']}",
     output:
-        f"{config['plots_dir']}/MutPred.{config['plot_format']}",
+        f"{config['plots_dir']}/{{tool}}.{config['plot_format']}",
     log:
-        "logs/plot_mutpred_comparison.log",
-    threads: _rule_threads("plot_mutpred_comparison", 1)
+        "logs/plot_tool_comparison_{tool}.log",
+    wildcard_constraints:
+        tool="MutPred|DEOGEN2|ClinPred|PrimateAI|FATHMM|MutationTaster",
+    threads: _rule_threads("plot_tool_comparison", 1)
     resources:
-        mem_mb=lambda wc, attempt: _rule_mem_mb("plot_mutpred_comparison", 4000, attempt),
-        runtime=lambda wc, attempt: _rule_runtime("plot_mutpred_comparison", 60, attempt),
-        slurm_partition=lambda wc, attempt: _rule_slurm_partition("plot_mutpred_comparison", 60, attempt),
+        mem_mb=lambda wc, attempt: _rule_mem_mb("plot_tool_comparison", 4000, attempt),
+        runtime=lambda wc, attempt: _rule_runtime("plot_tool_comparison", 60, attempt),
+        slurm_partition=lambda wc, attempt: _rule_slurm_partition("plot_tool_comparison", 60, attempt),
     conda:
         "../envs/plots.yaml"
     shell:
-        "PYTHONPATH=. python workflow/scripts/plots.py --type mutpred-comparison > {log} 2>&1"
+        "PYTHONPATH=. python workflow/scripts/plots.py --type tool-comparison --tool {wildcards.tool} > {log} 2>&1"
 
 
-rule plot_deogen2_comparison:
+rule plot_tool_strict:
     input:
         correlation_pkl = f"{config['pickled_dir']}/{config['correlation_pkl']}",
         gold_std_pkl    = f"{config['pickled_dir']}/{config['gold_std_pkl']}",
     output:
-        f"{config['plots_dir']}/DEOGEN2.{config['plot_format']}",
+        f"{config['plots_dir']}/{{tool}}_strict_cor.{config['plot_format']}",
     log:
-        "logs/plot_deogen2_comparison.log",
-    threads: _rule_threads("plot_deogen2_comparison", 1)
+        "logs/plot_tool_strict_{tool}.log",
+    wildcard_constraints:
+        tool="MutPred|DEOGEN2|ClinPred|PrimateAI|FATHMM|MutationTaster",
+    threads: _rule_threads("plot_tool_strict", 1)
     resources:
-        mem_mb=lambda wc, attempt: _rule_mem_mb("plot_deogen2_comparison", 4000, attempt),
-        runtime=lambda wc, attempt: _rule_runtime("plot_deogen2_comparison", 60, attempt),
-        slurm_partition=lambda wc, attempt: _rule_slurm_partition("plot_deogen2_comparison", 60, attempt),
+        mem_mb=lambda wc, attempt: _rule_mem_mb("plot_tool_strict", 4000, attempt),
+        runtime=lambda wc, attempt: _rule_runtime("plot_tool_strict", 60, attempt),
+        slurm_partition=lambda wc, attempt: _rule_slurm_partition("plot_tool_strict", 60, attempt),
     conda:
         "../envs/plots.yaml"
     shell:
-        "PYTHONPATH=. python workflow/scripts/plots.py --type deogen2-comparison > {log} 2>&1"
+        "PYTHONPATH=. python workflow/scripts/plots.py --type tool-strict --tool {wildcards.tool} > {log} 2>&1"
+
+
+rule plot_all_tools_all_exclude:
+    input:
+        correlation_pkl = f"{config['pickled_dir']}/{config['correlation_pkl']}",
+        gold_std_pkl    = f"{config['pickled_dir']}/{config['gold_std_pkl']}",
+    output:
+        f"{config['plots_dir']}/all_tools_all_exclude.{config['plot_format']}",
+    log:
+        "logs/plot_all_tools_all_exclude.log",
+    threads: _rule_threads("plot_all_tools_all_exclude", 1)
+    resources:
+        mem_mb=lambda wc, attempt: _rule_mem_mb("plot_all_tools_all_exclude", 8000, attempt),
+        runtime=lambda wc, attempt: _rule_runtime("plot_all_tools_all_exclude", 120, attempt),
+        slurm_partition=lambda wc, attempt: _rule_slurm_partition("plot_all_tools_all_exclude", 120, attempt),
+    conda:
+        "../envs/plots.yaml"
+    shell:
+        "PYTHONPATH=. python workflow/scripts/plots.py --type all-tools-all-exclude > {log} 2>&1"
+
+
+rule plot_all_tools_non_exclude:
+    input:
+        correlation_pkl = f"{config['pickled_dir']}/{config['correlation_pkl']}",
+        gold_std_pkl    = f"{config['pickled_dir']}/{config['gold_std_pkl']}",
+    output:
+        f"{config['plots_dir']}/all_tools_non_exclude.{config['plot_format']}",
+    log:
+        "logs/plot_all_tools_non_exclude.log",
+    threads: _rule_threads("plot_all_tools_non_exclude", 1)
+    resources:
+        mem_mb=lambda wc, attempt: _rule_mem_mb("plot_all_tools_non_exclude", 4000, attempt),
+        runtime=lambda wc, attempt: _rule_runtime("plot_all_tools_non_exclude", 60, attempt),
+        slurm_partition=lambda wc, attempt: _rule_slurm_partition("plot_all_tools_non_exclude", 60, attempt),
+    conda:
+        "../envs/plots.yaml"
+    shell:
+        "PYTHONPATH=. python workflow/scripts/plots.py --type all-tools-non-exclude > {log} 2>&1"
+
+
+rule plot_normal_corr:
+    input:
+        correlation_pkl = f"{config['pickled_dir']}/{config['correlation_pkl']}",
+        gold_std_pkl    = f"{config['pickled_dir']}/{config['gold_std_pkl']}",
+    output:
+        f"{config['plots_dir']}/normal_corr.{config['plot_format']}",
+    log:
+        "logs/plot_normal_corr.log",
+    threads: _rule_threads("plot_normal_corr", 1)
+    resources:
+        mem_mb=lambda wc, attempt: _rule_mem_mb("plot_normal_corr", 4000, attempt),
+        runtime=lambda wc, attempt: _rule_runtime("plot_normal_corr", 60, attempt),
+        slurm_partition=lambda wc, attempt: _rule_slurm_partition("plot_normal_corr", 60, attempt),
+    conda:
+        "../envs/plots.yaml"
+    shell:
+        "PYTHONPATH=. python workflow/scripts/plots.py --type normal-corr > {log} 2>&1"
+
+
+rule plot_mean_bar:
+    input:
+        correlation_pkl = f"{config['pickled_dir']}/{config['correlation_pkl']}",
+    output:
+        f"{config['plots_dir']}/mean_bar.{config['plot_format']}",
+    log:
+        "logs/plot_mean_bar.log",
+    threads: _rule_threads("plot_mean_bar", 1)
+    resources:
+        mem_mb=lambda wc, attempt: _rule_mem_mb("plot_mean_bar", 4000, attempt),
+        runtime=lambda wc, attempt: _rule_runtime("plot_mean_bar", 60, attempt),
+        slurm_partition=lambda wc, attempt: _rule_slurm_partition("plot_mean_bar", 60, attempt),
+    conda:
+        "../envs/plots.yaml"
+    shell:
+        "PYTHONPATH=. python workflow/scripts/plots.py --type mean-bar > {log} 2>&1"

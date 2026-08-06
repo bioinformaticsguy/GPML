@@ -33,5 +33,22 @@ enabled_plots:
   - pie_chart       # species distribution pie chart
   - bar_strict      # bar plot: correlations with training SNPs excluded
   - bar_all         # bar plot: correlations across all SNPs (no exclusion)
-  - mutpred_comparison  # legacy: all-SNP vs training-SNP-excluded MutPred correlations
-  - deogen2_comparison  # legacy: all-SNP vs training-SNP-excluded DEOGEN2 correlations
+  # Thesis-era per-tool comparisons (all SNPs versus training SNPs excluded)
+  - mutpred_comparison
+  - deogen2_comparison
+  - clinpred_comparison
+  - primateai_comparison
+  - fathmm_comparison
+  - mutationtaster_comparison
+  # Thesis-era per-tool strict correlations
+  - mutpred_strict
+  - deogen2_strict
+  - clinpred_strict
+  - primateai_strict
+  - fathmm_strict
+  - mutationtaster_strict
+  # Thesis-era aggregate comparison figures
+  - all_tools_all_exclude
+  - all_tools_non_exclude
+  - normal_corr
+  - mean_bar
