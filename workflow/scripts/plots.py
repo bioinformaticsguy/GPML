@@ -143,7 +143,12 @@ def plot_legacy_tool_strict(tool_name):
     """Reproduce the legacy PSSM-baseline versus strict-correlation plot."""
     corr_df = _load_correlation_dataframe()
     column_names = [ID_COL, BASELINE_COL, tool_name + STRICT_COR_SUFFIX]
-    _generate_bar_plot(corr_df, column_names, f"{tool_name}_strict_cor")
+    _generate_bar_plot(
+        corr_df,
+        column_names,
+        f"{tool_name}_strict_cor",
+        removed_snp_flag_value=False,
+    )
 
 
 def plot_all_tools_all_exclude():
