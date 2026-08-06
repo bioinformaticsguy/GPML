@@ -26,6 +26,19 @@ def get_plot_series_color(series_name, fallback_index=0):
     return PLOT_FALLBACK_COLORS[fallback_index % len(PLOT_FALLBACK_COLORS)]
 
 
+def get_plot_series_label(series_name):
+    """Return a compact, consistent legend label for a correlation series."""
+    if series_name == COLUMN_NAME_OF_BASELINE_SCORES_DICTIONARY:
+        return "PSSM baseline"
+    if series_name.endswith(EXCLUDE_TRAINING_SAV_SUFFIX):
+        tool_name = series_name.removesuffix(EXCLUDE_TRAINING_SAV_SUFFIX)
+        return f"{tool_name} (excl.)"
+    if series_name.endswith(STRICT_COR_SUFFIX):
+        tool_name = series_name.removesuffix(STRICT_COR_SUFFIX)
+        return f"{tool_name} (strict)"
+    return series_name
+
+
 class PlotGeneroator:
     @staticmethod
     def plot_correlations(dataframe,
@@ -145,7 +158,7 @@ class PlotGeneroator:
                 y + offset,
                 measurement,
                 height,
-                label=attribute,
+                label=get_plot_series_label(attribute),
                 color=get_plot_series_color(attribute, multiplier),
             )
 

@@ -46,7 +46,7 @@ from src.constants import (
     PICKLED_DATAFRAMES_DIRECTORY_PATH,
 )
 from src.utils import load_dataframe
-from src.plot_graphs import PlotGeneroator, get_plot_series_color
+from src.plot_graphs import PlotGeneroator, get_plot_series_color, get_plot_series_label
 
 TOOLS_WITH_TRAINING_DATA = [
     MUTEPRED_TOOL_NAME,
@@ -124,10 +124,11 @@ def plot_bar_all():
         corr_df,
         column_names,
         "bar_all",
-        height=0.13,
-        fig_height=8,
+        height=0.085,
+        fig_height=12,
         barlabel_font_size=4,
-        legend_font_size="large",
+        legend_font_size="small",
+        removed_snp_flag_value=False,
     )
 
 
@@ -239,7 +240,12 @@ def plot_averaged_over_savs():
     fig, ax = plt.subplots(figsize=(10, 7))
     positions = range(len(values))
     for position, label, value in zip(positions, labels, values):
-        ax.barh(position, value, color=get_plot_series_color(label, position), label=label)
+        ax.barh(
+            position,
+            value,
+            color=get_plot_series_color(label, position),
+            label=get_plot_series_label(label),
+        )
     ax.set_yticks([])
     ax.set_xlabel("Absolute Spearman's correlation")
     ax.legend(loc="lower center", bbox_to_anchor=(0.5, 1.0), ncol=3, fontsize="small")
