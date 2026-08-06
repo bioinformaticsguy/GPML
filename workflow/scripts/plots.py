@@ -31,6 +31,7 @@ from src.constants import (
     MUTATION_TASTER,
     SPEAR_COR_SUFFIX,
     STRICT_COR_SUFFIX,
+    EXCLUDE_TRAINING_SAV_SUFFIX,
     PICKLED_DATAFRAMES_DIRECTORY_PATH,
 )
 from src.utils import load_dataframe
@@ -116,12 +117,34 @@ def plot_bar_all():
     )
 
 
+def plot_legacy_tool_comparison(tool_name):
+    """Reproduce the legacy per-tool all-SNP versus excluded-training-SNP plot."""
+    corr_df = load_dataframe(
+        file_path=PICKLED_DATAFRAMES_DIRECTORY_PATH,
+        file_name=MAVE_DATAFRAME_ONLY_HUMAN_WITH_BASELINE_CORELATION_PICKLE_FILE_NAME,
+    )
+
+    all_col = tool_name + SPEAR_COR_SUFFIX
+    excluded_col = all_col + EXCLUDE_TRAINING_SAV_SUFFIX
+    column_names = [ID_COL, BASELINE_COL, all_col, excluded_col]
+    sorted_df = corr_df.loc[:, column_names].sort_values(by=BASELINE_COL, ascending=True)
+    protein_names = sorted_df.pop(ID_COL).tolist()
+    dict_df = {key.replace(SPEAR_COR_SUFFIX, ""): value for key, value in sorted_df.abs().to_dict("list").items()}
+
+    PlotGeneroator.generate_bar_plot(
+        protein_names,
+        dict_df,
+        PLOTS_DIRECTORY_PATH / f"{tool_name}.{PLOT_FORMAT}",
+        corr_df,
+    )
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--type",
         required=True,
-        choices=["pie", "bar-strict", "bar-all"],
+        choices=["pie", "bar-strict", "bar-all", "mutpred-comparison", "deogen2-comparison"],
         help="Which plot to generate",
     )
     args = parser.parse_args()
@@ -132,3 +155,7 @@ if __name__ == "__main__":
         plot_bar_strict()
     elif args.type == "bar-all":
         plot_bar_all()
+    elif args.type == "mutpred-comparison":
+        plot_legacy_tool_comparison(MUTEPRED_TOOL_NAME)
+    elif args.type == "deogen2-comparison":
+        plot_legacy_tool_comparison(DEOGEN_TOOL_NAME)

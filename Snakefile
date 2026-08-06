@@ -79,6 +79,8 @@ PLOT_OUTPUT_MAP = {
     "pie_chart":  f"{PLOTS_DIR}/pie_plot.{FMT}",
     "bar_strict": f"{PLOTS_DIR}/bar_strict.{FMT}",
     "bar_all":    f"{PLOTS_DIR}/bar_all.{FMT}",
+    "mutpred_comparison": f"{PLOTS_DIR}/MutPred.{FMT}",
+    "deogen2_comparison": f"{PLOTS_DIR}/DEOGEN2.{FMT}",
 }
 
 # ---------------------------------------------------------------------------
