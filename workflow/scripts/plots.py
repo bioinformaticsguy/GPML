@@ -101,7 +101,7 @@ def plot_bar_all():
     column_names = [ID_COL, BASELINE_COL] + [tool + SPEAR_COR_SUFFIX for tool in TOOLS_LIST]
 
     sorted_df     = corr_df.loc[:, column_names].sort_values(by=BASELINE_COL, ascending=True)
-    protein_names = [PROTEIN_SHORT_DICTMAP[name] for name in sorted_df.pop(ID_COL).tolist()]
+    protein_names = sorted_df.pop(ID_COL).tolist()
     dict_df       = {k.replace(SPEAR_COR_SUFFIX, ""): v for k, v in sorted_df.abs().to_dict("list").items()}
 
     PlotGeneroator.generate_bar_plot(
