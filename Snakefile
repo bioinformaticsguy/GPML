@@ -9,6 +9,53 @@
 configfile: "config/config.yaml"
 
 # ---------------------------------------------------------------------------
+# Resource policy for optional distributed SLURM execution
+# ---------------------------------------------------------------------------
+# These values affect scheduler requests only.  They do not change the
+# workflow DAG, analysis parameters, commands, or output paths.  Cluster
+# partition names are deliberately supplied at launch time by the ignored
+# local controller launcher, so normal local Snakemake runs remain portable.
+RESOURCE_POLICY = config.get("resource_policy") or {}
+RESOURCE_RULE_OVERRIDES = RESOURCE_POLICY.get("rules") or {}
+RESOURCE_MEMORY_MULTIPLIER = float(RESOURCE_POLICY.get("memory_retry_multiplier", 1.5))
+RESOURCE_RUNTIME_MULTIPLIER = float(RESOURCE_POLICY.get("runtime_retry_multiplier", 1.5))
+RESOURCE_MAX_MEMORY_MB = int(RESOURCE_POLICY.get("max_memory_mb", 128000))
+RESOURCE_MAX_RUNTIME_MINUTES = int(RESOURCE_POLICY.get("max_runtime_minutes", 4320))
+SLURM_SHORT_PARTITION = config.get("slurm_short_partition")
+SLURM_LONG_PARTITION = config.get("slurm_long_partition")
+SLURM_SHORT_MAX_MINUTES = int(config.get("slurm_short_max_minutes", 720))
+
+
+def _rule_resource(rule_name, key, default):
+    return RESOURCE_RULE_OVERRIDES.get(rule_name, {}).get(key, default)
+
+
+def _rule_threads(rule_name, default):
+    return int(_rule_resource(rule_name, "threads", default))
+
+
+def _scaled_resource(base, attempt, multiplier, maximum):
+    value = int(round(int(base) * (float(multiplier) ** (int(attempt) - 1))))
+    return min(value, int(maximum))
+
+
+def _rule_mem_mb(rule_name, default, attempt):
+    base = _rule_resource(rule_name, "mem_mb", default)
+    return _scaled_resource(base, attempt, RESOURCE_MEMORY_MULTIPLIER, RESOURCE_MAX_MEMORY_MB)
+
+
+def _rule_runtime(rule_name, default, attempt):
+    base = _rule_resource(rule_name, "runtime", default)
+    return _scaled_resource(base, attempt, RESOURCE_RUNTIME_MULTIPLIER, RESOURCE_MAX_RUNTIME_MINUTES)
+
+
+def _rule_slurm_partition(rule_name, default_runtime, attempt):
+    runtime = _rule_runtime(rule_name, default_runtime, attempt)
+    if runtime <= SLURM_SHORT_MAX_MINUTES:
+        return SLURM_SHORT_PARTITION
+    return SLURM_LONG_PARTITION or SLURM_SHORT_PARTITION
+
+# ---------------------------------------------------------------------------
 # Include rule modules
 # ---------------------------------------------------------------------------
 

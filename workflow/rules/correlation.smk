@@ -16,6 +16,11 @@ rule correlation:
         pkl = f"{config['pickled_dir']}/{config['correlation_pkl']}",
     log:
         "logs/correlation.log",
+    threads: _rule_threads("correlation", 2)
+    resources:
+        mem_mb=lambda wc, attempt: _rule_mem_mb("correlation", 16000, attempt),
+        runtime=lambda wc, attempt: _rule_runtime("correlation", 120, attempt),
+        slurm_partition=lambda wc, attempt: _rule_slurm_partition("correlation", 120, attempt),
     conda:
         "../envs/correlation.yaml"
     shell:

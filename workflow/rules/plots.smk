@@ -12,6 +12,11 @@ rule plot_pie:
         f"{config['plots_dir']}/pie_plot.{config['plot_format']}",
     log:
         "logs/plot_pie.log",
+    threads: _rule_threads("plot_pie", 1)
+    resources:
+        mem_mb=lambda wc, attempt: _rule_mem_mb("plot_pie", 4000, attempt),
+        runtime=lambda wc, attempt: _rule_runtime("plot_pie", 60, attempt),
+        slurm_partition=lambda wc, attempt: _rule_slurm_partition("plot_pie", 60, attempt),
     conda:
         "../envs/plots.yaml"
     shell:
@@ -26,6 +31,11 @@ rule plot_bar_strict:
         f"{config['plots_dir']}/bar_strict.{config['plot_format']}",
     log:
         "logs/plot_bar_strict.log",
+    threads: _rule_threads("plot_bar_strict", 1)
+    resources:
+        mem_mb=lambda wc, attempt: _rule_mem_mb("plot_bar_strict", 4000, attempt),
+        runtime=lambda wc, attempt: _rule_runtime("plot_bar_strict", 60, attempt),
+        slurm_partition=lambda wc, attempt: _rule_slurm_partition("plot_bar_strict", 60, attempt),
     conda:
         "../envs/plots.yaml"
     shell:
@@ -40,6 +50,11 @@ rule plot_bar_all:
         f"{config['plots_dir']}/bar_all.{config['plot_format']}",
     log:
         "logs/plot_bar_all.log",
+    threads: _rule_threads("plot_bar_all", 1)
+    resources:
+        mem_mb=lambda wc, attempt: _rule_mem_mb("plot_bar_all", 4000, attempt),
+        runtime=lambda wc, attempt: _rule_runtime("plot_bar_all", 60, attempt),
+        slurm_partition=lambda wc, attempt: _rule_slurm_partition("plot_bar_all", 60, attempt),
     conda:
         "../envs/plots.yaml"
     shell:

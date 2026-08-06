@@ -14,6 +14,11 @@ rule tables:
         csv = f"{config['tables_dir']}/{config['human_protein_table']}.csv",
     log:
         "logs/tables.log",
+    threads: _rule_threads("tables", 1)
+    resources:
+        mem_mb=lambda wc, attempt: _rule_mem_mb("tables", 4000, attempt),
+        runtime=lambda wc, attempt: _rule_runtime("tables", 60, attempt),
+        slurm_partition=lambda wc, attempt: _rule_slurm_partition("tables", 60, attempt),
     conda:
         "../envs/tables.yaml"
     shell:

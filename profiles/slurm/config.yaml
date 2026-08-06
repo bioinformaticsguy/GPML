@@ -1,0 +1,20 @@
+# GPML Snakemake SLURM executor profile.
+# Install in the controller environment:
+#   conda install -n snakemake -c conda-forge -c bioconda snakemake-executor-plugin-slurm
+# Cluster-specific account, partition, and allocation choices belong only in
+# scripts/slurm/submit_gpml_controller.local.sh (which is git-ignored).
+executor: slurm
+jobs: 10
+local-cores: 1
+max-jobs-per-second: 2
+max-status-checks-per-second: 1
+use-conda: true
+latency-wait: 60
+rerun-incomplete: true
+retries: 2
+printshellcmds: true
+slurm-logdir: "logs/slurm"
+slurm-delete-logfiles-older-than: 14
+default-resources:
+  mem_mb: 8000
+  runtime: 60

@@ -19,6 +19,11 @@ rule preprocess:
         pkl = f"{config['pickled_dir']}/{config['gold_std_pkl']}",
     log:
         "logs/preprocess.log",
+    threads: _rule_threads("preprocess", 2)
+    resources:
+        mem_mb=lambda wc, attempt: _rule_mem_mb("preprocess", 32000, attempt),
+        runtime=lambda wc, attempt: _rule_runtime("preprocess", 360, attempt),
+        slurm_partition=lambda wc, attempt: _rule_slurm_partition("preprocess", 360, attempt),
     conda:
         "../envs/preprocess.yaml"
     shell:

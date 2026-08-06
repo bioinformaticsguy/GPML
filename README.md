@@ -107,3 +107,47 @@ conda activate gpml_env
 ```
 
 **Key dependencies:** Python 3.9, pandas 1.4, numpy 1.23, scipy 1.9, scikit-learn 1.0, matplotlib 3.5, tensorflow 2.12
+
+## SLURM execution
+
+GPML can submit each Snakemake rule as a separate SLURM job. The controller is
+lightweight: it builds the DAG and submits child jobs; it does not process the
+large data itself. This keeps the existing workflow, commands, parameters, and
+outputs unchanged.
+
+Install the SLURM executor plugin in the environment that runs Snakemake:
+
+```bash
+conda install -n snakemake -c conda-forge -c bioconda snakemake-executor-plugin-slurm
+```
+
+On the cluster, make a site-local launcher and set the placeholders for your
+Conda installation and scheduler allocation. The local launcher is ignored by
+Git, so account, partition, and node settings remain private.
+
+```bash
+cp scripts/slurm/submit_gpml_controller.local.example.sh \
+   scripts/slurm/submit_gpml_controller.local.sh
+chmod +x scripts/slurm/submit_gpml_controller.local.sh
+# Edit scripts/slurm/submit_gpml_controller.local.sh for your cluster.
+```
+
+Validate the installation without submitting jobs:
+
+```bash
+conda activate snakemake
+bash scripts/slurm/check_slurm_profile.sh
+```
+
+Submit the controller after the preflight succeeds:
+
+```bash
+bash scripts/slurm/submit_gpml_controller.local.sh
+```
+
+Child job logs are written to `logs/slurm/`, controller logs to `logs/`, and
+active jobs can be viewed with:
+
+```bash
+bash scripts/slurm/show_gpml_jobs.sh
+```
