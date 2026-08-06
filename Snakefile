@@ -95,6 +95,7 @@ PLOT_OUTPUT_MAP = {
     "all_tools_non_exclude": f"{PLOTS_DIR}/all_tools_non_exclude.{FMT}",
     "normal_corr": f"{PLOTS_DIR}/normal_corr.{FMT}",
     "mean_bar": f"{PLOTS_DIR}/mean_bar.{FMT}",
+    "averaged_over_savs": f"{PLOTS_DIR}/averaged_over-savs.{FMT}",
 }
 
 # ---------------------------------------------------------------------------

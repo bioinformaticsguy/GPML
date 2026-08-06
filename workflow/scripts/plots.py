@@ -11,6 +11,7 @@ Generates one plot per invocation, selected via --type:
   all-tools-non-exclude : legacy aggregate of strict correlations
   normal-corr : legacy aggregate of unfiltered correlations
   mean-bar : legacy mean absolute correlation summary
+  averaged-over-savs : mean correlations before/after training-SAV exclusion
 
 Usage:
   python workflow/scripts/plots.py --type pie
@@ -45,7 +46,7 @@ from src.constants import (
     PICKLED_DATAFRAMES_DIRECTORY_PATH,
 )
 from src.utils import load_dataframe
-from src.plot_graphs import PlotGeneroator
+from src.plot_graphs import PlotGeneroator, get_plot_series_color
 
 TOOLS_WITH_TRAINING_DATA = [
     MUTEPRED_TOOL_NAME,
@@ -206,7 +207,11 @@ def plot_mean_bar():
     labels, values = zip(*sorted(means.items(), key=lambda item: item[1]))
 
     fig, ax = plt.subplots()
-    bars = ax.bar(labels, values, color="skyblue")
+    bars = ax.bar(
+        labels,
+        values,
+        color=[get_plot_series_color(label, index) for index, label in enumerate(labels)],
+    )
     ax.set_title("Mean values of Spearman's correlation")
     ax.set_xlabel("Tool Names")
     ax.set_ylabel("Mean Value")
@@ -214,6 +219,32 @@ def plot_mean_bar():
     ax.bar_label(bars, fmt="%.3f", padding=3, fontsize=8)
     fig.tight_layout()
     fig.savefig(PLOTS_DIRECTORY_PATH / f"mean_bar.{PLOT_FORMAT}")
+    plt.close(fig)
+
+
+def plot_averaged_over_savs():
+    """Average absolute all-SNP and excluded-training-SNP correlations by tool."""
+    corr_df = _load_correlation_dataframe()
+    series = [("pssmBaseline", BASELINE_COL)]
+    for tool in TOOLS_WITH_TRAINING_DATA:
+        excluded = tool + SPEAR_COR_SUFFIX + EXCLUDE_TRAINING_SAV_SUFFIX
+        all_savs = tool + SPEAR_COR_SUFFIX
+        series.extend([
+            (f"{tool}_excluded_training_savs", excluded),
+            (tool, all_savs),
+        ])
+
+    labels, columns = zip(*series)
+    values = [corr_df[column].abs().mean() for column in columns]
+    fig, ax = plt.subplots(figsize=(10, 7))
+    positions = range(len(values))
+    for position, label, value in zip(positions, labels, values):
+        ax.barh(position, value, color=get_plot_series_color(label, position), label=label)
+    ax.set_yticks([])
+    ax.set_xlabel("Absolute Spearman's correlation")
+    ax.legend(loc="lower center", bbox_to_anchor=(0.5, 1.0), ncol=3, fontsize="small")
+    fig.tight_layout()
+    fig.savefig(PLOTS_DIRECTORY_PATH / f"averaged_over-savs.{PLOT_FORMAT}")
     plt.close(fig)
 
 
@@ -225,6 +256,7 @@ if __name__ == "__main__":
         choices=[
             "pie", "bar-strict", "bar-all", "tool-comparison", "tool-strict",
             "all-tools-all-exclude", "all-tools-non-exclude", "normal-corr", "mean-bar",
+            "averaged-over-savs",
         ],
         help="Which plot to generate",
     )
@@ -253,3 +285,5 @@ if __name__ == "__main__":
         plot_normal_corr()
     elif args.type == "mean-bar":
         plot_mean_bar()
+    elif args.type == "averaged-over-savs":
+        plot_averaged_over_savs()

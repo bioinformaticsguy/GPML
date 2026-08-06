@@ -178,3 +178,21 @@ rule plot_mean_bar:
         "../envs/plots.yaml"
     shell:
         "PYTHONPATH=. python workflow/scripts/plots.py --type mean-bar > {log} 2>&1"
+
+
+rule plot_averaged_over_savs:
+    input:
+        correlation_pkl = f"{config['pickled_dir']}/{config['correlation_pkl']}",
+    output:
+        f"{config['plots_dir']}/averaged_over-savs.{config['plot_format']}",
+    log:
+        "logs/rules/plot_averaged_over_savs.log",
+    threads: _rule_threads("plot_averaged_over_savs", 1)
+    resources:
+        mem_mb=lambda wc, attempt: _rule_mem_mb("plot_averaged_over_savs", 4000, attempt),
+        runtime=lambda wc, attempt: _rule_runtime("plot_averaged_over_savs", 60, attempt),
+        slurm_partition=lambda wc, attempt: _rule_slurm_partition("plot_averaged_over_savs", 60, attempt),
+    conda:
+        "../envs/plots.yaml"
+    shell:
+        "PYTHONPATH=. python workflow/scripts/plots.py --type averaged-over-savs > {log} 2>&1"

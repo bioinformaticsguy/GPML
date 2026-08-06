@@ -1,4 +1,3 @@
-from itertools import cycle
 from operator import itemgetter
 from pathlib import Path
 
@@ -6,10 +5,25 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.interpolate import UnivariateSpline
 
-from src.constants import PROTEIN_SHORT_DICTMAP, SPEAR_COR_SUFFIX, PLOT_FORMAT, EXCLUDE_TRAINING_SAV_SUFFIX, \
-    TOOL_SCORE_COLUMN_SUFFIX, COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, TRAINING_SAVS_COLUMN_SIFFIX, PIE_PLOT_FILE_NAME, \
-    PLOTS_DIRECTORY_PATH
+from src.constants import PROTEIN_SHORT_DICTMAP, SPEAR_COR_SUFFIX, STRICT_COR_SUFFIX, PLOT_FORMAT, \
+    EXCLUDE_TRAINING_SAV_SUFFIX, TOOL_SCORE_COLUMN_SUFFIX, COLUMN_NAME_OF_MAVE_GOLD_STANDARD_ID, \
+    COLUMN_NAME_OF_BASELINE_SCORES_DICTIONARY, TRAINING_SAVS_COLUMN_SIFFIX, PIE_PLOT_FILE_NAME, \
+    PLOTS_DIRECTORY_PATH, PLOT_BASELINE_COLOR, PLOT_TOOL_COLORS, PLOT_FALLBACK_COLORS
 from src.utils import extract_value
+
+
+def get_plot_series_color(series_name, fallback_index=0):
+    """Return the centralized colour for a plotted correlation series."""
+    if series_name == COLUMN_NAME_OF_BASELINE_SCORES_DICTIONARY:
+        return PLOT_BASELINE_COLOR
+
+    is_excluded = series_name.endswith(EXCLUDE_TRAINING_SAV_SUFFIX)
+    tool_name = series_name.removesuffix(EXCLUDE_TRAINING_SAV_SUFFIX)
+    tool_name = tool_name.removesuffix(STRICT_COR_SUFFIX)
+    palette = PLOT_TOOL_COLORS.get(tool_name)
+    if palette is not None:
+        return palette["light" if is_excluded else "dark"]
+    return PLOT_FALLBACK_COLORS[fallback_index % len(PLOT_FALLBACK_COLORS)]
 
 
 class PlotGeneroator:
@@ -25,10 +39,7 @@ class PlotGeneroator:
 
         x = [protein_short_mapping[protein_name] for protein_name in dataframe['protein_name'].tolist()]
 
-        # Generating dynamic colors based on the number of legend entries
-        num_colors = len(legend)
-        color_cycle = cycle(plt.cm.get_cmap('tab10').colors)
-        colors = [next(color_cycle) for _ in range(num_colors)]
+        colors = [get_plot_series_color(label, index) for index, label in enumerate(legend)]
 
         fig, ax = plt.subplots()
 
@@ -130,7 +141,13 @@ class PlotGeneroator:
 
         for attribute, measurement in data_dict.items():
             offset = height * multiplier
-            rects = ax.barh(y + offset, measurement, height, label=attribute)
+            rects = ax.barh(
+                y + offset,
+                measurement,
+                height,
+                label=attribute,
+                color=get_plot_series_color(attribute, multiplier),
+            )
 
             for i, rect in enumerate(rects):
                 if attribute.replace("_excluded_training_savs", "") != "pssmBaseline" and "_excluded_training_savs" in attribute:

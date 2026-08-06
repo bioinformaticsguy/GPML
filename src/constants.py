@@ -72,6 +72,24 @@ TRAINING_FLAG_SUFFIX = "_training_flag"
 TRAINING_SAVS_COLUMN_SIFFIX = "_training_savs"
 EXCLUDE_TRAINING_SAV_SUFFIX = "_excluded_training_savs"
 
+# Plot palette.  Keep every tool's all-SNP and strict-correlation series in
+# its dark colour; the paired light colour is reserved for the corresponding
+# training-SAV-excluded series.  Update this mapping to restyle every GPML
+# tool plot consistently.
+PLOT_BASELINE_COLOR = "#000000"
+PLOT_TOOL_COLORS = {
+    MUTEPRED_TOOL_NAME: {"dark": "#2ca02c", "light": "#98df8a"},
+    DEOGEN_TOOL_NAME: {"dark": "#ff7f0e", "light": "#ffbb78"},
+    CLINPRED_TOOL_NAME: {"dark": "#9467bd", "light": "#c5b0d5"},
+    PRIMATEAI_TOOL_NAME: {"dark": "#d62728", "light": "#ff9896"},
+    FATHMM_TOOL_NAME: {"dark": "#17becf", "light": "#9edae5"},
+    MUTATION_TASTER: {"dark": "#8c564b", "light": "#c49c94"},
+    "REVEL": {"dark": "#1f77b4", "light": "#aec7e8"},
+    "EVE": {"dark": "#bcbd22", "light": "#dbdb8d"},
+    "AlphaMissense": {"dark": "#e377c2", "light": "#f7b6d2"},
+}
+PLOT_FALLBACK_COLORS = ("#7f7f7f", "#393b79", "#637939", "#843c39")
+
 ## File Names
 MAVE_DATAFRAME_PICKLE_FILE_NAME = "gold_std_df.pkl"
 MAVE_DATAFRAME_ONLY_HUMAN_PICKLE_FILE_NAME = "gold_std_df_only_human.pkl"

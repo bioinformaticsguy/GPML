@@ -52,3 +52,4 @@ enabled_plots:
   - all_tools_non_exclude
   - normal_corr
   - mean_bar
+  - averaged_over_savs  # mean absolute correlations, before/after training-SAV exclusion
